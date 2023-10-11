@@ -39,10 +39,11 @@ Untuk Komunitas:
 ### iii. Daftar modul yang akan diimplementasikan
 
 **1. Modul Registrasi dan Autentikasi:** <br>
-Deskripsi: <br>
+Deskripsi: 
 - Pengguna dapat mendaftar sebagai user atau writer melalui formulir registrasi.
 - Autentikasi dengan menggunakan email dan kata sandi.
 - Lupa kata sandi dan pengaturan profil untuk setiap role. <br>
+
 Fitur CRUD:
 - Create: Mendaftarkan akun baru.
 - Read: Melihat profil pengguna.
@@ -53,7 +54,8 @@ Fitur CRUD:
 Deskripsi: <br>
 - Writer dapat menambahkan, mengedit, atau menghapus buku yang telah dipublikasikan.
 - Melampirkan sampul buku, deskripsi, dan metadata lainnya. <br>
-Fitur CRUD: <br>
+
+Fitur CRUD: 
 - Create: Menambahkan buku baru.
 - Read: Menampilkan daftar buku yang telah dipublikasikan oleh writer tersebut.
 - Update: Mengedit detail dan konten buku.
@@ -71,8 +73,9 @@ Fitur CRUD:
 - Delete: Menghapus ulasan dan rating pengguna sendiri.
  
 **4. Modul Wishlist:** <br>
-Deskripsi: <br>
-User dapat menambahkan buku ke daftar keinginan atau wishlist. <br>
+Deskripsi: 
+- User dapat menambahkan buku ke daftar keinginan atau wishlist. <br>
+
 Fitur CRUD: 
 - Create: Menambah buku ke wishlist.
 - Read: Menampilkan daftar buku di wishlist.
@@ -80,8 +83,9 @@ Fitur CRUD:
 - Delete: Menghapus buku dari wishlist.
   
 **5. Modul Update:** <br>
-Deskripsi: <br>
-Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.<br>
+Deskripsi: 
+- Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.<br>
+
 Fitur CRUD: 
 - Create: Menambahkan berita atau pengumuman baru.
 - Read: Menampilkan daftar berita atau pengumuman.
@@ -90,7 +94,8 @@ Fitur CRUD:
   
 **6. Modul Keanggotaan Premium: (Optional)** <br>
 Deskripsi: <br>
-Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif. <br>
+- Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif. <br>
+
 Fitur CRUD: 
 - Create: Mengaktifkan keanggotaan premium.
 - Read: Menampilkan status dan detil keanggotaan.
@@ -106,8 +111,8 @@ https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 
 ### v. Role atau peran pengguna beserta deskripsinya (karena bisa saja lebih dari satu jenis pengguna yang mengakses aplikasi)
 - Pembaca
->> Pembaca adalah member Reguler by default yang mempunyai beberapa Modul, seperti Modul langganan, modul ulasan dan rating, serta modul wishlist.
+> Pembaca adalah member Reguler by default yang mempunyai beberapa Modul, seperti Modul langganan, modul ulasan dan rating, serta modul wishlist.
 - Penulis
->> Penulis adalah entitas yang mempunyai akses ke modul Manajemen Buku.
+> Penulis adalah entitas yang mempunyai akses ke modul Manajemen Buku.
 - Admin
->> Admin adalah entitas yang mempunyai akses ke modul Update. (Unfix)
+> Admin adalah entitas yang mempunyai akses ke modul Update. (Unfix)
