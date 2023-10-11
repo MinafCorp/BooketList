@@ -38,59 +38,60 @@ Untuk Komunitas:
 
 ### iii. Daftar modul yang akan diimplementasikan
 
-**1. Modul Registrasi dan Autentikasi:**
-Deskripsi:
-Pengguna dapat mendaftar sebagai user atau writer melalui formulir registrasi.
-Autentikasi dengan menggunakan email dan kata sandi.
-Lupa kata sandi dan pengaturan profil untuk setiap role.
-Fitur CRUD:
-Create: Mendaftarkan akun baru.
-Read: Melihat profil pengguna.
-Update: Mengubah data profil pengguna.
-Delete: Menghapus akun pengguna.
- 
-**2. Modul Manajemen Buku (untuk Writer):**
+**1. Modul Registrasi dan Autentikasi:** <br>
 Deskripsi: <br>
-Writer dapat menambahkan, mengedit, atau menghapus buku yang telah dipublikasikan.
-Melampirkan sampul buku, deskripsi, dan metadata lainnya.
+- Pengguna dapat mendaftar sebagai user atau writer melalui formulir registrasi.
+- Autentikasi dengan menggunakan email dan kata sandi.
+- Lupa kata sandi dan pengaturan profil untuk setiap role. <br>
+Fitur CRUD:
+- Create: Mendaftarkan akun baru.
+- Read: Melihat profil pengguna.
+- Update: Mengubah data profil pengguna.
+- Delete: Menghapus akun pengguna.
+ 
+**2. Modul Manajemen Buku (untuk Writer):** <br>
+Deskripsi: <br>
+- Writer dapat menambahkan, mengedit, atau menghapus buku yang telah dipublikasikan.
+- Melampirkan sampul buku, deskripsi, dan metadata lainnya. <br>
 Fitur CRUD: <br>
 - Create: Menambahkan buku baru.
 - Read: Menampilkan daftar buku yang telah dipublikasikan oleh writer tersebut.
 - Update: Mengedit detail dan konten buku.
 - Delete: Menghapus buku.
  
-**3. Modul Ulasan dan Rating:**
+**3. Modul Ulasan dan Rating:** <br>
 Deskripsi: <br>
 - User dapat meninggalkan ulasan dan rating untuk buku.
-- Writer dapat merespons ulasan pada buku mereka.
-Fitur CRUD: <br>
+- Writer dapat merespons ulasan pada buku mereka.<br>
+
+Fitur CRUD: 
 - Create: Menambahkan ulasan dan rating baru.
 - Read: Menampilkan ulasan dan rating.
 - Update: Mengedit ulasan dan rating (dalam jangka waktu tertentu).
 - Delete: Menghapus ulasan dan rating pengguna sendiri.
  
-4. Modul Wishlist:
+**4. Modul Wishlist:** <br>
 Deskripsi: <br>
-User dapat menambahkan buku ke daftar keinginan atau wishlist.
-Fitur CRUD: <br>
+User dapat menambahkan buku ke daftar keinginan atau wishlist. <br>
+Fitur CRUD: 
 - Create: Menambah buku ke wishlist.
 - Read: Menampilkan daftar buku di wishlist.
 - Update: Mengedit catatan atau prioritas buku di wishlist.
 - Delete: Menghapus buku dari wishlist.
   
-**5. Modul Update:**
+**5. Modul Update:** <br>
 Deskripsi: <br>
-Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.
-Fitur CRUD: <br>
+Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.<br>
+Fitur CRUD: 
 - Create: Menambahkan berita atau pengumuman baru.
 - Read: Menampilkan daftar berita atau pengumuman.
 - Update: Mengubah atau memperbarui berita atau pengumuman.
 - Delete: Menghapus berita atau pengumuman yang sudah tidak relevan.
   
-**6. Modul Keanggotaan Premium: (Optional)**
+**6. Modul Keanggotaan Premium: (Optional)** <br>
 Deskripsi: <br>
-Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif.
-Fitur CRUD: <br>
+Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif. <br>
+Fitur CRUD: 
 - Create: Mengaktifkan keanggotaan premium.
 - Read: Menampilkan status dan detil keanggotaan.
 - Update: Mengubah paket atau detil keanggotaan.
