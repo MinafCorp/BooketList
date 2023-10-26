@@ -1,0 +1,36 @@
+{% load static %}
+{% block style %}
+<style>
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">ABOUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">NEWS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CONTACT</a>
+        </li>
+    </ul>
+    <div class="buttonuser">
+        <a class="nav-link" href="#">LOG IN</a>
+        <button class="btnlogin" type="button" style="border-radius: 20px; background-color: #4F5352; color: #C8C1B7; overflow: hidden;">SIGN UP</button>
+    </div>
+</nav>
+{% endblock content %}
