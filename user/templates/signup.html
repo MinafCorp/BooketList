@@ -4,22 +4,42 @@
     <title>signup</title>
 {% endblock meta %}
 
+{% block style %}
+<style>
+    .container{
+        display: flex;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    #card-role{
+        width: 500px;
+        border-radius: 10px;
+    }
+
+</style>
+{% endblock style %}
+
 {% block content %}
 <div class="container">
-    <div>
-        <h1>Sign Up</h1>  
-
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" id="card-role">
+          <div class="card-header" style="background-color: #D9D9D9; color: #4F5352;">
+            <center><h2>Choose Your Role</h2></center>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                 <div class="col-lg-6">
+                  <a type="button" class="btn btn-block" href="{% url 'user:signup_author' %}">AUTHOR</a>
+                 </div>
+                 <div class="col-lg-6">
+                  <a type="button" class="btn btn-block" href="{% url 'user:signup_reader' %}">READER</a>
+                 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- Content here -->
-</div>
+  </div>
 {% endblock content %}
