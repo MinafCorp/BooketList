@@ -19,7 +19,7 @@
         overflow: hidden;
     }
     .custom-size{
-        padding: 20px;
+        padding: 10px;
         font-size: 24px;
     }
 </style>
@@ -36,6 +36,9 @@
         </li>
         <li class="nav-item custom-size">
             <a href="#"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
     </ul>
 
