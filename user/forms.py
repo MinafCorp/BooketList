@@ -16,7 +16,7 @@ class ReaderSignUpForm(UserCreationForm):
 
     def save(self):
         user = super().save(commit=False)
-        user.is_reader = True
+        user.role = 'READER'
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
         user.save()
@@ -37,7 +37,7 @@ class AuthorSignUpForm(UserCreationForm):
     @transaction.atomic
     def save(self):
         user = super().save(commit = False)
-        user.is_author = True
+        user.role = 'AUTHOR'
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
         user.save()

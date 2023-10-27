@@ -1,15 +1,13 @@
 from django.shortcuts import render
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import redirect
-from .models import User, Author, Reader
+
 
 # Create your views here.
 def show_landing(request):
@@ -26,8 +24,7 @@ def signup_reader(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('landing.html')
-            return redirect('google.com')
+            return HttpResponseRedirect(reverse('user:login'))
     context =  {'form': form}
     return render(request, 'signup_reader.html', context)
 
@@ -39,7 +36,7 @@ def signup_author(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('user:login')
+            return HttpResponseRedirect(reverse('user:login'))
         
     context =  {'form': form}
     return render(request, 'signup_author.html', context)
@@ -51,17 +48,19 @@ def login_user(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            role = form.cleaned_data.get('role')
+            user = authenticate(username=username, password=password, role= role)
             if user is not None:
                 login(request,user)
-                if user.is_author:
-                    print("hahahihi")
-                    return(redirect('manajemen_buku:""'))
-                else:
-                    return(redirect('user:'))
+                if user.role == 'AUTHOR':
+                    response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
+                elif user.role == 'READER':
+                    response = HttpResponseRedirect(reverse('main:show_main'))
+            return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
 
-def logout(request):
+def logout_user(request):
     logout(request)
-    return redirect('login')
+    response = HttpResponseRedirect(reverse('user:show_landing'))
+    return response
