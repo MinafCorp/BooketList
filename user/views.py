@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
@@ -58,7 +59,8 @@ def login_user(request):
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
-                    response = HttpResponseRedirect(reverse('show_page_user'))
+                    response = render(request, 'home.html')
+            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
@@ -66,14 +68,5 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('user:show_landing'))
+    response.delete_cookie('last_login')
     return response
-
-@login_required(login_url='/login')
-def show_page_user(request):
-    reader_instance = Reader.objects.get(user=request.user)
-    context = {
-        'username': request.user.username,
-        'products': Book.objects.all(),
-    }
-
-    return render(request, "home.html", context)
