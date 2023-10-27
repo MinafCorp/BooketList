@@ -50,12 +50,19 @@ def login_user(request):
             password = form.cleaned_data.get('password')
             role = form.cleaned_data.get('role')
             user = authenticate(username=username, password=password, role= role)
+            role = form.cleaned_data.get('role')
+            user = authenticate(username=username, password=password, role= role)
             if user is not None:
                 login(request,user)
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
+<<<<<<< HEAD
                     response = HttpResponseRedirect(reverse('main:show_main'))
+=======
+                    response = render(request, 'home.html')
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+>>>>>>> 51f3217110f9eb46dde57db6ebaa64f4d5b9b080
             return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
@@ -63,4 +70,8 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('user:show_landing'))
+<<<<<<< HEAD
+=======
+    response.delete_cookie('last_login')
+>>>>>>> 51f3217110f9eb46dde57db6ebaa64f4d5b9b080
     return response
