@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from user.forms import UserForm
+from user.forms import UserCreationForm
 import datetime
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse, HttpResponseNotFound
@@ -16,10 +16,10 @@ def show_landing(request):
     return render(request, 'landing.html')
 
 def signup(request):
-    form = UserForm()
+    form = UserCreationForm()
 
     if request.method == "POST":
-        form = UserForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             selected_role = request.POST.get('role')
