@@ -29,19 +29,19 @@ def manajemen_buku(request):
     return render(request, "manajemen_buku.html", context)
 
 def show_xml(request):
-    data = Books.objects.all()
+    data = Book.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = Books.objects.all()
+    data = Book.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
-    data = Books.objects.filter(pk=id)
+    data = Book.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json_by_id(request, id):
-    data = Books.objects.filter(pk=id)
+    data = Book.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def register(request):
@@ -78,13 +78,13 @@ def logout_user(request):
     return response
 
 def increment_amount(request, item_id):
-    books = Books.objects.get(pk=item_id)
+    books = Book.objects.get(pk=item_id)
     books.halaman += 1
     books.save()
     return redirect('main:show_main')
 
 def decrement_amount(request, item_id):
-    books = Books.objects.get(pk=item_id)
+    books = Book.objects.get(pk=item_id)
     if books.halaman > 0:
         books.halaman -= 1
         books.save()
@@ -93,12 +93,12 @@ def decrement_amount(request, item_id):
     return redirect('main:show_main')
 
 def delete_books(request, item_id):
-    books = Books.objects.get(pk=item_id)
+    books = Book.objects.get(pk=item_id)
     books.delete()
     return redirect('main:show_main')
 
 def get_books_json(request):
-    product_item = Books.objects.all()
+    product_item = Book.objects.all()
     return HttpResponse(serializers.serialize('json', product_item))
 
 
@@ -112,7 +112,7 @@ def add_books_ajax(request):
         image = request.FILES.get('image')
 
 
-        new_item = Books(judul=judul, halaman=halaman, description=description, user=user, image=image)
+        new_item = Book(judul=judul, halaman=halaman, description=description, user=user, image=image)
         new_item.save()
 
         return HttpResponse("CREATED", status=201)
@@ -122,6 +122,6 @@ def add_books_ajax(request):
 @csrf_exempt
 def delete_books_ajax(request, item_id):
     if request.method == 'DELETE':
-        books = Books.objects.get(id=item_id)
+        books = Book.objects.get(id=item_id)
         books.delete()
         return HttpResponse({'status': 'DELETED'}, status=200)
