@@ -1,12 +1,15 @@
 from django.shortcuts import render
+from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
-import datetime
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
+from user.models import Reader
 
 
 # Create your views here.
@@ -55,7 +58,7 @@ def login_user(request):
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
-                    response = HttpResponseRedirect(reverse('main:show_main'))
+                    response = HttpResponseRedirect(reverse('show_page_user'))
             return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
@@ -64,3 +67,13 @@ def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('user:show_landing'))
     return response
+
+@login_required(login_url='/login')
+def show_page_user(request):
+    reader_instance = Reader.objects.get(user=request.user)
+    context = {
+        'username': request.user.username,
+        'products': Book.objects.all(),
+    }
+
+    return render(request, "home.html", context)

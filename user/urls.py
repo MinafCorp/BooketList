@@ -1,5 +1,5 @@
 from django.urls import path, include
-from user.views import show_landing, login_user, signup_author, signup_reader, signup
+from user.views import *
 
 
 app_name = 'user'
@@ -10,5 +10,6 @@ urlpatterns = [
     path('signup_author/', signup_author, name='signup_author'),
     path('signup_reader/', signup_reader, name='signup_reader'),
     path('login/', login_user, name='login'),
-    path('manajemen', include('manajemen_buku.urls'))
+    path('manajemen', include('manajemen_buku.urls')),
+    path('show_page_user', show_page_user, name='show_page_user'),
 ]
