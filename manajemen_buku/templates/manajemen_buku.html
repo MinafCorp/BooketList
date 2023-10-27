@@ -158,16 +158,20 @@
                     <form id="form" onsubmit="return false;" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="judul" class="col-form-label">Judul:</label>
-                            <input type="text" class="form-control" id="judul" name="judul"></input>
+                            <label for="ISBN" class="col-form-label">ISBN:</label>
+                            <input type="number" class="form-control" id="ISBN" name="ISBN"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="halaman" class="col-form-label">Halaman:</label>
-                            <input type="number" class="form-control" id="halaman" name="halaman"></input>
+                            <label for="title" class="col-form-label">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="col-form-label">Deskripsi:</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <label for="year-of-publication" class="col-form-label">Year of Publication:</label>
+                            <input type="number" class="form-control" id="year-of-publication" name="year-of-publication"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="publisher" class="col-form-label">Publisher: </label>
+                            <input type="text" class="form-control" id="publisher" name="publisher"></input>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="col-form-label">Image:</label>
