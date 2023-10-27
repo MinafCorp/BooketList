@@ -1,5 +1,5 @@
 from django.urls import path
-from user.views import show_landing, signup, login, signup_author, signup_reader
+from user.views import show_landing, login, signup_author, signup_reader, signup
 
 app_name = 'user'
 

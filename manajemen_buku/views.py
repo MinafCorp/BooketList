@@ -15,7 +15,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotFound
-from manajemen_buku.models import Book
+from book.models import Book
 
 
 # Create your views here.
