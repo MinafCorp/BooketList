@@ -40,20 +40,20 @@ def show_json_by_id(request, id):
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 
-def increment_amount(request, item_id):
-    books = Book.objects.get(pk=item_id)
-    books.halaman += 1
-    books.save()
-    return redirect('main:show_main')
+# def increment_amount(request, item_id):
+#     books = Book.objects.get(pk=item_id)
+#     books.halaman += 1
+#     books.save()
+#     return redirect('main:show_main')
 
-def decrement_amount(request, item_id):
-    books = Book.objects.get(pk=item_id)
-    if books.halaman > 0:
-        books.halaman -= 1
-        books.save()
-    if books.halaman == 0:
-        books.delete()
-    return redirect('main:show_main')
+# def decrement_amount(request, item_id):
+#     books = Book.objects.get(pk=item_id)
+#     if books.halaman > 0:
+#         books.halaman -= 1
+#         books.save()
+#     if books.halaman == 0:
+#         books.delete()
+#     return redirect('main:show_main')
 
 def delete_books(request, item_id):
     books = Book.objects.get(pk=item_id)
@@ -61,24 +61,30 @@ def delete_books(request, item_id):
     return redirect('main:show_main')
 
 def get_books_json(request):
-    product_item = Book.objects.all()
+    author_instance = Author.objects.get(user=request.user)
+    product_item = Book.objects.filter(authorUser=author_instance)
     return HttpResponse(serializers.serialize('json', product_item))
 
 
 @csrf_exempt
 def add_books_ajax(request):
     if request.method == 'POST':
-        judul = request.POST.get("judul")
-        halaman = request.POST.get("halaman")
-        description = request.POST.get("description")
-        user = request.user
-        image = request.FILES.get('image')
+        ISBN = request.POST.get("ISBN")
+        title = request.POST.get("title")
+        author = request.POST.get("author")
+        year_of_publication = request.POST.get('year_of_publication')
+        publisher = request.POST.get("publisher")
+        image_url_s = ""
+        image_url_m = ""
+        image_url_l = ""
+        authorUser = Author.objects.get(user=request.user)
+        image = request.FILE.get("image")
 
 
-        new_item = Book(judul=judul, halaman=halaman, description=description, user=user, image=image)
+        new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
         new_item.save()
 
-        return HttpResponse("CREATED", status=201)
+        return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
 

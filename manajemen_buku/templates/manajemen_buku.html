@@ -85,7 +85,7 @@
 
 </style>
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">
-    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+    <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
     <ul class="nav justify-content-center">
         <li class="nav-item">
           <a class="nav-link active" href="#">ABOUT</a>
@@ -158,16 +158,24 @@
                     <form id="form" onsubmit="return false;" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="judul" class="col-form-label">Judul:</label>
-                            <input type="text" class="form-control" id="judul" name="judul"></input>
+                            <label for="ISBN" class="col-form-label">ISBN:</label>
+                            <input type="number" class="form-control" id="ISBN" name="ISBN"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="halaman" class="col-form-label">Halaman:</label>
-                            <input type="number" class="form-control" id="halaman" name="halaman"></input>
+                            <label for="title" class="col-form-label">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="col-form-label">Deskripsi:</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <label for="author" class="col-form-label">Author:</label>
+                            <input type="text" class="form-control" id="author" name="author"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year_of_publication" class="col-form-label">Year of Publication:</label>
+                            <input type="number" class="form-control" id="year_of_publication" name="year_of_publication"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="publisher" class="col-form-label">Publisher:</label>
+                            <input type="text" class="form-control" id="publisher" name="publisher"></input>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="col-form-label">Image:</label>
@@ -203,12 +211,7 @@
                 card.innerHTML = `
                 <div class="card-body">
                     <img src="${item.fields.image}" alt="Product Image">
-                    <h5 class="card-title">${item.fields.judul}</h5>
-                    <p class="card-text">${item.fields.description}</p>
-                    <p class="card-text">Amount: ${item.fields.halaman}</p>
-                    <a href="increment_amount/${item.pk}" class="btn btn-secondary" style="margin-left: 5px;">+</a> ${item.fields.halaman}
-                    <a href="decrement_amount/${item.pk}"class="btn btn-secondary" style="margin-right: 30px;">-</a>                </div>
-                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                    <h5 class="card-title">${item.fields.title}</h5>
                 `   
                 ;
 

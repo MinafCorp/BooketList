@@ -1,7 +1,6 @@
 from django.urls import path, include
 from manajemen_buku.views import add_books_ajax, delete_books_ajax, get_books_json, manajemen_buku
-from manajemen_buku.views import manajemen_buku,  show_json,show_json_by_id 
-from manajemen_buku.views import increment_amount, decrement_amount, delete_books
+from manajemen_buku.views import manajemen_buku
 from manajemen_buku.views import get_books_json, add_books_ajax
 
 
