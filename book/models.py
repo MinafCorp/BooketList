@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import *
+from user.models import Author
 
 # Create your models here.
 class Book(models.Model):
@@ -11,6 +11,6 @@ class Book(models.Model):
     image_url_m = models.URLField(verbose_name="Image-URL-M", null=True, blank=True)
     image_url_l = models.URLField(verbose_name="Image-URL-L", null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='book_images/')
+    image = models.ImageField(upload_to='book_images/', null=True, blank=True)
     
     
