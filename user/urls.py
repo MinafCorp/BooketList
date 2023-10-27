@@ -1,12 +1,12 @@
 from django.urls import path
-from user.views import show_landing, reader_register, author_register, login, logout
+from user.views import show_landing, login, signup_author, signup_reader, signup
 
 app_name = 'user'
 
 urlpatterns = [
     path('', show_landing, name='show_landing'),
-    path('reader_register/', reader_register, name='reader_register'),
-    path('author_register/', author_register, name='author_register'),
-    path('logout/', logout, name='logout'),
+    path('signup/', signup, name='signup'),
+    path('signup_author/', signup_author, name='signup_author'),
+    path('signup_reader/', signup_reader, name='signup_reader'),
     path('login/', login, name='login'),
 ]

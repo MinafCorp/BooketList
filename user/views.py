@@ -15,7 +15,10 @@ from .models import User, Author, Reader
 def show_landing(request):
     return render(request, 'landing.html')
 
-def reader_register(request):
+def signup(request):
+    return render(request, 'signup.html')
+
+def signup_reader(request):
     form = ReaderSignUpForm()
     
     if request.method == 'POST':
@@ -23,11 +26,11 @@ def reader_register(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
+            return redirect('login.html')
     context =  {'form': form}
     return render(request, 'signup_reader.html', context)
 
-def author_register(request):
+def signup_author(request):
     form = AuthorSignUpForm()
     
     if request.method == 'POST':
