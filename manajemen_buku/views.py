@@ -15,7 +15,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotFound
-from manajemen_buku.models import Books
+from book.models import Book
 
 
 # Create your views here.
@@ -23,7 +23,7 @@ from manajemen_buku.models import Books
 def manajemen_buku(request):
     context = {
         'nama': request.user.username, # Nama kamu
-        'products': Books.objects.filter(user=request.user)
+        'products': Book.objects.filter(user=request.user)
     }
 
     return render(request, "manajemen_buku.html", context)
