@@ -48,13 +48,15 @@ def login_user(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            role = form.cleaned_data.get('role')
+            user = authenticate(username=username, password=password, role= role)
             if user is not None:
                 login(request,user)
-                if user.is_author:
+                if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
-                else:
+                elif user.role == 'READER':
                     response = HttpResponseRedirect(reverse('main:show_main'))
+            return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
 

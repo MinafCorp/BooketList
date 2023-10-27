@@ -16,14 +16,16 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotFound
 from book.models import Book
+from user.models import Author, Reader
 
 
 # Create your views here.
-@login_required
+@login_required(login_url='/login')
 def manajemen_buku(request):
+    author_instance = Author.objects.get(user=request.user)
     context = {
-        'nama': request.user.username, # Nama kamu
-        'products': Book.objects.filter(user=request.user)
+        'username': request.user.username,
+        'products': Book.objects.filter(authorUser=author_instance), # Tambahkan ini
     }
 
     return render(request, "manajemen_buku.html", context)
