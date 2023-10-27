@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background-color: rgb(183, 139, 86);
+        font-size: 16px; /* Ukuran teks utama */
+        font-family: 'Courier New', monospace; 
+    }
+
+    .container {
+        max-width: 1200px; /* Maksimum lebar konten */
+        margin: 0 auto; /* Pusatkan konten di tengah layar */
+        text-align: center;
+    }
+
+    .heading {
+        background-color: rgb(233, 185, 185);
+        display: flex;
+        padding: 20px;
+        border-radius: 100px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #item_card {
+        display: flex;
+        flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
+        overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+    }
+
+    .card {
+        width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
+        height: 300px; /* Atur tinggi kartu sesuai kebutuhan */
+        max-width: 100%; /* Batasi lebar maksimum kartu */
+        margin-right: 10px; /* Beri jarak antara kartu */
+        margin-bottom: 20px;
+    }
+
+    .logout {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .add-item {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+        
+        
+    }
+
+    .btn-secondary {
+        background-color: rgb(214, 176, 126);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .card:last-child {
+    background-color: rgb(212, 111, 142);
+    }
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+
+</style>
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">ABOUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">NEWS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CONTACT</a>
+        </li>
+    </ul>
+    <div class="buttonuser">
+        <a class="nav-link" href="#">LOG IN</a>
+        <button class="btnlogin" type="button" style="border-radius: 20px; background-color: #4F5352; color: #C8C1B7; overflow: hidden;">SIGN UP</button>
+    </div>
+</nav>
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <center><iframe src="https://giphy.com/embed/VcizxCUIgaKpa" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
+      </div>
+      <div class="carousel-item">
+        <center><iframe src="https://giphy.com/embed/atcqQ5PuX41J6" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
+      </div>
+      <div class="carousel-item">
+        <center><iframe src="https://giphy.com/embed/3otPoRNsswd0WTQa7m" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
+      </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- <div class="heading">
+        <h1>{{ nama }}'s orders</h1>
+    </div> -->
+
+    <button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Publish book
+    </button>
+    
+
+    <div id="item_card" class="row">
+    </div>
+
+    <!-- <button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Publish book
+    </button> -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="judul" class="col-form-label">Judul:</label>
+                            <input type="text" class="form-control" id="judul" name="judul"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="halaman" class="col-form-label">Halaman:</label>
+                            <input type="number" class="form-control" id="halaman" name="halaman"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Deskripsi:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="col-form-label">Image:</label>
+                            <input type="file" class="form-control" id="image" name="image"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+
+    <script>
+        async function getItems() {
+            return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
+        }
+
+        async function refreshItems() {
+            const items = await getItems();
+            const itemCard = document.getElementById("item_card");
+            itemCard.innerHTML = ""; // Kosongkan elemen sebelum menambahkan kartu
+
+            items.forEach((item) => {
+                const card = document.createElement("div");
+                card.className = "card";
+
+                card.innerHTML = `
+                <div class="card-body">
+                    <img src="${item.fields.image}" alt="Product Image">
+                    <h5 class="card-title">${item.fields.judul}</h5>
+                    <p class="card-text">${item.fields.description}</p>
+                    <p class="card-text">Amount: ${item.fields.halaman}</p>
+                    <a href="increment_amount/${item.pk}" class="btn btn-secondary" style="margin-left: 5px;">+</a> ${item.fields.halaman}
+                    <a href="decrement_amount/${item.pk}"class="btn btn-secondary" style="margin-right: 30px;">-</a>                </div>
+                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                `   
+                ;
+
+                itemCard.appendChild(card);
+                
+                
+            });
+        }
+
+        refreshItems();
+
+        async function deleteItem(itemId) {
+            const deleteUrl = `{% url 'manajemen_buku:delete_books_ajax' item_id=999 %}`.replace('999', itemId);
+            console.log(itemId);
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(refreshItems)
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function addItem() {
+            fetch("{% url 'manajemen_buku:add_books_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshItems);
+
+            document.getElementById("form").reset();
+            return false;
+        }
+
+        document.getElementById("button_add").onclick = addItem;
+    </script>
+<footer class="text-center text-white fixed-bottom" style="background-color: #C8C1B7;">
+    <!-- Grid container -->
+    <div class="container p-4"></div>
+    <!-- Grid container -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: #C8C1B7;">
+      © 2023 Copyright:
+      <a class="text-white" href="https://github.com/MinafCorp">MinafCorp</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+
+{% endblock content %}
+
