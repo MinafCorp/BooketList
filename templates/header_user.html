@@ -1,0 +1,29 @@
+{% block content %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <svg class="bi" width="32" height="32" fill="currentColor">
+                <use xlink:href="bootstrap-icons.svg#heart-fill"/>
+              </svg>
+          <a class="nav-link active" href="#about">ABOUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#news">NEWS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">CONTACT</a>
+        </li>
+    </ul>
+    <div class="buttonuser">
+        <a class="nav-link" href="{% url 'user:login'%}">LOG IN</a>
+        <button class="btnlogin" onclick="redirectToRegister()" type="button">SIGN UP</button>
+    </div>
+</nav>
+
+<script>
+    function redirectToRegister() {
+        location.replace("{% url 'user:signup'%}"); 
+    }
+</script>
+{% endblock content %}

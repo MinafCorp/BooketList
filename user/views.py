@@ -26,7 +26,7 @@ def signup_reader(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('login.html')
+            return redirect('landing.html')
     context =  {'form': form}
     return render(request, 'signup_reader.html', context)
 
@@ -34,6 +34,7 @@ def signup_author(request):
     form = AuthorSignUpForm()
     
     if request.method == 'POST':
+        form = AuthorSignUpForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
@@ -52,8 +53,9 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request,user)
+                return(redirect("manajamen_buku: manajemen_buku"))
                 if user.is_author:
-                    return(redirect("manajamen_buku: manajemen_buku."))
+                    print("hahahihi")
                 else:
                     return(redirect("something"))
         
