@@ -13,6 +13,8 @@ class User(AbstractUser):
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user.is_author= True
 
 class Reader(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user.is_reader=True

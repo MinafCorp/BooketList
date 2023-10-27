@@ -11,6 +11,6 @@ class UserForm(forms.Form):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     email = forms.CharField(required=True)
-    role = forms.MultipleChoiceField(required=True, choices=ROLES)
+    role = forms.ChoiceField(required=True, choices=ROLES, widget=forms.Select(attrs={'class': 'custom-select-class'}))
     class Meta:
         model = User
