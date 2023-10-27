@@ -15,6 +15,11 @@ from .models import User, Author, Reader
 def show_landing(request):
     return render(request, 'landing.html')
 
+def signup_reader(request):
+    return render(request, 'signup_reader.html')
+def signup_author(request):
+    return render(request, 'signup_author.html')
+
 def signup(request):
     form = UserCreationForm()
 
