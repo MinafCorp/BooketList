@@ -1,24 +1,49 @@
+{% load static %}
+{% block style %}
+<style>
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 20px;
+        font-size: 24px;
+    }
+</style>
+{% endblock style %}
+
 {% block content %}
-<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
-    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <svg class="bi" width="32" height="32" fill="currentColor">
-                <use xlink:href="bootstrap-icons.svg#heart-fill"/>
-              </svg>
-          <a class="nav-link active" href="#about">ABOUT</a>
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#news">NEWS</a>
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-heart-fill custom-color"></i></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">CONTACT</a>
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-book-fill custom-color"></i></a>
         </li>
     </ul>
-    <div class="buttonuser">
-        <a class="nav-link" href="{% url 'user:login'%}">LOG IN</a>
-        <button class="btnlogin" onclick="redirectToRegister()" type="button">SIGN UP</button>
-    </div>
+
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search Book" aria-label="Search"  style="background-color: #4F5352; color: #C8C1B7;">
+    </form>
 </nav>
 
 <script>

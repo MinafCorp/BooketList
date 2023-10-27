@@ -27,6 +27,7 @@ def signup_reader(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('landing.html')
+            return redirect('google.com')
     context =  {'form': form}
     return render(request, 'signup_reader.html', context)
 
@@ -38,13 +39,13 @@ def signup_author(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
+            return redirect('user:login')
         
     context =  {'form': form}
     return render(request, 'signup_author.html', context)
     
 
-def login(request):
+def login_user(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -53,11 +54,11 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request,user)
-                return(redirect("manajamen_buku: manajemen_buku"))
                 if user.is_author:
                     print("hahahihi")
+                    return(redirect('manajemen_buku:""'))
                 else:
-                    return(redirect("something"))
+                    return(redirect('user:'))
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
 
