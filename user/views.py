@@ -55,7 +55,8 @@ def login_user(request):
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
-                    response = HttpResponseRedirect(reverse('main:show_main'))
+                    response = render(request, 'home.html')
+            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
@@ -63,4 +64,5 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('user:show_landing'))
+    response.delete_cookie('last_login')
     return response
