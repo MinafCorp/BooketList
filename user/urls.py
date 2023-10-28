@@ -10,6 +10,5 @@ urlpatterns = [
     path('signup_author/', signup_author, name='signup_author'),
     path('signup_reader/', signup_reader, name='signup_reader'),
     path('login/', login_user, name='login'),
-    path('manajemen', include('manajemen_buku.urls')),
     path('logout/', logout_user, name='logout'),
-]
+] 
