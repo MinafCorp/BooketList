@@ -74,11 +74,11 @@ def add_books_ajax(request):
         author = request.POST.get("author")
         year_of_publication = request.POST.get('year_of_publication')
         publisher = request.POST.get("publisher")
-        image_url_s = ""
+        image_url_s = request.FILES.get("image")
         image_url_m = ""
         image_url_l = ""
         authorUser = Author.objects.get(user=request.user)
-        image = request.FILE.get("image")
+        image = request.FILES.get("image")
 
 
         new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
@@ -94,3 +94,5 @@ def delete_books_ajax(request, item_id):
         books = Book.objects.get(id=item_id)
         books.delete()
         return HttpResponse({'status': 'DELETED'}, status=200)
+    
+
