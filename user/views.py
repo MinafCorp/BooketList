@@ -7,9 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='user:login')
+def show_home(request):
+    return render(request, 'home.html')
 
 
-# Create your views here.
 def show_landing(request):
     return render(request, 'landing.html')
 
@@ -55,7 +59,8 @@ def login_user(request):
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
-                    response = HttpResponseRedirect(reverse('main:show_main'))
+                    response = HttpResponseRedirect(reverse('user:show_home'))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         
     return render(request, 'login.html', context={'form': AuthenticationForm()})
@@ -63,4 +68,5 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('user:show_landing'))
+    response.delete_cookie('last_login')
     return response
