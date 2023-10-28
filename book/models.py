@@ -13,5 +13,32 @@ class Book(models.Model):
     image_url_l = models.URLField(verbose_name="Image-URL-L", null=True, blank=True)
     authorUser = models.ForeignKey(Author, on_delete=models.CASCADE, null= True, blank=True)
     image = models.ImageField(upload_to='book_images/',null = True, blank = True)
-    
+
+RATING = (
+    (1,'1'),
+    (2,'2'),
+    (3,'3'),
+    (4,'4'),
+    (5,'5'),
+)
+
+class ProductReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default="anonymous"),
+    product = models.ForeignKey(Book, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    review_rating = models.CharField(choices=RATING, max_length=150)
+
+    @classmethod
+    def delete_product(cls, product_id):
+        """
+        Deletes a specific product by its ID.
+        """
+        try:
+            product = cls.objects.get(pk=product_id)
+            product.delete()
+            return True  # Deletion successful
+        except cls.DoesNotExist:
+            return False  # Product with the given ID does not exist
+
     
