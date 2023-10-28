@@ -9,7 +9,10 @@ from django.urls import reverse
 from django.shortcuts import redirect
 
 
-# Create your views here.
+def show_home(request):
+    return render(request, 'home.html')
+
+
 def show_landing(request):
     return render(request, 'landing.html')
 
@@ -55,7 +58,7 @@ def login_user(request):
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
-                    response = render(request, 'home.html')
+                    response = HttpResponseRedirect(reverse('user:show_home'))
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         
