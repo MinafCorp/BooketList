@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Updates</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'header_user.html' %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Book Entry</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for=content" class="col-form-label">Content:</label>
+                        <input type="number" class="form-control" id="content" name="content"></input>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="width: 100px; height: 50px; margin: 10px; border-radius: 5px;" type="button" data-bs-dismiss="modal">Close</button>
+                <button style="width: 100px; height: 50px; margin: 10px; border-radius: 5px;" type="button" id="button_add" data-bs-dismiss="modal">Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cardContainer" class="grid"></div>
+
+<script>
+    async function getPost() {
+        return fetch("{% url 'updates:get_updates_json' %}").then((res) => res.json())
+    }
+    async function refreshPost() {
+        document.getElementById("cardContainer").innerHTML = ""
+        const updates = await getPost()
+        updates.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const cardContent = `
+                <div class="card-body">
+                    <h5 class="card-title">${item.fields.title}</h5>
+                    <p class="card-text">${item.fields.content}</p>
+                </div>
+                <div class="card-footer">
+                    <p>${item.fields.author.username}</p>
+                    <p class="card-text"><small class="text-muted">${item.fields.date_added}</small></p>
+                </div>
+                <div class="card-button">
+                    <center>
+                        <button class="btn3" onclick="deleteItem(${item.pk})">
+                            <i class="icon-trash"></i>
+                        </button>
+                    </center>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+    refreshPost()
+
+    function post() {
+        fetch("{% url 'updates:post_update' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshPost)
+
+        document.getElementById("form").reset()
+        return false
+    }
+    document.getElementById("button_add").onclick = post
+</script>
+{% endblock content %}
