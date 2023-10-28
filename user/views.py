@@ -7,8 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='user:login')
 def show_home(request):
     return render(request, 'home.html')
 
