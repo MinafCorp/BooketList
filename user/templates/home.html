@@ -164,27 +164,19 @@
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
         <li class="nav-item custom-size">
-            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
+            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
-            <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
-        </li>
-        <li class="nav-item custom-size">
-            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
+            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
     </ul>
-
-    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
-
-    <form class="form-inline my-2 my-lg-0">
-        <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Search Book" aria-label="Search"  style="background-color: #4F5352; color: #C8C1B7; border-radius: 20px;">
-    </form>
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
 </nav>
 
 {% include 'news.html' %}
