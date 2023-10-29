@@ -22,11 +22,9 @@ from wishlist.models import Wishlist
 def show_home(request):
     data = Book.objects.all()
     
-    # Cek apakah pengguna sudah masuk atau belum
     if request.user.is_authenticated:
-        reader_instance = Reader.objects.get(user=request.user)
-        # Ambil wishlist pengguna saat ini
-        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+        reader_instance, _ = Reader.objects.get_or_create(user=request.user)
+        wishlist_instance, _ = Wishlist.objects.get_or_create(pengguna=reader_instance)
         wishlisted_books = wishlist_instance.buku.all()
         wishlisted_book_ids = set(book.id for book in wishlisted_books)
     else:
