@@ -1,17 +1,26 @@
 from django.shortcuts import render
+from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 
-@login_required(login_url='user:login')
+from user.models import Author
+
+@login_required(login_url='/login')
 def show_home(request):
-    return render(request, 'home.html')
+    context = {
+        'username': request.user.username,
+        'products': Book.objects.all(), # Tambahkan ini
+    }
+
+    return render(request, "home.html", context)
 
 
 def show_landing(request):
@@ -70,3 +79,7 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('user:show_landing'))
     response.delete_cookie('last_login')
     return response
+
+def get_books(request):
+    product_item = Book.objects.all()
+    return HttpResponse(serializers.serialize('json', product_item))

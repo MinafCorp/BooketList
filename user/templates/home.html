@@ -1,11 +1,119 @@
 {% extends 'base.html' %}
-
-{% block meta %}
-    <title>Home</title>
-{% endblock meta %}
-
 {% block content %}
 {% include 'header_user.html' %}
 {% include 'news.html' %}
+
+{% block meta %}
+    <style>
+
+        .container {
+            max-width: 1200px; /* Maksimum lebar konten */
+            margin: 0 auto; /* Pusatkan konten di tengah layar */
+            text-align: center;
+        }
+    
+      
+    
+        #item_card {
+            display: flex;
+            flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
+            overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+        }
+    
+        .card {
+            width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
+            height: 300px; /* Atur tinggi kartu sesuai kebutuhan */
+            max-width: 100%; /* Batasi lebar maksimum kartu */
+            margin-right: 10px; /* Beri jarak antara kartu */
+            margin-bottom: 20px;
+        }
+    
+    
+        .add-item {
+            background-color: rgb(201, 124, 137);
+            /* You can customize other styles as needed, like text color, padding, etc. */
+            color: white; /* Text color */
+            padding: 10px 20px; /* Padding around the button */
+            /* Add more styles as needed */
+            border-radius: 20px;
+            
+            
+        }
+    
+        .card:last-child {
+        background-color: rgb(184, 163, 125);
+        }
+    
+        a{
+            color:#4F5352;
+        }
+        .buttonuser{
+            display: flex;
+            margin-right: 10px;
+        }
+        .centernav{
+            display: flex;
+            position: relative;
+        }
+    
+        .search-bar {
+        background-color: #F7F7F7;
+        border: none;
+        border-radius: 20px;
+    }
+    
+    /* Gaya untuk tombol pencarian */
+    .search-button {
+        background-color: #816e2c;
+        color: white;
+        border: none;
+        border-radius: 20px;
+    }
+    
+    /* Gaya saat tombol pencarian di-hover */
+    .search-button:hover {
+        background-color: #007666;
+    }
+    </style>
+
+        <script>
+            async function getItems() {
+                return fetch("{% url 'user:get_books' %}").then((res) => res.json())
+            }
+                    
+            async function refreshItems() {
+                const items = await getItems();
+                const itemCard = document.getElementById("item_card");
+                itemCard.innerHTML = ""; 
+                const searchQuery = document.querySelector('input[name="search_query"]').value.toLowerCase();
+                const filteredItems = items.filter(item => item.fields.title.toLowerCase().includes(searchQuery));
+
+
+                filteredItems.forEach((item) => {
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    card.innerHTML = `
+                    <div class="card-body">
+                        <img src="${item.fields.image_url_s}" alt="Product Image">
+                        <h5 class="card-title">${item.fields.title}</h5>
+                        <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                    `   
+                    ;
+
+                    itemCard.appendChild(card);
+                    
+                    
+                });
+            }
+    
+            refreshItems();
+
+            document.querySelector('form[role="search"]').addEventListener('submit', function (e) {
+                e.preventDefault();
+                refreshItems();
+            });
+        </script>
+{% endblock meta %}
 {% include 'footer.html' %}
 {% endblock content %}
