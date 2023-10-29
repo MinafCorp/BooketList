@@ -13,7 +13,9 @@
                             <h3>Hello, {{ user.role }}</h3>
                             <h4 class="mb-2">{{ user.first_name }} {{ user.last_name }}</h4>
                             <p class="text-muted mb-4"> {{ user.role }} <span class="mx-2">|</span> @{{ user.username }}</p>
+                            <button><a href={% url "user:delete_user"%}>Delete Account</a></button>
                         </div>
+                        
                     </div>
                 </div>
             </div>

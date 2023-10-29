@@ -101,5 +101,8 @@ def get_books(request):
     product_item = Book.objects.all()
     return HttpResponse(serializers.serialize('json', product_item))
 
-
+def delete_user(request):
+    user = request.user
+    user.delete()
+    return HttpResponseRedirect(reverse('user:show_landing'))
 

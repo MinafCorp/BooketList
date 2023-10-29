@@ -11,9 +11,12 @@ urlpatterns = [
     path('signup_reader/', signup_reader, name='signup_reader'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path('delete-user/', delete_user, name='delete_user'),
+    
     path('get-books/', get_books, name='get_books'),
     path('api/books/list_buku/',include('book.urls'), name='daftar_buku'),
     path('list_buku/',include('book.urls'), name='daftar_buku'),
+    
     path('wishlist/',include('wishlist.urls'), name='wishlistku'),
     path('profile/', profile, name='profile'),
 ] 
