@@ -82,9 +82,27 @@
 .search-button:hover {
     background-color: #007666;
 }
+.custom-size{
+    padding: 10px;
+    font-size: 24px;
+}
 </style>
-<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
-    <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
+
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
     <form class="d-flex" role="search" method="POST">
         {% csrf_token %}
         <input
@@ -95,10 +113,7 @@
             required aria-label="Search"
         >
         <button class="btn btn-outline-success search-button" type="submit">Search</button>
-       </form>
-    <div class="buttonuser">
-        <button class="btn btnlogin" onclick="redirectToLanding()" type="button" style="background-color: #816e2c; color: white; border: none;">LOGOUT</button>
-    </div>
+    </form>
 </nav>
 
 {% include 'news.html' %}

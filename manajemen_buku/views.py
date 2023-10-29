@@ -84,9 +84,7 @@ def add_books_ajax(request):
 def delete_books_ajax(request, item_id):
     if request.method == 'DELETE':
         books = Book.objects.get(id=item_id)
-        books2 = Publish.objects.get(id=item_id)
         books.delete()
-        books2.delete()
         return HttpResponse({'status': 'DELETED'}, status=200)
     
 

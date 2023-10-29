@@ -97,7 +97,7 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-def get_books(request):
+#def get_books(request):
     product_item = Book.objects.all()
     return HttpResponse(serializers.serialize('json', product_item))
 
