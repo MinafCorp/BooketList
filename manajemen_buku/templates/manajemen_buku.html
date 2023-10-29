@@ -82,9 +82,27 @@
 .search-button:hover {
     background-color: #007666;
 }
+.custom-size{
+    padding: 10px;
+    font-size: 24px;
+}
 </style>
-<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
-    <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
+
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
     <form class="d-flex" role="search" method="POST">
         {% csrf_token %}
         <input
@@ -95,14 +113,9 @@
             required aria-label="Search"
         >
         <button class="btn btn-outline-success search-button" type="submit">Search</button>
-       </form>
-    <div class="buttonuser">
-        <button class="btn btnlogin" onclick="redirectToLanding()" type="button" style="background-color: #816e2c; color: white; border: none;">LOGOUT</button>
-    </div>
+    </form>
 </nav>
--->
 
-{% include 'header_author.html' %}
 {% include 'news.html' %}
 
 <div class="container">
@@ -168,7 +181,7 @@
         }
         
         async function getItems() {
-            return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
+            return fetch("{% url 'manajemen_buku:get_books' %}").then((res) => res.json())
         }
 
         async function refreshItems() {
@@ -189,6 +202,7 @@
                     <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="hideItem(this.getAttribute('data-id'))">Hide</button>
                 `   
                 ;
 
@@ -216,6 +230,22 @@
             }
         }
 
+        async function hideItem(itemId) {
+            const deleteUrl = `{% url 'manajemen_buku:hide_books_ajax' item_id=999 %}`.replace('999', itemId);
+            console.log(itemId);
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(refreshItems)
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function addItem() {
             fetch("{% url 'manajemen_buku:add_books_ajax' %}", {
                 method: "POST",
@@ -225,6 +255,8 @@
             document.getElementById("form").reset();
             return false;
         }
+
+        
 
 
         document.getElementById("button_add").onclick = addItem;
@@ -236,4 +268,3 @@
 
 {% include 'footer.html' %}
 {% endblock content %}
-
