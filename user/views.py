@@ -1,8 +1,9 @@
+import datetime
 from django.shortcuts import render
 from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -21,6 +22,7 @@ def show_home(request):
     }
 
     return render(request, "home.html", context)
+
 
 
 def show_landing(request):

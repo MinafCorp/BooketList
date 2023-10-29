@@ -1,0 +1,35 @@
+<script>
+    $(document).ready(function(){
+        const modalElement = document.getElementById('wishlistModal');
+        const modal = new bootstrap.Modal(modalElement);
+        const modalBody = modalElement.querySelector('.modal-body');
+        $(".btn-delete").click(function(e){
+            e.preventDefault();
+            
+            var bookId = $(this).closest('.card').data('book-id');
+            var cardDiv = $(this).closest('.col-md-3');
+            var bookTitle = $(this).closest('.card-body').data('book-title');
+
+            $.ajax({
+                url: `/wishlist/delete-wishlist-book/${bookId}/`,
+                type: 'POST',
+                data: {
+                    'book_id': bookId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'  // Memastikan mengirim token CSRF
+                },
+                success: function(response) {
+                    if (response.status == 'ok') {
+                        cardDiv.remove();
+                        modalBody.textContent = "Buku dengan judul '" + bookTitle + "' berhasil dihapus dari wishlist";
+                    } else {
+                        alert(response.message || 'There was an error. Please try again.');
+                    }
+                    modal.show();
+                },
+                error: function(error) {
+                    alert(error.responseJSON.message || 'There was an error. Please try again.');
+                }
+            });
+        });
+    });
+</script>
