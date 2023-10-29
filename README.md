@@ -1,3 +1,6 @@
+### Web app link, deployed on Railway
+booketlist-production.up.railway.app
+
 ### Anggota Kelompok MinafCorp :
 Masabil Arraya Muhammad  - 2206082101 <br>
 I Made Surya Anahata Putra - 2206081370 <br>
@@ -46,7 +49,6 @@ Deskripsi:
 Fitur CRUD:
 - Create: Mendaftarkan akun baru.
 - Read: Melihat profil pengguna.
-- Update: Mengubah data profil pengguna.
 - Delete: Menghapus akun pengguna.
  
 **2. Modul Manajemen Buku (untuk Writer):** <br>
