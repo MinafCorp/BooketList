@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load static%}
 
 {% block meta %}
     <title>signup</title>
+
 {% endblock meta %}
 
 {% block style %}
@@ -35,14 +37,14 @@
   <br>
   <div class="card-deck" style="padding-bottom: 150px; padding-left: 100px; padding-right: 100px;">
     <div class="card" id="cardperson">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Masabil Arraya Muhammad</h5>
         <p class="card-text">2206082101</p>
       </div>
     </div>
     <div class="card" id="cardperson">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">I Made Surya Anahata Putra</h5>
         <p class="card-text">2206081370</p>
