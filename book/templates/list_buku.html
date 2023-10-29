@@ -2,18 +2,8 @@
 {% load static %}
 
 {% block meta %}
-<link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-
-    <!-- Bootstrap Font Icon CSS -->
-    <link rel="stylesheet" href=
-"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-
     <title>Semua Buku</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock meta %}
 
 {% block style %}
@@ -33,6 +23,7 @@
     border-radius: 10px;
     color: aqua;
     }
+    
     .card-body {
         overflow-y: auto;
         color: aquamarine;
@@ -136,83 +127,121 @@
         position: relative;
     }
 
+    .heart-btn:hover .heart-icon {
+        color: red;
+    }
+      
 </style>
 {% endblock style %}
 
 {% block content %}
-{% include 'header.html' %}
+{% include 'header_user.html' %}
+
 <br>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form" onsubmit="return false;">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="name" class="col-form-label">Nama Kelas:</label>
-                        <input type="text" class="form-control" id="name" name="name"></input>
-                    </div>
-                    <div class="mb-3">
-                        <label for="kelas" class="col-form-label">Kelas (A/B/C/D/dst)</label>
-                        <input type="text" class="form-control" id="kelas" name="kelas"></input>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jumlah_mahasiswa" class="col-form-label">Jumlah Mahasiswa:</label>
-                        <input type="number" class="form-control" id="jumlah_mahasiswa" name="jumlah_mahasiswa"></input>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="col-form-label">Deskripsi Kelas:</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nilai" class="col-form-label">Nilai Kamu (A,A-,B+,B-, dst)</label>
-                        <input type="text" class="form-control" id="nilai" name="nilai"></input>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="container mt-4" id="product_table">
     <div class="row">
         {% if products %}
             {% for product in products %}
                 <div class="col-md-3 mt-4">
-                    <div class="card">
-                        <img src={{product.image_url_l}} class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                    <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
+                        <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
                         <div class="card-body">
                             <h5 class="card-title">{{ product.title }}</h5>
                             <p class="card-text">{{ product.description }}</p>
                             <p class="card-text">Author: {{ product.author }}</p>
-                            <a href="#" class="btn btn-secondary" style="margin-left: 5px;"> <i class="bi bi-heart-fill custom-color"> </i> </a>
+                            <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                <i class="bi bi-heart-fill custom-color heart-icon" {% if product.pk in wishlisted_book_ids %}style="color: red;"{% endif %}> </i>
+                            </a>
                             <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <div class="col-md-12 mt-4">
-                <img src="{% static 'finalNoData.png' %}" class="card-img-top img-fluid" alt="..." />
-                <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#exampleModal">Add A Product +</button>
-            </div>
+        <div class="col-md-12 mt-4">
+            <p>Tidak ada buku </p>
+        </div>
         {% endif %}
     </div>
 </div>
 
-
-
-
+{% csrf_token %}
+<!-- Modal -->
+<div class="modal fade" id="wishlistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Informasi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          some
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
   
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modalElement = document.getElementById('wishlistModal');
+        const modal = new bootstrap.Modal(modalElement);
+        const modalBody = modalElement.querySelector('.modal-body');
+        const heartButtons = document.querySelectorAll('.heart-btn');
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    
+        heartButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                const bookTitle = btn.closest('.card').getAttribute('data-book-title');
+                const bookId = btn.closest('.card').getAttribute('data-book-id');
+                const icon = btn.querySelector('.heart-icon');
+    
+                // AJAX Request
+                fetch(`/wishlist/add_to_wishlist/${bookId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        if (icon.style.color === 'red') {
+                            icon.style.color = '';
+                            modalBody.textContent = `Buku dengan judul `+`${bookTitle} berhasil dihapus dari wishlist`;
+                        } else {
+                            icon.style.color = 'red';
+                            modalBody.textContent = `Buku dengan judul `+`${bookTitle} berhasil ditambahkan ke wishlist`;
+                        }
+                        modal.show();
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modalBody.textContent = "Terjadi kesalahan saat memproses permintaan Anda.";
+                    modal.show();
+                });
+            });
+        });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 {% include 'footer.html' %}
 {% endblock content %}
