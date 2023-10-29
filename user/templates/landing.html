@@ -3,15 +3,10 @@
 
 {% block meta %}
     <title>signup</title>
-
 {% endblock meta %}
 
 {% block style %}
-<style>
-  #cardperson{
-    background-color: #79BDC4;
-  }
-</style>
+  <link rel="stylesheet" href="{% static 'user/css/landing.css' %}">
 {% endblock style %}
 
 {% block content %}
@@ -51,21 +46,21 @@
       </div>
     </div>
     <div class="card" id="cardperson">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Novita Mulia Sari</h5>
         <p class="card-text">2206032785</p>
       </div>
     </div>
     <div class="card" id="cardperson">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Ayu Siti Nasya Ningrum</h5>
         <p class="card-text">2206025426</p>
       </div>
     </div>
     <div class="card" id="cardperson">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">Farrel Sheva Alkautsar</h5>
         <p class="card-text">2206030344</p>
