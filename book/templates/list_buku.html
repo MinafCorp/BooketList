@@ -240,25 +240,25 @@
     </div>
 </div>
 
-{% csrf_token %}
 <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="searchBookModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchBookModalLabel">Find Wishlist</h5>
+                <h5 class="modal-title" id="reviewModalLabel">Your rating</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="bookSearchForm" method="get">
+                {% csrf_token %}
+                <form id="reviewForm" method="get">
                     <div class="mb-3">
                         <label for="bookTitleSearch" class="form-label">Review singkat:</label>
-                        <input type="text" class="form-control" id="bookTitleSearch" name="bookTitleSearch" placeholder="Masukkan review">
+                        <input type="text" class="form-control" id="reviewBook" name="reviewBook" placeholder="Masukkan review">
                     </div>
                     <div class="mb-3">
-                        <label for="yearFilter" class="form-label">Rating:</label>
-                        <select class="form-control" id="yearFilter" name="yearFilter">
+                        <label for="rating" class="form-label">Rating:</label>
+                        <select class="form-control" id="rating" name="rating">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -330,68 +330,38 @@
             $('#reviewModal').modal('show');
         });
     });
-
-    $(document).ready(function() {
-        $("#bookSearchForm").on("submit", function(event) {
-            event.preventDefault();
-            const searchValue = $("#bookTitleSearch").val();
-            const yearFilter = $("#yearFilter").val();
+    
+    $(document).ready(function () {
+        $('.review-btn').on('click', function () {
+            var productId = $(this).closest('.card').data('book-id');
+            $('#reviewModal').data('product-id', productId).modal('show');
+        });
+    
+        $('#reviewForm').on('submit', function (e) {
+            e.preventDefault();
+            var productId = $('#reviewModal').data('product-id');
             $.ajax({
-                url: `/wishlist/search_wishlist/?bookTitleSearch=${searchValue}&yearFilter=${yearFilter}`,
-                type: "GET",
-                success: function(data) {
-                    $("#product_table .row").empty();
-                    if (data.books.length > 0) {
-                        data.books.forEach(function(book) {
-                            var bookCard = `<div class="col-md-3 mt-4">
-                                                <div class="card" data-book-id="${book.pk}">
-                                                    <img src="${book.image_url_l}" class="card-img-top" alt="book image" />
-                                                    <div class="card-body" data-book-title="${book.title}">
-                                                        <h5 class="card-title">${book.title}</h5>
-                                                        <p class="card-text">Author: ${book.author}</p>
-                                                        <p class="card-text">Year: ${book.year}</p>
-                                                        <a href="#" class="btn btn-delete" style="margin-right: 5px;">
-                                                            <i class="bi bi-trash-fill"></i> Delete
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>`;
-                            $("#product_table .row").append(bookCard);
-                        });
-                    } else {
-                        $("#product_table .row").append('<div class="col-md-12 mt-4"><p>Tidak ada buku dengan judul dan filter tersebut di wishlist Anda.</p></div>');
+                type: 'POST',
+                url: '{% url "create_review" %}',
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    product_id: productId,
+                    review_text: $('#reviewBook').val(),
+                    review_rating: $('#rating').val(),
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        window.location.href = '{% url "review_list" %}';
                     }
                 },
-                error: function(error) {
-                    alert("Terjadi kesalahan saat mencari. Silakan coba lagi.");
-                },
-                complete: function() {
-                    $("#searchBookModal").modal("hide");
+                error: function () {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+
                 }
             });
         });
     });
 
-    // $(document).ready(function () {
-    //     $('#reviewForm').submit(function (event) {
-    //         event.preventDefault();
-    //         const komen = $("#")
-    //         // Handle form submission here
-    //         // You can use AJAX to send the form data to the server
-    //         $.ajax({
-    //             data:$(this).serialize(),
-    //             method:$(this).method,
-    //             url:$(this).action,
-    //             dataType:'json',
-    //             success:function(res){
-    //                 if(res.bool==true){
-    //                     $(".ajaxRes").html("Review has been added");
-    //                 }
-    //             }
-    //         });
-            
-    //     });
-    // });
     
 
 </script>
