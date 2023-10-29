@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from book.models import Book
 from user.models import Reader
@@ -69,18 +68,20 @@ def login_user(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            role = form.cleaned_data.get('role')
-            user = authenticate(username=username, password=password, role= role)
-            if user is not None:
-                login(request,user)
+            role = request.POST.get('role')
+            user = authenticate(username=username, password=password)
+            if user is not None and user.role == role:
+                login(request, user)
                 if user.role == 'AUTHOR':
                     response = HttpResponseRedirect(reverse('manajemen_buku:manajemen_buku'))
                 elif user.role == 'READER':
                     response = HttpResponseRedirect(reverse('user:show_home'))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
-            return response
-        
+                response.set_cookie('last_login', str(datetime.datetime.now()))
+                return response
+            else:
+                messages.info(request, 'Username/password salah atau role tidak sesuai')
     return render(request, 'login.html', context={'form': AuthenticationForm()})
+
 
 def logout_user(request):
     logout(request)
