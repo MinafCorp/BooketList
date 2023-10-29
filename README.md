@@ -83,12 +83,11 @@ Fitur CRUD:
   
 **5. Modul Update:** <br>
 Deskripsi: 
-- Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.<br>
+- Modul ini menyediakan informasi terbaru tentang buku atau penulis<br>
 
 Fitur CRUD: 
 - Create: Menambahkan berita atau pengumuman baru.
 - Read: Menampilkan daftar berita atau pengumuman.
-- Update: Mengubah atau memperbarui berita atau pengumuman.
 - Delete: Menghapus berita atau pengumuman yang sudah tidak relevan.
 
 

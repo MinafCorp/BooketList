@@ -47,16 +47,9 @@
 
     <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
 
-    <form class="d-flex" role="search" method="POST">
-        {% csrf_token %}
-        <input
-            class="form-control me-2 search-bar"
-            type="search"
-            placeholder="Search"
-            name="search_query"
-            required aria-label="Search"
-        >
-        <button class="btn btn-outline-success search-button" type="submit">Search</button>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search Book" aria-label="Search"  style="background-color: #4F5352; color: #C8C1B7; border-radius: 20px;">
+        <button class="btn btn-outline-success search-button" type="submit" style="background-color: #4F5352; color: #C8C1B7;"><i class="bi bi-search"></i></button>
     </form>
 </nav>
 

@@ -9,13 +9,13 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('book', '0001_initial'),
+        ('manajemen_buku', '0001_initial'),
         ('user', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='book',
+            model_name='publish',
             name='authorUser',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='user.author'),
         ),
