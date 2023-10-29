@@ -2,7 +2,6 @@
 {% block content %}
 
 <style>
-
     .container {
         max-width: 1200px; /* Maksimum lebar konten */
         margin: 0 auto; /* Pusatkan konten di tengah layar */
@@ -13,17 +12,21 @@
 
     #item_card {
         display: flex;
-        flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
-        overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap; /* Menjaga elemen-elemen dalam satu baris */
+        min-width: 100%; /* Pastikan lebar minimum untuk mencegah kartu menjadi terlalu kecil */
     }
 
     .card {
-        width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
-        height: 300px; /* Atur tinggi kartu sesuai kebutuhan */
-        max-width: 100%; /* Batasi lebar maksimum kartu */
-        margin-right: 10px; /* Beri jarak antara kartu */
+        width: 300px;
+        height: 300px;
+        max-width: 100%;
+        margin-right: 10px;
         margin-bottom: 20px;
         object-fit: cover;
+        min-width: 300px; /* Pastikan lebar minimum untuk kartu */
+        white-space: normal; /* Kembalikan putih-spasi ke normal jika diperlukan */
     }
 
     /* Jika Anda ingin mengatur jarak antara gambar dan tepi kartu */
@@ -35,7 +38,7 @@
 
 
     .add-item {
-        background-color: rgb(201, 124, 137);
+        background-color: #816e2c;
         /* You can customize other styles as needed, like text color, padding, etc. */
         color: white; /* Text color */
         padding: 10px 20px; /* Padding around the button */
@@ -80,6 +83,7 @@
     background-color: #007666;
 }
 </style>
+
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">
     <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
     <form class="d-flex" role="search" method="POST">
@@ -205,8 +209,9 @@
 
                 card.innerHTML = `
                 <div class="card-body">
-                    <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-title">${item.fields.title}</h5>
+                    <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
+                    <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
                 `   
                 ;
