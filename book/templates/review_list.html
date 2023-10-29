@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Ulasan</title>
+</head>
+<body>
+    <h1>Daftar Ulasan</h1>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.user.username }}</strong>: {{ review.review_text }} (Rating: {{ review.review_rating }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
