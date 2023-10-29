@@ -83,7 +83,6 @@
     background-color: #007666;
 }
 </style>
-
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">
     <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
     <form class="d-flex" role="search" method="POST">
@@ -102,32 +101,7 @@
     </div>
 </nav>
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <center><iframe src="https://giphy.com/embed/VcizxCUIgaKpa" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/atcqQ5PuX41J6" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/3otPoRNsswd0WTQa7m" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-    </div>
-</div>
+{% include 'news.html' %}
 
 <div class="container">
 
@@ -192,7 +166,7 @@
         }
         
         async function getItems() {
-            return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
+            return fetch("{% url 'manajemen_buku:get_books' %}").then((res) => res.json())
         }
 
         async function refreshItems() {
@@ -213,6 +187,7 @@
                     <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="hideItem(this.getAttribute('data-id'))">Hide</button>
                 `   
                 ;
 
@@ -240,6 +215,22 @@
             }
         }
 
+        async function hideItem(itemId) {
+            const deleteUrl = `{% url 'manajemen_buku:hide_books_ajax' item_id=999 %}`.replace('999', itemId);
+            console.log(itemId);
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(refreshItems)
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function addItem() {
             fetch("{% url 'manajemen_buku:add_books_ajax' %}", {
                 method: "POST",
@@ -249,6 +240,8 @@
             document.getElementById("form").reset();
             return false;
         }
+
+        
 
 
         document.getElementById("button_add").onclick = addItem;
@@ -260,4 +253,3 @@
 
 {% include 'footer.html' %}
 {% endblock content %}
-
