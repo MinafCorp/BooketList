@@ -73,8 +73,6 @@ def add_books_ajax(request):
 
         new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
         new_item.save()
-        new_item2 = Publish(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, authorUser=authorUser, image=image)
-        new_item2.save()
 
         return HttpResponse(b"CREATED", status=201)
 
