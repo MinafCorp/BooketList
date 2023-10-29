@@ -45,3 +45,7 @@ class AuthorSignUpForm(UserCreationForm):
         author.save()
         return user 
     
+
+class ProductSearchForm(forms.Form):
+    title_query = forms.CharField(label='Search by Title', max_length=100, required=False)
+    

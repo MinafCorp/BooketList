@@ -100,3 +100,6 @@ def logout_user(request):
 def get_books(request):
     product_item = Book.objects.all()
     return HttpResponse(serializers.serialize('json', product_item))
+
+
+

@@ -40,21 +40,6 @@ def show_json_by_id(request, id):
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 
-# def increment_amount(request, item_id):
-#     books = Book.objects.get(pk=item_id)
-#     books.halaman += 1
-#     books.save()
-#     return redirect('main:show_main')
-
-# def decrement_amount(request, item_id):
-#     books = Book.objects.get(pk=item_id)
-#     if books.halaman > 0:
-#         books.halaman -= 1
-#         books.save()
-#     if books.halaman == 0:
-#         books.delete()
-#     return redirect('main:show_main')
-
 def delete_books(request, item_id):
     books = Book.objects.get(pk=item_id)
     books.delete()
