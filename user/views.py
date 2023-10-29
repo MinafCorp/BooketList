@@ -9,15 +9,29 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-
-
+from book.models import Book
 from user.models import Reader
+from wishlist.models import Wishlist
 
 @login_required(login_url='user:login')
 def show_home(request):
-    return render(request, 'home.html')
-
-
+    data = Book.objects.all()
+    
+    # Cek apakah pengguna sudah masuk atau belum
+    if request.user.is_authenticated:
+        reader_instance = Reader.objects.get(user=request.user)
+        # Ambil wishlist pengguna saat ini
+        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+        wishlisted_books = wishlist_instance.buku.all()
+        wishlisted_book_ids = set(book.id for book in wishlisted_books)
+    else:
+        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
+    
+    context = {
+        'products': data,
+        'wishlisted_book_ids': wishlisted_book_ids,
+    }
+    return render(request,'home.html', context)
 
 def show_landing(request):
     return render(request, 'landing.html')

@@ -27,14 +27,4 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(blank=True, null=True, upload_to='book_images/')),
             ],
         ),
-        migrations.CreateModel(
-            name='ProductReview',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('review_text', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('review_rating', models.CharField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], max_length=150)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='book.book')),
-            ],
-        ),
     ]

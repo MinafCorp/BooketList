@@ -27,8 +27,6 @@ def add_to_wishlist(request, book_id):
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     return JsonResponse({"success": False, "message": "Error"}, status=400)
 
-
-
 def show_wishlist(request):
     reader_instance = Reader.objects.get(user=request.user)
     wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
