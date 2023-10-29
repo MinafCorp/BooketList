@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
+from django.shortcuts import render
+from book.models import Book
+from user.forms import ReaderSignUpForm, AuthorSignUpForm
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -9,9 +10,13 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+
+from user.models import Reader
+
 @login_required(login_url='user:login')
 def show_home(request):
     return render(request, 'home.html')
+
 
 
 def show_landing(request):

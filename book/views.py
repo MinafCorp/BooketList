@@ -1,21 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
-from django.urls import reverse
-from book.forms import ProductForm
-from book.models import Book  # Assuming your Product model is defined in 'main.models'
-from django.db.models import Sum
+from django.shortcuts import render
+from book.models import Book
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
-from django.shortcuts import redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages  
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-import datetime
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 
+from user.models import Reader
+from wishlist.models import Wishlist
 
 def get_book(request):
     data = Book.objects.all()
@@ -23,11 +12,22 @@ def get_book(request):
 
 def list_buku(request):
     data = Book.objects.all()
+    
+    # Cek apakah pengguna sudah masuk atau belum
+    if request.user.is_authenticated:
+        reader_instance = Reader.objects.get(user=request.user)
+        # Ambil wishlist pengguna saat ini
+        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+        wishlisted_books = wishlist_instance.buku.all()
+        wishlisted_book_ids = set(book.id for book in wishlisted_books)
+    else:
+        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
+    
     context = {
-        'products' : data,
+        'products': data,
+        'wishlisted_book_ids': wishlisted_book_ids,
     }
     return render(request,'list_buku.html', context)
-# Create your views here.
 
 
 
