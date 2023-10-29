@@ -20,7 +20,7 @@ def post_update(request):
     return HttpResponseNotFound()
 
 def get_updates_json(request):
-    posts = Updates.objects.all()
+    posts = Updates.objects.filter(author=request.user)
     return HttpResponse(serializers.serialize('json', posts))
 
 def show_updates(request):
