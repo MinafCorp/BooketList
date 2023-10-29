@@ -5,13 +5,12 @@
 {% endblock meta %}
 
 {% block content %}
-{% include 'header_user.html' %}
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Book Entry</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New Update</h1>
             </div>
             <div class="modal-body">
                 <form id="form" onsubmit="return false;">
@@ -22,19 +21,26 @@
                     </div>
                     <div class="mb-3">
                         <label for=content" class="col-form-label">Content:</label>
-                        <input type="number" class="form-control" id="content" name="content"></input>
+                        <textarea class="form-control" id="content" name="content"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button style="width: 100px; height: 50px; margin: 10px; border-radius: 5px;" type="button" data-bs-dismiss="modal">Close</button>
-                <button style="width: 100px; height: 50px; margin: 10px; border-radius: 5px;" type="button" id="button_add" data-bs-dismiss="modal">Post</button>
+                <button style="width: 100px; height: 30px; margin: 10px; border-radius: 5px;" type="button" data-bs-dismiss="modal">Close</button>
+                <button style="width: 100px; height: 30px; margin: 10px; border-radius: 5px;" type="button" id="button_add" data-bs-dismiss="modal">Post</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="cardContainer" class="grid"></div>
+
+    <div class="button-container">
+        <button style="width: 150px; height: 30px; margin: 10px; border-radius: 5px; background-color: #4F5352; color: #C8C1B7; border: hidden;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Make Updates
+        </button>
+    </div>
+
+    <center><div id="cardContainer" class="grid" style="width: 1500px; border-radius: 50px; padding: 20px;"></div></center>
 
 <script>
     async function getPost() {
@@ -47,20 +53,17 @@
             const card = document.createElement("div");
             card.classList.add("card");
             const cardContent = `
-                <div class="card-body">
-                    <h5 class="card-title">${item.fields.title}</h5>
+                <div class="card-body" style="background-color:#C8C1B7;">
+                    <h4 class="card-title">${item.fields.title}</h4>
                     <p class="card-text">${item.fields.content}</p>
                 </div>
-                <div class="card-footer">
-                    <p>${item.fields.author.username}</p>
-                    <p class="card-text"><small class="text-muted">${item.fields.date_added}</small></p>
+                <div class="card-footer" style="background-color:#C8C1B7">
+                    <p>@{{user.username}}</p>
+                    <p class="card-text"><small class="text-muted">${item.fields.data_added}</small></p>
                 </div>
-                <div class="card-button">
-                    <center>
-                        <button class="btn3" onclick="deleteItem(${item.pk})">
-                            <i class="icon-trash"></i>
+                        <button class="btn3" onclick="deletePost(${item.pk})"style="border:hidden; background-color: #4F5352;">
+                            <i class="bi bi-trash-fill" style="color: #C8C1B7;"></i>
                         </button>
-                    </center>
                 </div>
             `;
 
@@ -80,5 +83,20 @@
         return false
     }
     document.getElementById("button_add").onclick = post
+
+    function deletePost(id){
+            fetch(`/delete/${id}/`, {
+                method : 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            }).then(refreshPost)
+        }
+    
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 </script>
 {% endblock content %}

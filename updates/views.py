@@ -11,7 +11,7 @@ def post_update(request):
     if request.method == 'POST':
         title = request.POST.get("title")
         content = request.POST.get("content")
-        author = request.author
+        author = request.user
 
         update_entry = Updates(title=title, content=content, author=author)
         update_entry.save()
@@ -22,3 +22,15 @@ def post_update(request):
 def get_updates_json(request):
     posts = Updates.objects.all()
     return HttpResponse(serializers.serialize('json', posts))
+
+def show_updates(request):
+    return render(request, 'updates.html')
+
+def show_json(request):
+    data = Updates.objects.filter(author=request.user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def post_delete(request, pk):
+    posts = Updates.objects.get(id=pk)
+    posts.delete()
+    return HttpResponseRedirect('/')
