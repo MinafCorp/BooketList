@@ -8,5 +8,7 @@ urlpatterns = [
     path('manajemen-buku/', include('manajemen_buku.urls')),
     path('create_review/', create_review, name='create_review'),
     path('review_list/', review_list, name='review_list'),
+    path('edit_review/', edit_review, name='edit_review'),
+    path('delete-review-book/<int:book_id>/', delete_review_book, name='delete-review-book'),
 ]
 
