@@ -13,4 +13,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('list_buku/',include('book.urls'), name='daftar_buku'),
     path('wishlist/',include('wishlist.urls'), name='wishlistku'),
+    path('profile/', profile, name='profile'),
 ] 

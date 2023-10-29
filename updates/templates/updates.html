@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Updates</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New Update</h1>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for=content" class="col-form-label">Content:</label>
+                        <textarea class="form-control" id="content" name="content"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button style="width: 100px; height: 30px; margin: 10px; border-radius: 5px;" type="button" data-bs-dismiss="modal">Close</button>
+                <button style="width: 100px; height: 30px; margin: 10px; border-radius: 5px;" type="button" id="button_add" data-bs-dismiss="modal">Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<center>
+    <div class="button-container" style="margin-top: 20px;">
+        <button style="width: 150px; height: 30px; margin: 10px; border-radius: 5px; background-color: #4F5352; color: #C8C1B7; border: hidden;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Make Updates
+        </button>
+    </div>
+</center>
+    <center><div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 80px;"></div></center>
+
+<script>
+    async function getPost() {
+        return fetch("{% url 'updates:get_updates_json' %}").then((res) => res.json())
+    }
+    async function refreshPost() {
+        document.getElementById("cardContainer").innerHTML = ""
+        const updates = await getPost()
+        const reversedUpdates = updates.reverse();
+        reversedUpdates.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const cardContent = `
+                <div class="card-body" style="background-color:#C8C1B7;">
+                    <h4 class="card-title">${item.fields.title}</h4>
+                    <p class="card-text">${item.fields.content}</p>
+                </div>
+                <div class="card-footer" style="background-color:#C8C1B7">
+                    <p>@${item.fields.author_username}</p>
+                    <p class="card-text"><small class="text-muted">${item.fields.data_added}</small></p>
+                </div>
+                <div style="border:hidden; background-color: #4F5352;">
+                    <a href="/updates/delete/${item.pk}/">
+                        <button>
+                            <i class="bi bi-trash-fill" style="color: #C8C1B7;"></i>
+                        </button>
+                    </a>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+    refreshPost()
+
+    function post() {
+        fetch("{% url 'updates:post_update' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshPost)
+
+        document.getElementById("form").reset()
+        return false
+    }
+    document.getElementById("button_add").onclick = post
+</script>
+{% endblock content %}
