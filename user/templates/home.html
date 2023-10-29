@@ -195,7 +195,7 @@
     <div class="row">
         {% if products %}
             {% for product in products|slice:":12" %}
-                <div id="cardContainer class="col-md-3 mt-4">
+                <div id="cardContainer" class="col-md-3 mt-4">
                     <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
                         <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
                         <div class="card-body">
@@ -216,6 +216,7 @@
 </div>
 
 <script>
+
     async function getPost() {
         return fetch("{% url 'book:get_book' %}").then((res) => res.json())
     }
@@ -226,7 +227,7 @@
             const card = document.createElement("div");
             card.classList.add("card");
             const cardContent = `
-                <div id="cardContainer class="col-md-3 mt-4">
+                <div id="cardContainer" class="col-md-3 mt-4">
                     <div class="col-md-3 mt-4">
                         <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
                             <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
@@ -264,7 +265,7 @@
             card.classList.add('card');
 
             const cardContent = `
-                <div id="cardContainer class="col-md-3 mt-4">
+                <div id="cardContainer" class="col-md-3 mt-4">
                     <div class="col-md-3 mt-4">
                         <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
                             <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
@@ -292,6 +293,7 @@
         const query = searchInput.value;
         performSearch(query);
     });
+
 </script>
 
 {% include 'footer.html' %}
