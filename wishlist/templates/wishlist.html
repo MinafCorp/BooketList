@@ -38,14 +38,12 @@
 <!-- Tombol Cari Buku -->
 <div class="search-box-container">
     <div class="search-box">
-        <span class="search-label">Cari Wishlistmu!</span>
+        <span class="search-label">Cari dan Filter Wishlistmu!</span>
         <button class="search-btn">
             <i class="bi bi-search"></i>  <!-- Ganti dengan ikon pencarian yang Anda gunakan -->
         </button>
     </div>
 </div>
-
-
 
 <div class="container mt-4" id="product_table">
     <div class="row">
@@ -58,6 +56,7 @@
                             <h5 class="card-title">{{ book.title }}</h5>
                             <p class="card-text">{{ book.description }}</p>
                             <p class="card-text">Author: {{ book.author }}</p>
+                            <p class="card-text">Year: {{ book.year_of_publication }}</p>
                             <a href="#" class="btn btn-delete" style="margin-right: 5px;"><i class="bi bi-trash-fill"></i> Delete</a>
                         </div>
                     </div>
@@ -102,11 +101,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="bookSearchForm" method="post">
-                    {% csrf_token %}
+                <form id="bookSearchForm" method="get">
                     <div class="mb-3">
                         <label for="bookTitleSearch" class="form-label">Judul buku:</label>
                         <input type="text" class="form-control" id="bookTitleSearch" name="bookTitleSearch" placeholder="Masukkan judul buku">
+                    </div>
+                    <div class="mb-3">
+                        <label for="yearFilter" class="form-label">Filter Tahun:</label>
+                        <select class="form-control" id="yearFilter" name="yearFilter">
+                            <option value="all">Semua Tahun</option>
+                            <option value="<1990">Sebelum 1990</option>
+                            <option value="1990-2000">1990 - 2000</option>
+                            <option value=">2000">Setelah 2000</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -114,6 +121,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
 

@@ -8,6 +8,32 @@
 
 {% block style %}
 <style>
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 10px;
+        font-size: 24px;
+    }
+    
+    a .bi {
+        color: #4F5352;
+    }
+
   #cardperson{
     background-color: #79BDC4;
   }
@@ -20,7 +46,6 @@
         height: 275px   ;
     }
     .card {
-    border-radius: 10px;
     color: aqua;
     }
     
@@ -52,6 +77,11 @@
         font-family: 'Courier New', monospace; 
     }
 
+    .card {
+        border: none !important;
+
+    }
+    
     .container {
         max-width: 1200px; /* Maksimum lebar konten */
         margin: 0 auto; /* Pusatkan konten di tengah layar */
@@ -135,9 +165,29 @@
 {% endblock style %}
 
 {% block content %}
-{% include 'header_user.html' %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+</nav>
 
 <br>
+<br>
+<h1 style="text-align:center">Our Collections</h1>
+
 <div class="container mt-4" id="product_table">
     <div class="row">
         {% if products %}

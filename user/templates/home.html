@@ -128,12 +128,55 @@
     .heart-btn:hover .heart-icon {
         color: red;
     }
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 10px;
+        font-size: 24px;
+    }
+    
+    a .bi {
+        color: #4F5352;
+    }
       
 </style>
 {% endblock style %}
 
 {% block content %}
-{% include 'header_user.html' %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+</nav>
 {% include 'news.html' %}
 <br>
 <h1 style="text-align:center">Editor's choice</h1>
