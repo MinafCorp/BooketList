@@ -1,8 +1,9 @@
+from django import forms
 from django.forms import ModelForm
 from book.models import Book
 from book.models import ProductReview
 
-class ProductForm(ModelForm):
+class ProductReviewForm(forms.ModelForm):
     class Meta:
         model = ProductReview
-        fields = ('review_text', 'review_rating')
+        fields = ['user', 'product', 'review_text', 'review_rating']
