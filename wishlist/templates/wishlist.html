@@ -12,17 +12,37 @@
 {% endblock style %}
 
 {% block content %}
-{% include 'header_user.html' %}
 
-{% csrf_token %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+</nav>
+
+
 <br>
 
 <!-- Tombol Cari Buku -->
-<div class="search-box">
-    <span class="search-label">Cari Wishlistmu!</span>
-    <button class="search-btn">
-        <i class="bi bi-search"></i>  <!-- Ganti dengan ikon pencarian yang Anda gunakan -->
-    </button>
+<div class="search-box-container">
+    <div class="search-box">
+        <span class="search-label">Cari Wishlistmu!</span>
+        <button class="search-btn">
+            <i class="bi bi-search"></i>  <!-- Ganti dengan ikon pencarian yang Anda gunakan -->
+        </button>
+    </div>
 </div>
 
 
@@ -101,5 +121,5 @@
 
 
 {% include 'wishlist-script.html' %}
-
+{% include 'footer.html' %}
 {% endblock content %}

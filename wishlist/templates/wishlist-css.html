@@ -1,4 +1,31 @@
 <style>
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 10px;
+        font-size: 24px;
+    }
+    
+    a .bi {
+        color: #4F5352;
+    }
+    
     #cardperson{
       background-color: #79BDC4;
     }
@@ -106,18 +133,6 @@
       background-color: rgb(212, 111, 142);
       }
   
-      a{
-          color:#4F5352;
-      }
-      .buttonuser{
-          display: flex;
-          margin-right: 10px;
-      }
-      .centernav{
-          display: flex;
-          position: relative;
-      }
-  
       .heart-btn:hover .heart-icon {
           color: red;
       }
@@ -128,32 +143,35 @@
           border: none;
       }
 
-      .search-box {
-        background-color: #e5f5e8;
-        border: 2px solid #4caf50;
+      .search-box-container {
+        display: flex; /* Ini akan mengaktifkan flexbox */
+        margin: 0; /* Ensures there are no default margins */
+        justify-content: center; /* Horizontally centers the search box */
+        align-items: center; /* Vertically centers the search box */
+    }
+    
+    .search-box {
+        background-color: #8B4513; /* Dark brown */
         padding: 5px 10px;
-        border-radius: 25px;
+        border-radius: 20px;
         display: flex;
+        width: 86%;
         align-items: center;
-        width: 300px;  /* Atur lebar sesuai kebutuhan */
     }
+    
     .search-label {
-        flex-grow: 1;  /* Memastikan label mengambil ruang maksimal di box */
+        flex-grow: 1;  
         margin-right: 10px;
+        color: white; /* For visibility on dark background */
     }
-    .search-input {
-        flex-grow: 2;  /* Memastikan input mengambil ruang yang lebih besar daripada label */
-        border: none;
-        background-color: transparent;
-        outline: none;
-    }
+    
     .search-btn {
-        background-color: #4caf50;
+        background-color: #4F5352;
         border: none;
-        padding: 5px 10px;  /* Ukuran tombol yang lebih kecil */
+        padding: 5px 10px;  
         border-radius: 20px;
         color: white;
         cursor: pointer;
     }
-        
+       
 </style>
