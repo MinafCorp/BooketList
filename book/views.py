@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+
 from book.models import Book, ProductReview
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
@@ -31,6 +32,7 @@ def list_buku(request):
         'form':form
     }
     return render(request,'list_buku.html', context)
+
 
 
 @login_required

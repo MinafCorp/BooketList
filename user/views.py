@@ -2,12 +2,17 @@ import datetime
 from django.shortcuts import render
 from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+import datetime
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
+
+from user.models import Author
+
 from book.models import Book
 from user.models import Reader
 from wishlist.models import Wishlist
@@ -91,3 +96,10 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('user:show_landing'))
     response.delete_cookie('last_login')
     return response
+
+def get_books(request):
+    product_item = Book.objects.all()
+    return HttpResponse(serializers.serialize('json', product_item))
+
+
+

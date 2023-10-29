@@ -9,3 +9,4 @@ urlpatterns = [
     path('create_review/', create_review, name='create_review'),
     path('review_list/', review_list, name='review_list'),
 ]
+
