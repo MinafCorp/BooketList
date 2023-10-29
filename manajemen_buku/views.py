@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotFound
 from book.models import Book
+from manajemen_buku.models import Publish
 from user.models import Author, Reader
 
 
@@ -50,6 +51,10 @@ def get_books_json(request):
     product_item = Book.objects.filter(authorUser=author_instance)
     return HttpResponse(serializers.serialize('json', product_item))
 
+def get_books(request):
+    author_instance = Author.objects.get(user=request.user)
+    product_item = Publish.objects.filter(authorUser=author_instance)
+    return HttpResponse(serializers.serialize('json', product_item))
 
 @csrf_exempt
 def add_books_ajax(request):
@@ -68,6 +73,8 @@ def add_books_ajax(request):
 
         new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
         new_item.save()
+        new_item2 = Publish(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, authorUser=authorUser, image=image)
+        new_item2.save()
 
         return HttpResponse(b"CREATED", status=201)
 
@@ -81,3 +88,8 @@ def delete_books_ajax(request, item_id):
         return HttpResponse({'status': 'DELETED'}, status=200)
     
 
+def hide_books_ajax(request, item_id):
+    if request.method == 'DELETE':
+        books = Publish.objects.get(id=item_id)
+        books.delete()
+        return HttpResponse({'status': 'DELETED'}, status=200)

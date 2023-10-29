@@ -181,7 +181,7 @@
         }
         
         async function getItems() {
-            return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
+            return fetch("{% url 'manajemen_buku:get_books' %}").then((res) => res.json())
         }
 
         async function refreshItems() {
@@ -202,6 +202,7 @@
                     <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
+                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="hideItem(this.getAttribute('data-id'))">Hide</button>
                 `   
                 ;
 
@@ -229,6 +230,22 @@
             }
         }
 
+        async function hideItem(itemId) {
+            const deleteUrl = `{% url 'manajemen_buku:hide_books_ajax' item_id=999 %}`.replace('999', itemId);
+            console.log(itemId);
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(refreshItems)
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function addItem() {
             fetch("{% url 'manajemen_buku:add_books_ajax' %}", {
                 method: "POST",
@@ -238,6 +255,8 @@
             document.getElementById("form").reset();
             return false;
         }
+
+        
 
 
         document.getElementById("button_add").onclick = addItem;
@@ -249,4 +268,3 @@
 
 {% include 'footer.html' %}
 {% endblock content %}
-
