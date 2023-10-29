@@ -4,6 +4,7 @@
     <title>Home</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock meta %}
+
 {% block style %}
 <style>
   #cardperson{
@@ -158,43 +159,50 @@
 </style>
 {% endblock style %}
 
+
 {% block content %}
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
         <li class="nav-item custom-size">
-            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
-            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+            <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
     </ul>
 
-    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
+    <form class="form-inline my-2 my-lg-0">
+        <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Search Book" aria-label="Search"  style="background-color: #4F5352; color: #C8C1B7; border-radius: 20px;">
+    </form>
 </nav>
+
 {% include 'news.html' %}
 <br>
 <h1 style="text-align:center">Editor's choice</h1>
-<div class="container mt-4" id="product_table">
+<div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 80px;"></div>
+<div class="container mt-4">
     <div class="row">
         {% if products %}
             {% for product in products|slice:":12" %}
-                <div class="col-md-3 mt-4">
+                <div id="cardContainer class="col-md-3 mt-4">
                     <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
                         <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
                         <div class="card-body">
                             <h5 class="card-title">{{ product.title }}</h5>
                             <p class="card-text">{{ product.description }}</p>
                             <p class="card-text">Author: {{ product.author }}</p>
-                            <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
-                                <i class="bi bi-heart-fill custom-color heart-icon" {% if product.pk in wishlisted_book_ids %}style="color: red;"{% endif %}> </i>
-                            </a>
-                            <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                            <p class="card-text">Year: {{ product.year_of_publication }}</p>
                         </div>
                     </div>
                 </div>
@@ -206,5 +214,85 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    async function getPost() {
+        return fetch("{% url 'book:get_book' %}").then((res) => res.json())
+    }
+    async function refreshPost() {
+        document.getElementById("cardContainer").innerHTML = ""
+        const updates = await getPost()
+        updates.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const cardContent = `
+                <div id="cardContainer class="col-md-3 mt-4">
+                    <div class="col-md-3 mt-4">
+                        <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
+                            <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                            <div class="card-body">
+                                <h5 class="card-title">${ item.title }</h5>
+                                <p class="card-text">${ item.description }</p>
+                                <p class="card-text">Author: ${ item.author }</p>
+                                <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                    <i class="bi bi-heart-fill custom-color heart-icon" ${wishlisted_book_ids.includes(item.pk) ? 'red' : 'black'}> </i>
+                                </a>
+                                <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+    refreshPost()
+
+    async function performSearch(query) {
+        const updates = await getPost(); // Get all updates
+
+        const filteredUpdates = updates.filter(item => {
+            const title = item.fields.title.toLowerCase();
+            return title.includes(query.toLowerCase());
+        });
+        document.getElementById('cardContainer').innerHTML = '';
+
+        filteredUpdates.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const cardContent = `
+                <div id="cardContainer class="col-md-3 mt-4">
+                    <div class="col-md-3 mt-4">
+                        <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
+                            <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                            <div class="card-body">
+                                <h5 class="card-title">${ item.title }</h5>
+                                <p class="card-text">${ item.description }</p>
+                                <p class="card-text">Author: ${ item.author }</p>
+                                <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                    <i class="bi bi-heart-fill custom-color heart-icon" ${wishlisted_book_ids.includes(item.pk) ? 'red' : 'black'}> </i>
+                                </a>
+                                <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value;
+        performSearch(query);
+    });
+</script>
+
 {% include 'footer.html' %}
 {% endblock content %}

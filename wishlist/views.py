@@ -57,29 +57,33 @@ def delete_wishlist_book(request, book_id):
 
 @login_required
 def search_wishlist(request):
-    title_search = request.GET.get('bookTitleSearch', '')
-    year_filter = request.GET.get('yearFilter', 'all')
-    reader = request.user.reader
+    form = WishlistSearchForm(request.GET)
+    if form.is_valid():
+        title_search = form.cleaned_data['bookTitleSearch']
+        year_filter = form.cleaned_data['yearFilter']
+        reader = request.user.reader
 
-    # Dapatkan buku yang ada di wishlist user yang sedang login
-    user_wishlist_books = Wishlist.objects.filter(pengguna=reader).values_list('buku', flat=True)
-    books = Book.objects.filter(pk__in=user_wishlist_books, title__icontains=title_search)
+        # Dapatkan buku yang ada di wishlist user yang sedang login
+        user_wishlist_books = Wishlist.objects.filter(pengguna=reader).values_list('buku', flat=True)
+        books = Book.objects.filter(pk__in=user_wishlist_books, title__icontains=title_search)
 
-    if year_filter == '<1990':
-        books = books.filter(year_of_publication__lt=1990)
-    elif year_filter == '1990-2000':
-        books = books.filter(year_of_publication__gte=1990, year_of_publication__lte=2000)
-    elif year_filter == '>2000':
-        books = books.filter(year_of_publication__gt=2000)
+        if year_filter == '<1990':
+            books = books.filter(year_of_publication__lt=1990)
+        elif year_filter == '1990-2000':
+            books = books.filter(year_of_publication__gte=1990, year_of_publication__lte=2000)
+        elif year_filter == '>2000':
+            books = books.filter(year_of_publication__gt=2000)
 
-    books_data = [
-        {
-            'pk': book.pk,
-            'title': book.title,
-            'image_url_l': book.image_url_l,
-            'author': book.author,
-            'year': book.year_of_publication,
-        }
-        for book in books
-    ]
-    return JsonResponse({'books': books_data})
+        books_data = [
+            {
+                'pk': book.pk,
+                'title': book.title,
+                'image_url_l': book.image_url_l,
+                'author': book.author,
+                'year': book.year_of_publication,
+            }
+            for book in books
+        ]
+        return JsonResponse({'books': books_data})
+    return JsonResponse({'error': 'Invalid form submission'}, status=400)
+

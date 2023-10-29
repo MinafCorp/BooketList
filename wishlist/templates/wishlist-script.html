@@ -53,14 +53,12 @@
             $("#searchBookModal").modal('show');
         });
     });
-    
+
     $(document).ready(function() {
         $("#bookSearchForm").on("submit", function(event) {
             event.preventDefault();
-            const searchValue = $("#bookTitleSearch").val();
-            const yearFilter = $("#yearFilter").val();
             $.ajax({
-                url: `/wishlist/search_wishlist/?bookTitleSearch=${searchValue}&yearFilter=${yearFilter}`,
+                url: `/wishlist/search_wishlist/?${$(this).serialize()}`,
                 type: "GET",
                 success: function(data) {
                     $("#product_table .row").empty();
@@ -94,6 +92,7 @@
             });
         });
     });
+    
 
     
     
