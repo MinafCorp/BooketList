@@ -33,7 +33,7 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
-@login_required
+@login_required(login_url="user:login")
 def delete_wishlist_book(request, book_id):
     if request.method == 'POST':
         try:
