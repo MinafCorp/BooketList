@@ -23,6 +23,14 @@
         max-width: 100%; /* Batasi lebar maksimum kartu */
         margin-right: 10px; /* Beri jarak antara kartu */
         margin-bottom: 20px;
+        object-fit: cover;
+    }
+
+    /* Jika Anda ingin mengatur jarak antara gambar dan tepi kartu */
+    .card img {
+        width: 70%;
+        height: 70%;
+        object-fit: cover; /* Membuat gambar mengisi kartu dan mengatur aspek rasio */
     }
 
 
@@ -175,7 +183,7 @@
 
                 card.innerHTML = `
                 <div class="card-body">
-                    <img src="${item.fields.image_url_s}" alt="Product Image">
+                    <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-title">${item.fields.title}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
                 `   
