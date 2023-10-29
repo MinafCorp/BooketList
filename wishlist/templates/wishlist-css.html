@@ -34,35 +34,42 @@
           object-fit:cover; /* Do not scale the image */
           object-position: top; /* Center the image within the element */
           width: 100%;
-          max-height: 275px;
-          height: 275px   ;
+          max-height: 300px;
+          height: 300px   ;
       }
-      .card {
-      border-radius: 10px;
+
+    .card {
       color: aqua;
-      }
+    }
       
-      .card-body {
+    .card-body {
           overflow-y: auto;
           color: aquamarine;
           background-color: #1f436d;
-      }
+    }
   
   
-      .card-img-top{
+    .card-img-top{
           border-radius: 10px;
           border-bottom-left-radius: 0px;
           border-bottom-right-radius: 0px;
           background-color:#1c333b ;
       }
+
       .card-title{
           overflow-x: auto;
           white-space: nowrap;
       }
-      .card-text{
+
+    .card-text{
           overflow-x: auto;
           white-space: nowrap;
       }
+
+      .card {
+        border: none !important;
+
+        }
   
       body {
           background-color: rgb(255, 255, 255);
@@ -94,7 +101,7 @@
   
       .card {
           width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
-          height: 450px; /* Atur tinggi kartu sesuai kebutuhan */
+          height: 500px; /* Atur tinggi kartu sesuai kebutuhan */
           max-width: 100%; /* Batasi lebar maksimum kartu */
           margin-right: 10px; /* Beri jarak antara kartu */
           margin-bottom: 20px;
@@ -109,16 +116,6 @@
           border-radius: 20px;
       }
   
-      .add-item {
-          background-color: rgb(201, 124, 137);
-          /* You can customize other styles as needed, like text color, padding, etc. */
-          color: white; /* Text color */
-          padding: 10px 20px; /* Padding around the button */
-          /* Add more styles as needed */
-          border-radius: 20px;
-          
-          
-      }
   
       .btn-secondary {
           background-color: rgb(214, 176, 126);
@@ -155,7 +152,9 @@
         padding: 5px 10px;
         border-radius: 20px;
         display: flex;
-        width: 86%;
+
+        width: 78%;
+
         align-items: center;
     }
     
@@ -173,5 +172,15 @@
         color: white;
         cursor: pointer;
     }
+
+
+    .filter-box {
+        margin: 20px 0;
+    }
+    
+    #filterYear {
+        width: 200px;
+    }
+
        
 </style>

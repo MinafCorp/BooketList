@@ -83,7 +83,6 @@
     background-color: #007666;
 }
 </style>
-
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">
     <b><a class="navbar-brand" style="font-size: xx-large;">{{ username }}</a></b>
     <form class="d-flex" role="search" method="POST">
@@ -101,33 +100,10 @@
         <button class="btn btnlogin" onclick="redirectToLanding()" type="button" style="background-color: #816e2c; color: white; border: none;">LOGOUT</button>
     </div>
 </nav>
+-->
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <center><iframe src="https://giphy.com/embed/VcizxCUIgaKpa" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/atcqQ5PuX41J6" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/3otPoRNsswd0WTQa7m" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-    </div>
-</div>
+{% include 'header_author.html' %}
+{% include 'news.html' %}
 
 <div class="container">
 

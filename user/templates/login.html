@@ -1,99 +1,64 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 
-{% block meta %}
-    <title>Login</title>
-{% endblock meta %}
+    {% load static %}
 
-{% block style %}
-<style>
-    .container{
-        display: flex;
-        justify-content: center;
-        margin-top: 200px;
-    }
-    .card-login{
-        background-color: #ABC5B8;
-        justify-items: center;
-        border-radius: 40px;
-        width: fit-content;
-        padding: 20px;
-    }
-    td{
-        padding: 10px;
-    }
-    input{
-        background-color: #D9D9D9;
-        color: #4F5352;
-        border-radius: 10px;
-        border-style: hidden;
-        width:350px;
-        height: 35px;
-    }
-    input[type=text]:focus {
-        border: 3px solid #4F5352;
-    }
-    input[type=password]:focus {
-        border: 3px solid #4F5352;
-    }
-    #role{
-        background-color: #D9D9D9;
-        color: #4F5352;
-        width: 350px;
-        height: 35px;
-        border-radius: 10px;
-        border-style: hidden;
-    }
-    input[type=submit]{
-        background-color: #4F5352;
-        color: #D9D9D9;
-        width: 80px;
-    }
-</style>
-{% endblock style %}
+    {% block meta %}
+        <title>Login</title>
+    {% endblock meta %}
+    {% block style %}
+        <link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+    {% endblock style %}
 
+    {% block content %}
+    <div class="container">
+        <div class="card-login">
+            <center><h2 style="color: #4F5352;">Login</h2></center>
 
-{% block content %}
-<div class="container">
-    <div class="card-login">
-        <center><h2 style="color: #4F5352;">Login</h2></center>
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>
+                    <tr>
+                        <td>Username: </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                    </tr>
+                            
+                    <tr>
+                        <td>Password: </td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                    </tr>
 
-                <tr>
-                    <td>Username: </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-                </tr>
-                        
-                <tr>
-                    <td>Password: </td>
-                </tr>
-                <tr>
-                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-                </tr>
-
-                <tr>
-                    <td>Role: </td>
-                </tr>
-                <tr>
-                    <td>
-                        <select id="role" name="role">
-                            <option value="author">Author</option>
-                            <option value="reader">Reader</option>
-                          </select>
-                    </td>
-                </tr>
-    
-                <tr>
-                    <td><a class="btn signup_btn" href="{% url 'user:signup' %}">Register</a></td>
-                    <td><center><input class="btn login_btn" type="submit" value="Login"></center></td>
-                </tr>
-            </table> 
-        </form>
+                    <tr>
+                        <td>Role: </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="role" name="role">
+                                <option value="AUTHOR">AUTHOR</option>
+                                <option value="READER">READER</option>
+                            </select>
+                        </td>
+                    </tr>
+        
+                    <tr>
+                        <td><a class="btn signup_btn" href="{% url 'user:signup' %}">Register</a></td>
+                        <td><center><input class="btn login_btn" type="submit" value="Login"></center></td>
+                    </tr>
+                </table> 
+            </form>
+        </div>
+        <!-- Content here -->
+        
     </div>
-    <!-- Content here -->
-</div>
-{% endblock content %}
+    <div id= "message">
+        {% if messages%} 
+            {% for message in messages %} 
+                <li style="color: red;">{{ message }}</li> 
+            {% endfor %}
+        {% endif %}    
+    </div>
+    {% endblock content %}

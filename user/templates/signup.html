@@ -1,22 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block meta %}
     <title>signup</title>
 {% endblock meta %}
 
 {% block style %}
-<style>
-    .container{
-        display: flex;
-        justify-content: center;
-        margin-top: 200px;
-    }
-    #card-role{
-        width: 500px;
-        border-radius: 10px;
-    }
-
-</style>
+  <link rel="stylesheet" href="{% static 'user/css/signup.css' %}">
 {% endblock style %}
 
 {% block content %}
