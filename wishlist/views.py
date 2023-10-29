@@ -27,15 +27,13 @@ def add_to_wishlist(request, book_id):
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     return JsonResponse({"success": False, "message": "Error"}, status=400)
 
-
-
 def show_wishlist(request):
     reader_instance = Reader.objects.get(user=request.user)
     wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
-@login_required
+@login_required(login_url="user:login")
 def delete_wishlist_book(request, book_id):
     if request.method == 'POST':
         try:

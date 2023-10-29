@@ -1,119 +1,167 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock meta %}
+{% block style %}
+<style>
+  #cardperson{
+    background-color: #79BDC4;
+  }
+
+  .card img {
+        object-fit:cover; /* Do not scale the image */
+        object-position: top; /* Center the image within the element */
+        width: 100%;
+        max-height: 275px;
+        height: 275px   ;
+    }
+    .card {
+    border-radius: 10px;
+    color: aqua;
+    }
+    
+    .card-body {
+        overflow-y: auto;
+        color: aquamarine;
+        background-color: #1f436d;
+    }
+
+
+    .card-img-top{
+        border-radius: 10px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        background-color:#1c333b ;
+    }
+    .card-title{
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .card-text{
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    body {
+        background-color: rgb(255, 255, 255);
+        font-size: 16px; /* Ukuran teks utama */
+        font-family: 'Courier New', monospace; 
+    }
+
+    .container {
+        max-width: 1200px; /* Maksimum lebar konten */
+        margin: 0 auto; /* Pusatkan konten di tengah layar */
+        text-align: center;
+    }
+
+    .heading {
+        background-color: rgb(233, 185, 185);
+        display: flex;
+        padding: 20px;
+        border-radius: 100px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #item_card {
+        display: flex;
+        flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
+        overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+    }
+
+    .card {
+        width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
+        height: 450px; /* Atur tinggi kartu sesuai kebutuhan */
+        max-width: 100%; /* Batasi lebar maksimum kartu */
+        margin-right: 10px; /* Beri jarak antara kartu */
+        margin-bottom: 20px;
+    }
+
+    .logout {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .add-item {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+        
+        
+    }
+
+    .btn-secondary {
+        background-color: rgb(214, 176, 126);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .card:last-child {
+    background-color: rgb(212, 111, 142);
+    }
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+
+    .heart-btn:hover .heart-icon {
+        color: red;
+    }
+      
+</style>
+{% endblock style %}
+
 {% block content %}
 {% include 'header_user.html' %}
 {% include 'news.html' %}
-
-{% block meta %}
-    <style>
-
-        .container {
-            max-width: 1200px; /* Maksimum lebar konten */
-            margin: 0 auto; /* Pusatkan konten di tengah layar */
-            text-align: center;
-        }
-    
-      
-    
-        #item_card {
-            display: flex;
-            flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
-            overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
-        }
-    
-        .card {
-            width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
-            height: 300px; /* Atur tinggi kartu sesuai kebutuhan */
-            max-width: 100%; /* Batasi lebar maksimum kartu */
-            margin-right: 10px; /* Beri jarak antara kartu */
-            margin-bottom: 20px;
-        }
-    
-    
-        .add-item {
-            background-color: rgb(201, 124, 137);
-            /* You can customize other styles as needed, like text color, padding, etc. */
-            color: white; /* Text color */
-            padding: 10px 20px; /* Padding around the button */
-            /* Add more styles as needed */
-            border-radius: 20px;
-            
-            
-        }
-    
-        .card:last-child {
-        background-color: rgb(184, 163, 125);
-        }
-    
-        a{
-            color:#4F5352;
-        }
-        .buttonuser{
-            display: flex;
-            margin-right: 10px;
-        }
-        .centernav{
-            display: flex;
-            position: relative;
-        }
-    
-        .search-bar {
-        background-color: #F7F7F7;
-        border: none;
-        border-radius: 20px;
-    }
-    
-    /* Gaya untuk tombol pencarian */
-    .search-button {
-        background-color: #816e2c;
-        color: white;
-        border: none;
-        border-radius: 20px;
-    }
-    
-    /* Gaya saat tombol pencarian di-hover */
-    .search-button:hover {
-        background-color: #007666;
-    }
-    </style>
-
-        <script>
-            async function getItems() {
-                return fetch("{% url 'user:get_books' %}").then((res) => res.json())
-            }
-                    
-            async function refreshItems() {
-                const items = await getItems();
-                const itemCard = document.getElementById("item_card");
-                itemCard.innerHTML = ""; 
-                const searchQuery = document.querySelector('input[name="search_query"]').value.toLowerCase();
-                const filteredItems = items.filter(item => item.fields.title.toLowerCase().includes(searchQuery));
-
-
-                filteredItems.forEach((item) => {
-                    const card = document.createElement("div");
-                    card.className = "card";
-
-                    card.innerHTML = `
-                    <div class="card-body">
-                        <img src="${item.fields.image_url_s}" alt="Product Image">
-                        <h5 class="card-title">${item.fields.title}</h5>
-                        <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
-                    `   
-                    ;
-
-                    itemCard.appendChild(card);
-                    
-                    
-                });
-            }
-    
-            refreshItems();
-
-            document.querySelector('form[role="search"]').addEventListener('submit', function (e) {
-                e.preventDefault();
-                refreshItems();
-            });
-        </script>
-{% endblock meta %}
+<br>
+<h1 style="text-align:center">Editor's choice</h1>
+<div class="container mt-4" id="product_table">
+    <div class="row">
+        {% if products %}
+            {% for product in products|slice:":12" %}
+                <div class="col-md-3 mt-4">
+                    <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
+                        <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">Author: {{ product.author }}</p>
+                            <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                <i class="bi bi-heart-fill custom-color heart-icon" {% if product.pk in wishlisted_book_ids %}style="color: red;"{% endif %}> </i>
+                            </a>
+                            <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-md-12 mt-4">
+            <p>Tidak ada buku </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% include 'footer.html' %}
 {% endblock content %}

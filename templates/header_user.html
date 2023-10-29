@@ -42,7 +42,7 @@
         </li>
     </ul>
 
-    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
 
     <form class="d-flex" role="search" method="POST">
         {% csrf_token %}
