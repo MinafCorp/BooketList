@@ -5,6 +5,7 @@ from user.models import User
 
 class Updates(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author_username = models.CharField(max_length=150, default="author")
     title = models.CharField(max_length=255)
     content = models.TextField()
     data_added = models.DateField(auto_now_add=True)

@@ -33,14 +33,14 @@
     </div>
 </div>
 
-
-    <div class="button-container">
+<center>
+    <div class="button-container" style="margin-top: 20px;">
         <button style="width: 150px; height: 30px; margin: 10px; border-radius: 5px; background-color: #4F5352; color: #C8C1B7; border: hidden;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Make Updates
         </button>
     </div>
-
-    <center><div id="cardContainer" class="grid" style="width: 1500px; border-radius: 50px; padding: 20px;"></div></center>
+</center>
+    <center><div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 80px;"></div></center>
 
 <script>
     async function getPost() {
@@ -49,7 +49,8 @@
     async function refreshPost() {
         document.getElementById("cardContainer").innerHTML = ""
         const updates = await getPost()
-        updates.forEach((item) => {
+        const reversedUpdates = updates.reverse();
+        reversedUpdates.forEach((item) => {
             const card = document.createElement("div");
             card.classList.add("card");
             const cardContent = `
@@ -58,12 +59,15 @@
                     <p class="card-text">${item.fields.content}</p>
                 </div>
                 <div class="card-footer" style="background-color:#C8C1B7">
-                    <p>@{{user.username}}</p>
+                    <p>@${item.fields.author_username}</p>
                     <p class="card-text"><small class="text-muted">${item.fields.data_added}</small></p>
                 </div>
-                        <button class="btn3" onclick="deletePost(${item.pk})"style="border:hidden; background-color: #4F5352;">
+                <div style="border:hidden; background-color: #4F5352;">
+                    <a href="/updates/delete/${item.pk}/">
+                        <button>
                             <i class="bi bi-trash-fill" style="color: #C8C1B7;"></i>
                         </button>
+                    </a>
                 </div>
             `;
 
@@ -83,20 +87,5 @@
         return false
     }
     document.getElementById("button_add").onclick = post
-
-    function deletePost(id){
-            fetch(`/delete/${id}/`, {
-                method : 'DELETE',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            }).then(refreshPost)
-        }
-    
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
 </script>
 {% endblock content %}
