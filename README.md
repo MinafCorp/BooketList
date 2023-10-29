@@ -42,7 +42,6 @@ Untuk Komunitas:
 Deskripsi: 
 - Pengguna dapat mendaftar sebagai user atau writer melalui formulir registrasi.
 - Autentikasi dengan menggunakan email dan kata sandi.
-- Lupa kata sandi dan pengaturan profil untuk setiap role. <br>
 
 Fitur CRUD:
 - Create: Mendaftarkan akun baru.
@@ -91,18 +90,6 @@ Fitur CRUD:
 - Read: Menampilkan daftar berita atau pengumuman.
 - Update: Mengubah atau memperbarui berita atau pengumuman.
 - Delete: Menghapus berita atau pengumuman yang sudah tidak relevan.
-  
-**6. Modul Keanggotaan Premium: (Optional)** <br>
-Deskripsi: <br>
-- Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif. <br>
-
-Fitur CRUD: 
-- Create: Mengaktifkan keanggotaan premium.
-- Read: Menampilkan status dan detil keanggotaan.
-- Update: Mengubah paket atau detil keanggotaan.
-- Delete: Membatalkan keanggotaan premium.
- 
-
 
 
 ### iv. Sumber dataset katalog buku
@@ -114,5 +101,3 @@ https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 > Pembaca adalah member Reguler by default yang mempunyai beberapa Modul, seperti Modul langganan, modul ulasan dan rating, serta modul wishlist.
 - Penulis
 > Penulis adalah entitas yang mempunyai akses ke modul Manajemen Buku.
-- Admin
-> Admin adalah entitas yang mempunyai akses ke modul Update. (Unfix)
