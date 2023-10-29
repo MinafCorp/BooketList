@@ -166,7 +166,7 @@
         }
         
         async function getItems() {
-            return fetch("{% url 'manajemen_buku:get_books' %}").then((res) => res.json())
+            return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
         }
 
         async function refreshItems() {
@@ -187,7 +187,6 @@
                     <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
                     <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
-                    <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="hideItem(this.getAttribute('data-id'))">Hide</button>
                 `   
                 ;
 
