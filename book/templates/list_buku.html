@@ -179,7 +179,7 @@
             <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
-            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+            <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
@@ -342,7 +342,7 @@
             var productId = $('#reviewModal').data('product-id');
             $.ajax({
                 type: 'POST',
-                url: '{% url "create_review" %}',
+                url: '{% url "book:create_review" %}',
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                     product_id: productId,
@@ -351,7 +351,7 @@
                 },
                 success: function (response) {
                     if (response.status === 'success') {
-                        window.location.href = '{% url "review_list" %}';
+                        window.location.href = '{% url "book:review_list" %}';
                     }
                 },
                 error: function () {
