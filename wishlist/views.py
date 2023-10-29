@@ -54,17 +54,32 @@ def delete_wishlist_book(request, book_id):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
+
+@login_required
 def search_wishlist(request):
-    if request.method == "POST":
-        form = WishlistSearchForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            # Assuming the logged in user is 'request.user'
-            wishlist = Wishlist.objects.get(pengguna=request.user.reader)
-            wishlist_books = wishlist.buku.filter(title__icontains=query)
-            return render(request, 'your_template_name.html', {'wishlist_books': wishlist_books, 'form': form})
-    else:
-        form = WishlistSearchForm()
-        wishlist = Wishlist.objects.get(pengguna=request.user.reader)
-        wishlist_books = wishlist.buku.all()
-        return render(request, 'your_template_name.html', {'wishlist_books': wishlist_books, 'form': form})
+    title_search = request.GET.get('bookTitleSearch', '')
+    year_filter = request.GET.get('yearFilter', 'all')
+    reader = request.user.reader
+
+    # Dapatkan buku yang ada di wishlist user yang sedang login
+    user_wishlist_books = Wishlist.objects.filter(pengguna=reader).values_list('buku', flat=True)
+    books = Book.objects.filter(pk__in=user_wishlist_books, title__icontains=title_search)
+
+    if year_filter == '<1990':
+        books = books.filter(year_of_publication__lt=1990)
+    elif year_filter == '1990-2000':
+        books = books.filter(year_of_publication__gte=1990, year_of_publication__lte=2000)
+    elif year_filter == '>2000':
+        books = books.filter(year_of_publication__gt=2000)
+
+    books_data = [
+        {
+            'pk': book.pk,
+            'title': book.title,
+            'image_url_l': book.image_url_l,
+            'author': book.author,
+            'year': book.year_of_publication,
+        }
+        for book in books
+    ]
+    return JsonResponse({'books': books_data})

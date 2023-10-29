@@ -1,12 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block meta %}
-    <title>Home</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{% endblock meta %}
-{% block style %}
-<style>
-  #cardperson{
+#cardperson{
     background-color: #79BDC4;
   }
 
@@ -128,83 +120,4 @@
     .heart-btn:hover .heart-icon {
         color: red;
     }
-
-    a{
-        color:#4F5352;
-    }
-    .buttonuser{
-        display: flex;
-        margin-right: 10px;
-    }
-    .centernav{
-        display: flex;
-        position: relative;
-    }
-    .btnlogin{
-        border-radius: 20px;
-        background-color: #4F5352;
-        color: #C8C1B7;
-        overflow: hidden;
-    }
-    .custom-size{
-        padding: 10px;
-        font-size: 24px;
-    }
-    
-    a .bi {
-        color: #4F5352;
-    }
       
-</style>
-{% endblock style %}
-
-{% block content %}
-<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
-    <ul class="nav justify-content-center">
-        <li class="nav-item custom-size">
-            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
-        </li>
-        <li class="nav-item custom-size">
-            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
-        </li>
-        <li class="nav-item custom-size">
-            <a href="{% url 'user:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
-        </li>
-        <li class="nav-item custom-size">
-            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
-        </li>
-    </ul>
-
-    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
-</nav>
-{% include 'news.html' %}
-<br>
-<h1 style="text-align:center">Editor's choice</h1>
-<div class="container mt-4" id="product_table">
-    <div class="row">
-        {% if products %}
-            {% for product in products|slice:":12" %}
-                <div class="col-md-3 mt-4">
-                    <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
-                        <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.title }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
-                            <p class="card-text">Author: {{ product.author }}</p>
-                            <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
-                                <i class="bi bi-heart-fill custom-color heart-icon" {% if product.pk in wishlisted_book_ids %}style="color: red;"{% endif %}> </i>
-                            </a>
-                            <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-        <div class="col-md-12 mt-4">
-            <p>Tidak ada buku </p>
-        </div>
-        {% endif %}
-    </div>
-</div>
-{% include 'footer.html' %}
-{% endblock content %}

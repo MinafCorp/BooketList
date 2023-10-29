@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Updates</title>
+{% endblock meta %}
+
+{% block content %}
+<center>
+    <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Search Updates and News" aria-label="Search"  style="background-color: #4F5352; color: #C8C1B7; border-radius: 20px;">
+    <div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 80px;"></div>
+</center>
+
+<script>
+    async function getPost() {
+        return fetch("{% url 'updates:get_updates_json_all' %}").then((res) => res.json())
+    }
+    async function refreshPost() {
+        document.getElementById("cardContainer").innerHTML = ""
+        const updates = await getPost()
+        const reversedUpdates = updates.reverse();
+        reversedUpdates.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const cardContent = `
+                <div class="card-body" style="background-color:#C8C1B7;">
+                    <h4 class="card-title">${item.fields.title}</h4>
+                    <p class="card-text">${item.fields.content}</p>
+                </div>
+                <div class="card-footer" style="background-color:#C8C1B7">
+                    <p>@${item.fields.author_username}</p>
+                    <p class="card-text"><small class="text-muted">${item.fields.data_added}</small></p>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+    refreshPost()
+
+    async function performSearch(query) {
+        const updates = await getPost(); // Get all updates
+
+        const filteredUpdates = updates.filter(item => {
+            const title = item.fields.title.toLowerCase();
+            return title.includes(query.toLowerCase());
+        });
+        document.getElementById('cardContainer').innerHTML = '';
+
+        filteredUpdates.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const cardContent = `
+                <div class="card-body" style="background-color:#C8C1B7;">
+                    <h4 class="card-title">${item.fields.title}</h4>
+                    <p class="card-text">${item.fields.content}</p>
+                </div>
+                <div class="card-footer" style="background-color:#C8C1B7">
+                    <p>@${item.fields.author_username}</p>
+                    <p class="card-text"><small class="text-muted">${item.fields.data_added}</small></p>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value;
+        performSearch(query);
+    });
+</script>
+{% endblock content %}

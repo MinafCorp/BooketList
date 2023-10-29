@@ -15,4 +15,5 @@ urlpatterns = [
     path('api/books/list_buku/',include('book.urls'), name='daftar_buku'),
     path('list_buku/',include('book.urls'), name='daftar_buku'),
     path('wishlist/',include('wishlist.urls'), name='wishlistku'),
+    path('profile/', profile, name='profile'),
 ] 
