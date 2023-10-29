@@ -36,6 +36,9 @@ def show_landing(request):
 def signup(request):
     return render(request, 'signup.html')
 
+def profile(request):
+    return render(request, 'profile.html')
+
 def signup_reader(request):
     form = ReaderSignUpForm()
     
