@@ -1,18 +1,14 @@
 import datetime
 from django.shortcuts import render
-from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-
-from user.models import Author
-
 from book.models import Book
 from user.models import Reader
 from wishlist.models import Wishlist
