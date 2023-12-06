@@ -8,10 +8,15 @@ from user.forms import ReaderSignUpForm, AuthorSignUpForm
 def login(request):
     username = request.POST['username']
     password = request.POST['password']
+    role = request.POST['role']
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
-            # NEED TO ADD ROLE VERIFICATION (OR JUST NAVIGATE TO DIFFERENT PAGE) 
+            if user.role != role:
+                return JsonResponse({
+                    "status": False,
+                    "message": "Login gagal, role tidak sesuai."
+                }, status=401)
             auth_login(request, user)
             return JsonResponse({
                 "username": user.username,
