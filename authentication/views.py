@@ -1,8 +1,8 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from user.forms import ReaderSignUpForm, AuthorSignUpForm
+from user.models import User
+import json
 
 @csrf_exempt
 def login(request):
@@ -55,31 +55,41 @@ def logout(request):
      
      
 @csrf_exempt
-@require_http_methods(["POST"])
 def register(request):
-    data = request.POST
-    role = data.get('role', '').upper()
-    form = None 
-    
-    if role == 'READER':
-        form = ReaderSignUpForm(data)
-    elif role == 'AUTHOR':
-        form = AuthorSignUpForm(data)
-    else:
-        return JsonResponse({
-            "status": False,
-            "message": "Role tidak valid/tidak ada."
-        }, status=400)
+    if request.method == 'POST':
         
-    if form and form.is_valid():
-        user = form.save()
-        return JsonResponse({
-            "username": user.username,
-            "status": True,
-            "message": "Register berhasil!"
-        }, status=200)
-    else:
-        return JsonResponse({
-            "status": False,
-            "message": "Register gagal."
-        }, status=400)
+        data = json.loads(request.body)
+        
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        password1 = data['password1']
+        password2 = data['password2']
+        role = data['role']
+        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
+            
+        if password1 != password2: 
+            return JsonResponse({"status": False,"message": "Password tidak sama."}, status=401)
+        
+        create_user = User.objects.create_user(username=username, 
+                                               email=email, 
+                                               password=password, 
+                                               first_name=first_name, 
+                                               last_name=last_name,
+                                               role=role)
+        
+        create_user.save()
+        if role == 'AUTHOR':
+            Author = Author.objects.create(user=create_user)
+            Author.save()
+        elif role == 'READER':
+            Reader = Reader.objects.create(user=create_user)
+            Reader.save()
+            
+        return JsonResponse({"status": True,"message": "Register berhasil."}, status=200)
+    else :
+        return JsonResponse({"status": False,"message": "Register gagal."}, status=401)
