@@ -34,11 +34,11 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 text-center logo-wrap">
-						<div id="booketlist-logo"><a href="index.html">BooketList<span>.</span></a></div>
+						<div id="booketlist-logo"><a href="{% url 'user:show_landing'%}">BooketList<span>.</span></a></div>
 					</div>
 					<div class="col-xs-12 text-center menu-1 menu-wrap">
 						<ul>
-							<li class="active"><a href="index.html">Home</a></li>
+							<li class="active"><a href="{% url 'user:show_landing'%}">Home</a></li>
 							<li><a href="{% url 'user:login'%}">Login</a></li>
 							<li><a href="{% url 'user:signup'%}">Sign Up</a></li>
 						</ul>
