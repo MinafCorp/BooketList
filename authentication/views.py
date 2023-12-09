@@ -56,40 +56,43 @@ def logout(request):
      
 @csrf_exempt
 def register(request):
-    if request.method == 'POST':
-        
-        data = json.loads(request.body)
-        
-        username = data['username']
-        email = data['email']
-        password = data['password']
-        first_name = data['first_name']
-        last_name = data['last_name']
-        password1 = data['password1']
-        password2 = data['password2']
-        role = data['role']
-        
-        if User.objects.filter(username=username).exists():
-            return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
+    try:
+        if request.method == 'POST':
             
-        if password1 != password2: 
-            return JsonResponse({"status": False,"message": "Password tidak Valid."}, status=401)
-        
-        create_user = User.objects.create_user(username=username, 
-                                               email=email, 
-                                               password=password, 
-                                               first_name=first_name, 
-                                               last_name=last_name,
-                                               role=role)
-        
-        create_user.save()
-        if role == 'AUTHOR':
-            Author = Author.objects.create(user=create_user)
-            Author.save()
-        elif role == 'READER':
-            Reader = Reader.objects.create(user=create_user)
-            Reader.save()
+            data = json.loads(request.body)
             
-        return JsonResponse({"status": True,"message": "Register berhasil."}, status=200)
-    else :
-        return JsonResponse({"status": False,"message": "Register gagal."}, status=401)
+            username = data['username']
+            email = data['email']
+            password = data['password']
+            first_name = data['first_name']
+            last_name = data['last_name']
+            password1 = data['password1']
+            password2 = data['password2']
+            role = data['role']
+            
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
+                
+            if password1 != password2: 
+                return JsonResponse({"status": False,"message": "Password tidak Valid."}, status=401)
+            
+            create_user = User.objects.create_user(username=username, 
+                                                email=email, 
+                                                password=password, 
+                                                first_name=first_name, 
+                                                last_name=last_name,
+                                                role=role)
+            
+            create_user.save()
+            if role == 'AUTHOR':
+                Author = Author.objects.create(user=create_user)
+                Author.save()
+            elif role == 'READER':
+                Reader = Reader.objects.create(user=create_user)
+                Reader.save()
+                
+            return JsonResponse({"status": True,"message": "Register berhasil."}, status=200)
+        else :  
+            return JsonResponse({"status": False,"message": "Register gagal."}, status=401)
+    except Exception as e:
+        return JsonResponse({"status": False, "message": str(e)}, status=500)
