@@ -73,7 +73,7 @@ def register(request):
             return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
             
         if password1 != password2: 
-            return JsonResponse({"status": False,"message": "Password tidak sama."}, status=401)
+            return JsonResponse({"status": False,"message": "Password tidak Valid."}, status=401)
         
         create_user = User.objects.create_user(username=username, 
                                                email=email, 
