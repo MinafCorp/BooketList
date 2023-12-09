@@ -32,7 +32,7 @@ def show_home(request):
     return render(request,'home.html', context)
 
 def show_landing(request):
-    return render(request, 'landing.html')
+    return render(request, 'index.html')
 
 def signup(request):
     return render(request, 'signup.html')
