@@ -13,7 +13,7 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
-            if user.role != role:
+            if user.role.upper() != role:
                 return JsonResponse({
                     "status": False,
                     "message": "Login gagal, role tidak sesuai"
@@ -58,7 +58,7 @@ def logout(request):
      
      
 @csrf_exempt
-def register(request):
+def register(request):  
     try:
         if request.method == 'POST':
             
