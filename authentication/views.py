@@ -6,6 +6,7 @@ import json
 
 @csrf_exempt
 def login(request):
+    global user
     username = request.POST['username']
     password = request.POST['password']
     role = request.POST['role'].upper()
@@ -15,15 +16,17 @@ def login(request):
             if user.role != role:
                 return JsonResponse({
                     "status": False,
-                    "message": "Login gagal, role tidak sesuai. ini role asli"+user.role+"ini rolemu"+role
+                    "message": "Login gagal, role tidak sesuai"
                 }, status=401)
-            auth_login(request, user)
-            return JsonResponse({
-                "username": user.username,
-                "status": True,
-                "message": "Login sukses!",
-                "role" : user.role,
-            }, status=200)
+            else:
+                auth_login(request, user)
+                # Status login sukses.
+                return JsonResponse({
+                    "username": user.username,
+                    "status": True,
+                    "message": "Login sukses!",
+                    "role" : user.role,
+                }, status=200)
         else:
             return JsonResponse({
                 "status": False,
