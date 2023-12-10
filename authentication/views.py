@@ -15,7 +15,7 @@ def login(request):
             if user.role != role:
                 return JsonResponse({
                     "status": False,
-                    "message": "Login gagal, role tidak sesuai."
+                    "message": "Login gagal, role tidak sesuai. ini role asli"+user.role+"ini rolemu"+role
                 }, status=401)
             auth_login(request, user)
             return JsonResponse({
