@@ -8,7 +8,7 @@ import json
 def login(request):
     username = request.POST['username']
     password = request.POST['password']
-    role = request.POST['role']
+    role = request.POST['role'].upper()
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
