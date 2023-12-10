@@ -70,7 +70,7 @@ def register(request):
             last_name = data['last_name']
             password1 = data['password1']
             password2 = data['password2']
-            role = data['role']
+            role = data['role'].upper()
             
             if User.objects.filter(username=username).exists():
                 return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
