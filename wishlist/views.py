@@ -28,11 +28,11 @@ def add_to_wishlist(request, book_id):
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     return JsonResponse({"success": False, "message": "Error"}, status=400)
 
-@login_required
+@csrf_exempt
 def add_to_wishlist_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        book_id = data.get('book_id')
+        book_id = data["book_id"]
         
         if not book_id:
             return JsonResponse({"status": "error", "message": "Book ID is required"}, status=400)
