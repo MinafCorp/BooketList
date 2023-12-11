@@ -1,21 +1,19 @@
 import datetime
 from django.shortcuts import render
-from book.models import Book
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-
-from user.models import Author
-
 from book.models import Book
-from user.models import Reader
+from .models import Reader, User
 from wishlist.models import Wishlist
+
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='user:login')
 def show_home(request):
@@ -36,7 +34,7 @@ def show_home(request):
     return render(request,'home.html', context)
 
 def show_landing(request):
-    return render(request, 'landing.html')
+    return render(request, 'index.html')
 
 def signup(request):
     return render(request, 'signup.html')
@@ -106,3 +104,8 @@ def delete_user(request):
     user.delete()
     return HttpResponseRedirect(reverse('user:show_landing'))
 
+@csrf_exempt
+def user_info(request):
+    # Assuming the request user is the target user
+    data = request.user
+    return HttpResponse(serializers.serialize('json', data), content_type="application/json")

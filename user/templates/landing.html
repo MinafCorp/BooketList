@@ -1,74 +1,88 @@
 {% extends 'base.html' %}
-{% load static%}
+{% load static %}
 
 {% block meta %}
-    <title>signup</title>
+<title>Welcome to BooketList</title>
 {% endblock meta %}
 
 {% block style %}
-  <link rel="stylesheet" href="{% static 'user/css/landing.css' %}">
+<link rel="stylesheet" href="{% static 'user/css/landing.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.0/dist/aos.css" rel="stylesheet">
 {% endblock style %}
 
 {% block content %}
 {% include 'header.html' %}
 <br>
-<div id="news">
+
+<!-- News Section -->
+<div id="news" data-aos="fade-up">
   {% include 'news.html' %}
 </div>
 
-  <div id = "about" class="about" style="padding-bottom: 100px; padding-top: 70px;">
-    <div class="row" style="padding: 50px; justify-content: center;">
-      <div class="column" style="width: 500px;">
-        <b><h1 style="text-align: left;">BooketList</h1></b>
-        <p style="text-align: left;">
-          BooketList bridges the gap between readers and the literary world, illuminating unexplored terrains of fiction and beyond. Our dedicated team dives deep into the pages, offering discerning reviews that guide you on your next reading adventure. Dive into our curated selections and let your literary bucket list journey begin.
-        </p>
-      </div>
-      <div class="column">
-        <img src="{% static 'user/images/book.gif' %}" style="width: 80%; height: 80%; border-radius: 10px;">
-      </div>
+<!-- About Section -->
+<div id="about" class="about" data-aos="fade-right" style="padding: 100px 50px;">
+  <div class="row">
+    <div class="column">
+      <h1>BooketList</h1>
+      <p>
+        BooketList bridges the gap between readers and the literary world, illuminating unexplored terrains of fiction and beyond. Our dedicated team dives deep into the pages, offering discerning reviews that guide you on your next reading adventure. Dive into our curated selections and let your literary bucket list journey begin.
+      </p>
+    </div>
+    <div class="column">
+      <img src="{% static 'user/images/book.gif' %}" alt="Books Animation" style="max-width: 100%; border-radius: 10px;">
     </div>
   </div>
+</div>
 
-  <center><b><h1 id="contact">Meet The Team</h1></b></center>
-  <br>
-  <div class="card-deck" style="padding-bottom: 150px; padding-left: 100px; padding-right: 100px;">
-    <div class="card" id="cardperson">
-      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Masabil Arraya Muhammad</h5>
-        <p class="card-text">2206082101</p>
-      </div>
-    </div>
-    <div class="card" id="cardperson">
-      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">I Made Surya Anahata Putra</h5>
-        <p class="card-text">2206081370</p>
-      </div>
-    </div>
-    <div class="card" id="cardperson">
-      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Novita Mulia Sari</h5>
-        <p class="card-text">2206032785</p>
-      </div>
-    </div>
-    <div class="card" id="cardperson">
-      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Ayu Siti Nasya Ningrum</h5>
-        <p class="card-text">2206025426</p>
-      </div>
-    </div>
-    <div class="card" id="cardperson">
-      <img class="card-img-top" src="{% static 'user/images/testimage.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Farrel Sheva Alkautsar</h5>
-        <p class="card-text">2206030344</p>
-      </div>
+<!-- Team Section -->
+<h1 id="contact" data-aos="zoom-in">Meet The Team</h1>
+<div class="card-deck" data-aos="zoom-in-up" style="padding: 150px 100px;">
+  <div class="card" id="cardperson">
+    <img class="card-img-top" src="{% static 'user/images/komukabil.jpeg' %}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Masabil Arraya Muhammad</h5>
+      <p class="card-text">2206082101</p>
     </div>
   </div>
+  <div class="card" id="cardperson">
+    <img class="card-img-top" src="{% static 'user/images/komuksurya.jpeg' %}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">I Made Surya Anahata Putra</h5>
+      <p class="card-text">2206081370</p>
+    </div>
+  </div>
+  <div class="card" id="cardperson">
+    <img class="card-img-top" src="{% static 'user/images/komuknovita.jpg' %}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Novita Mulia Sari</h5>
+      <p class="card-text">2206032785</p>
+    </div>
+  </div>
+  <div class="card" id="cardperson">
+    <img class="card-img-top" src="{% static 'user/images/komuknasya.jpg' %}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Ayu Siti Nasya Ningrum</h5>
+      <p class="card-text">2206025426</p>
+    </div>
+  </div>
+  <div class="card" id="cardperson">
+    <img class="card-img-top" src="{% static 'user/images/komukalel.jpeg' %}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Farrel Sheva Alkautsar</h5>
+      <p class="card-text">2206030344</p>
+    </div>
+  </div>
+</div>
+
+<!-- Additional Sections -->
+<!-- Include other sections like testimonials, gallery, FAQ here -->
 
 {% include 'footer.html' %}
 {% endblock content %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.0/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+{% endblock scripts %}

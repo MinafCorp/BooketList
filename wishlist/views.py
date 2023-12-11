@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import WishlistSearchForm
+import json
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -26,6 +27,35 @@ def add_to_wishlist(request, book_id):
         except Reader.DoesNotExist:
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     return JsonResponse({"success": False, "message": "Error"}, status=400)
+
+@csrf_exempt
+def add_to_wishlist_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        book_id = data["book_id"]
+        
+        if not book_id:
+            return JsonResponse({"status": "error", "message": "Book ID is required"}, status=400)
+        
+        try:
+            book = Book.objects.get(pk=book_id)
+            reader = request.user.reader
+            
+            wishlist, created = Wishlist.objects.get_or_create(pengguna=reader)
+            wishlist.books.add(book)  # Adding the book to the user's wishlist
+            
+            if book not in wishlist.buku.all():
+                wishlist.buku.add(book)
+                return JsonResponse({"success": True, "message": "Berhasil ditambahkan ke wishlist"}, status=200)
+            else:
+                wishlist.buku.remove(book)
+                return JsonResponse({"success": True, "message": "Berhasil dihapus dari wishlist"}, status=200)
+        except Book.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Book tidak ditemukan"}, status=404)
+        except Reader.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
+    else:
+        return JsonResponse({"success": False, "message": "Error"}, status=400)
 
 def show_wishlist(request):
     reader_instance = Reader.objects.get(user=request.user)

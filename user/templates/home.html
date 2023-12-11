@@ -11,38 +11,59 @@
     background-color: #79BDC4;
   }
 
-  .card img {
-        object-fit:cover; /* Do not scale the image */
-        object-position: top; /* Center the image within the element */
+    .card img {
+        object-fit: cover;
+        object-position: top;
         width: 100%;
         max-height: 275px;
-        height: 275px   ;
+        height: 275px;
     }
+
     .card {
-    border-radius: 10px;
-    color: aqua;
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk font */
+        border-radius: 150px;
+        border: none !important;
+        width: 300px; /* Lebar kartu */
+        height: 450px; /* Tinggi kartu */
+        max-width: 100%;
+        margin-right: 10px;
+        margin-bottom: 20px;
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Penambahan shadow untuk kedalaman */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden; /* Mencegah konten meluap keluar dari kartu */
     }
-    
+
+    .card:hover {
+        transform: scale(1.05); /* Optional: for hover effect */
+    }
+
     .card-body {
         overflow-y: auto;
-        color: aquamarine;
-        background-color: #1f436d;
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk teks */
     }
 
+    .card-title {
+        white-space: nowrap; /* Memungkinkan teks untuk di-slide */
+        overflow-x: auto; /* Memungkinkan scrolling horizontal */
+        display: block; /* Membatalkan efek -webkit-box */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        font-size: 18px; /* Ukuran font yang disesuaikan */
+        font-weight: bold; /* Membuat judul tebal */
+        line-height: 1.2; /* Menyesuaikan jarak antar baris */
+        color: #654321; /* Warna coklat tua untuk judul */
+        margin-bottom: 0.5em; /* Menambahkan sedikit ruang di bawah judul */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
 
-    .card-img-top{
-        border-radius: 10px;
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-        background-color:#1c333b ;
-    }
-    .card-title{
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    .card-text{
-        overflow-x: auto;
-        white-space: nowrap;
+    .card-text {
+        color: #654321; /* Warna coklat tua untuk teks */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
     }
 
     body {
@@ -164,7 +185,7 @@
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
         <li class="nav-item custom-size">
-            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
@@ -174,7 +195,6 @@
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
-        </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
@@ -184,8 +204,8 @@
 
 {% include 'news.html' %}
 <br>
-<h1 style="text-align:center">Editor's choice</h1>
-<div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 80px;"></div>
+<h1 style="text-align:center ;font-family: 'Times New Roman', Times, serif">Editor's choice</h1>
+<div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 20px;"></div>
 <div class="container mt-4">
     <div class="row">
         {% if products %}

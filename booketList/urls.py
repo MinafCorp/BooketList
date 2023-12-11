@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/books/',include('book.urls')),
     path('manajemen-buku/', include('manajemen_buku.urls')),
     path('updates/', include('updates.urls')),
+    path('auth/', include('authentication.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -4,6 +4,7 @@
 {% block meta %}
     <title>Semua Buku</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock meta %}
 
 {% block style %}
@@ -204,7 +205,7 @@
 <nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
         <li class="nav-item custom-size">
-            <a href="#"><i class="bi bi-person-fill custom-color"></i></a>
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
         <li class="nav-item custom-size">
             <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
@@ -212,6 +213,8 @@
         <li class="nav-item custom-size">
             <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
         </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
         <li class="nav-item custom-size">
             <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
@@ -301,43 +304,18 @@
 </div>
   
 <script>
-    $(document).ready(function () {
-        $('.review-btn').on('click', function () {
-            $('#reviewModal').modal('show');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        }
+    });
+    
+    $(document).ready(function(){
+        $('.close').on('click', function(){
+            $('#reviewModal').modal('hide');
         });
     });
     
-    $(document).ready(function () {
-        $('.review-btn').on('click', function () {
-            var productId = $(this).closest('.card').data('book-id');
-            $('#reviewModal').data('product-id', productId).modal('show');
-        });
-    
-        $('#reviewForm').on('submit', function (e) {
-            e.preventDefault();
-            var productId = $('#reviewModal').data('product-id');
-            $.ajax({
-                type: 'POST',
-                url: '{% url "book:edit_review" %}',
-                data: {
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    product_id: productId,
-                    review_text: $('#reviewBook').val(),
-                    review_rating: $('#rating').val(),
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        window.location.href = '{% url "book:review_list" %}';
-                    }
-                },
-                error: function () {
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
-
-                }
-            });
-        });
-    });
-
     $(document).ready(function(){
         const modalElement = document.getElementById('wishlistModal');
         const modal = new bootstrap.Modal(modalElement);
@@ -352,7 +330,7 @@
             var bookTitle = $(this).closest('.card-body').data('book-title');
     
             $.ajax({
-                url: `/book/delete-review-book/${bookId}/`,
+                url: `/wishlist/delete-wishlist-book/${bookId}/`,
                 type: 'POST',
                 data: {
                     'book_id': bookId,
@@ -361,7 +339,7 @@
                 success: function(response) {
                     if (response.status == 'ok') {
                         cardDiv.remove();
-                        modalBody.textContent = "review Buku '" + bookTitle + "' berhasil dihapus";
+                        modalBody.textContent = "Buku dengan judul '" + bookTitle + "' berhasil dihapus dari wishlist";
                     } else {
                         alert(response.message || 'There was an error. Please try again.');
                     }
@@ -373,9 +351,59 @@
             });
         });
     });
-
     
 
+    $(document).ready(function() {
+        $(".review-btn").click(function() {
+            $("#reviewModal").modal('show');
+        });
+    });
+
+
+
+    $(document).ready(function() {
+        $("#reviewModal").on("submit", function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: `/api/books/review_list/?${$(this).serialize()}`,
+                type: "GET",
+                success: function(data) {
+                    $("#product_table .row").empty();
+                    if (data.books.length > 0) {
+                        data.books.forEach(function(book) {
+                            var bookCard = `<div class="col-md-3 mt-4">
+                                                <div class="card" data-book-id="${book.pk}">
+                                                    <img src="${book.image_url_l}" class="card-img-top" alt="book image" />
+                                                    <div class="card-body" data-book-title="${book.title}">
+                                                        <h5 class="card-title">{{ review.product.title }}</h5>
+                                                        <p class="card-text">{{ review.review_text }}</p>
+                                                        <p class="card-text">Rating : {{ review.review_rating }}</p>
+                                                        <a href="#" class="btn btn-delete" style="margin-right: 5px;"><i class="bi bi-trash-fill"></i></a>
+                                                        <a href="#" class="btn btn-secondary review-btn" style="margin-right: 5px;"><i class="bi bi-pen"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                            $("#product_table .row").append(bookCard);
+                        });
+                    } else {
+                        $("#product_table .row").append('<div class="col-md-12 mt-4"><p>Anda Tidak mempunyai Buku Yang telah diReview</p></div>');
+                    }
+                },
+                error: function(error) {
+                    alert("Terjadi kesalahan. Silakan coba lagi.");
+                },
+                complete: function() {
+                    $("#reviewModal").modal("hide");
+                }
+            });
+        });
+    });
+    
+
+    
+    
+    
+    
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 

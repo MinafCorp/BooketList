@@ -20,4 +20,5 @@ urlpatterns = [
     
     path('wishlist/',include('wishlist.urls'), name='wishlistku'),
     path('profile/', profile, name='profile'),
+    path('user-api/', user_info, name='user_info'),
 ] 
