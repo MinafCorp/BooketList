@@ -107,12 +107,5 @@ def delete_user(request):
 @csrf_exempt
 def user_info(request):
     # Assuming the request user is the target user
-    user = request.user
-    data = {
-        'username': user.username,
-        'email': user.email,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'role': user.role,
-    }
-    return JsonResponse(data)
+    data = request.user
+    return HttpResponse(serializers.serialize('json', data), content_type="application/json")
