@@ -1,13 +1,15 @@
+import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from user.models import Reader
 from .models import Wishlist
 from book.models import Book
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import WishlistSearchForm
-import json
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse
+from django.core import serializers
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -31,6 +33,7 @@ def add_to_wishlist(request, book_id):
 @csrf_exempt
 def add_to_wishlist_flutter(request):
     if request.method == 'POST':
+        
         data = json.loads(request.body)
         book_id = data["book_id"]
         
@@ -42,7 +45,6 @@ def add_to_wishlist_flutter(request):
             reader = request.user.reader
             
             wishlist, created = Wishlist.objects.get_or_create(pengguna=reader)
-            wishlist.books.add(book)  # Adding the book to the user's wishlist
             
             if book not in wishlist.buku.all():
                 wishlist.buku.add(book)
@@ -62,6 +64,18 @@ def show_wishlist(request):
     wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
+
+def wishlist_api(request):
+    if request.user.is_authenticated:
+        try:
+            reader_instance =  Reader.objects.get(user=request.user)
+            wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+            wishlisted_books = wishlist_instance.buku.all()
+            data = serializers.serialize('json', wishlisted_books)
+            return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
+        except Wishlist.DoesNotExist:
+            return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
+    return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
 
 @login_required(login_url="user:login")
 def delete_wishlist_book(request, book_id):
