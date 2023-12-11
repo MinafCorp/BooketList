@@ -87,11 +87,11 @@ def register(request):
             
             create_user.save()
             if role == 'AUTHOR':
-                Author = Author.objects.create(user=create_user)
-                Author.save()
+                author_instance = Author.objects.create(user=create_user)
+                author_instance.save()
             elif role == 'READER':
-                Reader = Reader.objects.create(user=create_user)
-                Reader.save()
+                reader_instance = Reader.objects.create(user=create_user)
+                reader_instance.save()
                 
             return JsonResponse({"status": True,"message": "Register berhasil."}, status=200)
         else :  
