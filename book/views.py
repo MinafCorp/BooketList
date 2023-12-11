@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
 from book.models import Book, ProductReview
-from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist

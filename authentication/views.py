@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from user.models import User
+from user.models import User, Reader, Author
 import json
 
 @csrf_exempt
@@ -13,7 +13,7 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
-            if user.role != role:
+            if user.role.upper() != role:
                 return JsonResponse({
                     "status": False,
                     "message": "Login gagal, role tidak sesuai"
@@ -58,7 +58,7 @@ def logout(request):
      
      
 @csrf_exempt
-def register(request):
+def register(request):  
     try:
         if request.method == 'POST':
             
@@ -70,7 +70,7 @@ def register(request):
             last_name = data['last_name']
             password1 = data['password1']
             password2 = data['password2']
-            role = data['role']
+            role = data['role'].upper()
             
             if User.objects.filter(username=username).exists():
                 return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
@@ -87,11 +87,11 @@ def register(request):
             
             create_user.save()
             if role == 'AUTHOR':
-                Author = Author.objects.create(user=create_user)
-                Author.save()
+                author_instance = Author.objects.create(user=create_user)
+                author_instance.save()
             elif role == 'READER':
-                Reader = Reader.objects.create(user=create_user)
-                Reader.save()
+                reader_instance = Reader.objects.create(user=create_user)
+                reader_instance.save()
                 
             return JsonResponse({"status": True,"message": "Register berhasil."}, status=200)
         else :  
