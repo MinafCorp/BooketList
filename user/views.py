@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.shortcuts import render
 from user.forms import ReaderSignUpForm, AuthorSignUpForm
 import datetime
@@ -106,6 +107,12 @@ def delete_user(request):
 
 @csrf_exempt
 def user_info(request):
-    # Assuming the request user is the target user
-    data = request.user
-    return HttpResponse(serializers.serialize('json', data), content_type="application/json")
+    user = request.user
+    data = {
+        'username': user.username,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'role': user.role,
+    }
+    return HttpResponse(json.dumps(data), content_type="application/json")
