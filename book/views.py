@@ -17,18 +17,18 @@ def list_buku(request):
     
     # Cek apakah pengguna sudah masuk atau belum
     if request.user.is_authenticated:
-        reader_instance = Reader.objects.get(user=request.user)
-        # Ambil wishlist pengguna saat ini
-        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
-        wishlisted_books = wishlist_instance.buku.all()
-        wishlisted_book_ids = set(book.id for book in wishlisted_books)
+        user_instance = request.user
+    # Ambil review pengguna saat ini
+        review_instances = ProductReview.objects.filter(user=user_instance)
+        reviewed_books = review_instances.values_list('product', flat=True)
+        reviewed_book_ids = set(reviewed_books)
     else:
-        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
+        reviewed_book_ids = set()  # Jika pengguna belum masuk, set kosong
     
     form = ProductReview()
     context = {
         'products': data,
-        'wishlisted_book_ids': wishlisted_book_ids,
+        'wishlisted_book_ids': reviewed_book_ids,
         'form':form
     }
     return render(request,'list_buku.html', context)
@@ -51,31 +51,54 @@ def create_review(request):
             review_text=review_text,
             review_rating=review_rating
         )
-        
         return JsonResponse({'status': 'success'})
-    return redirect('name_of_your_book_list_view')
+    show_review()
+
+@login_required
+def show_review(request):
+    reader_instance = Reader.objects.get(user=request.user)
+    review_instance = ProductReview.objects.get(pengguna=reader_instance)
+    reviewed_books = review_instance.product.all()
+    context = {
+        'review': reviewed_books,
+        'user_data': reader_instance,
+    }
+    return render(request, 'review_list.html', context)
 
 # --------------------------
 
-@login_required(login_url="user:login")
-def delete_review_book(request, book_id):
-    if request.method == 'POST':
+def review_api(request):
+    if request.user.is_authenticated:
         try:
             reader_instance = Reader.objects.get(user=request.user)
-            # Ambil objek wishlist yang berhubungan dengan user yang sedang login
-            review = ProductReview.objects.get(user=reader_instance)
-            
-            # Cari buku yang ingin dihapus berdasarkan book_id
-            book_to_remove = Book.objects.get(pk=book_id)
-            
-            # Hapus buku dari wishlist
-            review.product.remove(book_to_remove)            
+            review_instance = ProductReview.objects.get(pengguna=reader_instance)
+            reviewed_books = review_instance.product.all()
+
+            books_data = [
+                {
+                    'pk': book.pk,
+                    'title': book.title,
+                    'image_url_l': book.image_url_l,
+                    'author': book.author,
+                    'year': book.year_of_publication,
+                    'review_text': reviewed_books.review_text,
+                    'review_rating': reviewed_books.review_rating,
+                }
+                for book in reviewed_books
+            ]
+
+            return JsonResponse({'books': books_data})
+        except ProductReview.DoesNotExist:
+            return JsonResponse({'books': []})  # Return an empty list if the review doesn't exist
+    return JsonResponse({'books': []})  # Return an empty list if the user is not authenticated
+
+
+@login_required(login_url="user:login")
+def delete_review_book(request, book_id):
+            product = ProductReview.objects.get(pk=book_id)
+            product.delete()
             return JsonResponse({'status': 'ok'})
-        except ObjectDoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Object not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
 
 
 
@@ -98,5 +121,40 @@ def edit_review(request):
 @login_required
 def review_list(request):
     reviews = ProductReview.objects.all()
-    return render(request, 'review_list.html', {'reviews': reviews})
+    reader_instance = Reader.objects.get(user=request.user)
+    wishlist_instance = ProductReview.objects.filter(user=request.user)
+    # wishlisted_books = wishlist_instance.product.all()
+    user_sekarang = request.user
+    context = {
+        'reviews': reviews,
+        "user_sekarang":user_sekarang,
+        'how': wishlist_instance,
+    }
+    # response = JsonResponse(context, status=200)
+    return render(request, 'review_list.html', context)
+
+def review_api(request):
+    if request.user.is_authenticated:
+        try:
+            reader_instance = Reader.objects.get(user=request.user)
+            review_instance = ProductReview.objects.get(pengguna=reader_instance)
+            reviewed_books = review_instance.product.all()
+
+            books_data = [
+                {
+                    'pk': book.pk,
+                    'title': book.title,
+                    'image_url_l': book.image_url_l,
+                    'author': book.author,
+                    'year': book.year_of_publication,
+                    'review_text': reviewed_books.review_text,
+                    'review_rating': reviewed_books.review_rating,
+                }
+                for book in reviewed_books
+            ]
+
+            return JsonResponse({'books': books_data})
+        except ProductReview.DoesNotExist:
+            return JsonResponse({'books': []})  # Return an empty list if the review doesn't exist
+    return JsonResponse({'books': []})
 

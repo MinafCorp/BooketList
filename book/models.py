@@ -22,4 +22,9 @@ class ProductReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     review_rating = models.IntegerField()
 
+    def edit_data(self, review_text, review_rating):
+        self.review_text = review_text
+        self.review_rating = review_rating
+        self.save()
+
     
