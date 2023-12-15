@@ -1,10 +1,13 @@
+from django.dispatch import receiver
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from updates.forms import UpdatesForm
 from django.core import serializers
 from django.urls import reverse
 from updates.models import Updates
+from book.models import Book
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.signals import post_save
 
 @csrf_exempt
 def post_update(request):
@@ -25,7 +28,7 @@ def get_updates_json(request):
     return HttpResponse(serializers.serialize('json', posts))
 
 def get_updates_json_all(request):
-    posts = Updates.objects.all()
+    posts = Updates.objects.all().order_by('-data_added')
     return HttpResponse(serializers.serialize('json', posts))
 
 def show_updates(request):
@@ -43,3 +46,15 @@ def post_delete(request, pk):
     posts = Updates.objects.get(id=pk)
     posts.delete()
     return HttpResponseRedirect('/updates/')
+
+@receiver(post_save, sender=Book)  # Connect to the Book model
+def create_update_for_new_book(sender, instance, created, **kwargs):
+    if created:
+        title = instance.title
+        description = instance.description
+        author = instance.author
+
+        new_update = Updates(title=title, content=description, author=author)
+        new_update.save()
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
