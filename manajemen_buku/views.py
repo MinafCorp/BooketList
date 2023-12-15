@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotFound
 from book.models import Book
+from updates.models import Updates
 from manajemen_buku.models import Publish
 from user.models import Author, Reader
 
@@ -73,6 +74,10 @@ def add_books_ajax(request):
 
         new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
         new_item.save()
+
+        content = "new published book!"
+        new_update = Updates(title=title, content=content, author=author, author_username=authorUser.user.username)
+        new_update.save()
 
         return HttpResponse(b"CREATED", status=201)
 
