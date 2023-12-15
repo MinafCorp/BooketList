@@ -9,4 +9,6 @@ urlpatterns = [
     path('search_wishlist/', search_wishlist, name='search_wishlist'),
     path('add_to_wishlist_flutter/', add_to_wishlist_flutter, name='add_to_wishlist_flutter'),
     path('api_wishlist/', wishlist_api, name='wishlist_api'),
+    path('json/user/', show_review_by_current_user, name='show_json_user'),
+    path('json/all/', show_review, name='show_json_all'), 
 ]

@@ -66,6 +66,15 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
+def show_review_by_current_user(request):
+    review_user = ProductReview.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
+
+def show_review(request):
+    review = ProductReview.objects.all()
+    return HttpResponse(serializers.serialize("json", review), content_type="application/json")
+
+
 def wishlist_api(request):
     if request.user.is_authenticated:
         try:
