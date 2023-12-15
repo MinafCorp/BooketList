@@ -47,14 +47,3 @@ def post_delete(request, pk):
     posts.delete()
     return HttpResponseRedirect('/updates/')
 
-@receiver(post_save, sender=Book)  # Connect to the Book model
-def create_update_for_new_book(sender, instance, created, **kwargs):
-    if created:
-        title = instance.title
-        description = instance.description
-        author = instance.author
-
-        new_update = Updates(title=title, content=description, author=author)
-        new_update.save()
-        return HttpResponse(b"CREATED", status=201)
-    return HttpResponseNotFound()
