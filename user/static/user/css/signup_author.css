@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+}
+.card-box{
+    background-color: #ABC5B8;
+    justify-items: center;
+    border-radius: 40px;
+    width: fit-content;
+    padding: 20px;
+}
+td{
+    padding: 10px;
+}
+input{
+    background-color: #D9D9D9;
+    color: #4F5352;
+    border-radius: 10px;
+    border-style: hidden;
+    width:350px;
+    height: 35px;
+}
+input[type=text]:focus {
+    border: 3px solid #4F5352;
+}
+.custom-select-class{
+    background-color: #D9D9D9;
+    color: #4F5352;
+    width: 350px;
+    height: 35px;
+    border-radius: 10px;
+    border-style: hidden;
+}
+input[type=submit]{
+    background-color: #4F5352;
+    color: #D9D9D9;
+    width: 80px;
+}

@@ -2,53 +2,43 @@
 {% block content %}
 
 <style>
-    body {
-        background-color: rgb(183, 139, 86);
-        font-size: 16px; /* Ukuran teks utama */
-        font-family: 'Courier New', monospace; 
-    }
-
     .container {
         max-width: 1200px; /* Maksimum lebar konten */
         margin: 0 auto; /* Pusatkan konten di tengah layar */
         text-align: center;
     }
 
-    .heading {
-        background-color: rgb(233, 185, 185);
-        display: flex;
-        padding: 20px;
-        border-radius: 100px;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
+  
 
     #item_card {
         display: flex;
-        flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
-        overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap; /* Menjaga elemen-elemen dalam satu baris */
+        min-width: 100%; /* Pastikan lebar minimum untuk mencegah kartu menjadi terlalu kecil */
     }
 
     .card {
-        width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
-        height: 300px; /* Atur tinggi kartu sesuai kebutuhan */
-        max-width: 100%; /* Batasi lebar maksimum kartu */
-        margin-right: 10px; /* Beri jarak antara kartu */
+        width: 300px;
+        height: 300px;
+        max-width: 100%;
+        margin-right: 10px;
         margin-bottom: 20px;
+        object-fit: cover;
+        min-width: 300px; /* Pastikan lebar minimum untuk kartu */
+        white-space: normal; /* Kembalikan putih-spasi ke normal jika diperlukan */
     }
 
-    .logout {
-        background-color: rgb(201, 124, 137);
-        /* You can customize other styles as needed, like text color, padding, etc. */
-        color: white; /* Text color */
-        padding: 10px 20px; /* Padding around the button */
-        /* Add more styles as needed */
-        border-radius: 20px;
+    /* Jika Anda ingin mengatur jarak antara gambar dan tepi kartu */
+    .card img {
+        width: 70%;
+        height: 70%;
+        object-fit: cover; /* Membuat gambar mengisi kartu dan mengatur aspek rasio */
     }
+
 
     .add-item {
-        background-color: rgb(201, 124, 137);
+        background-color: #816e2c;
         /* You can customize other styles as needed, like text color, padding, etc. */
         color: white; /* Text color */
         padding: 10px 20px; /* Padding around the button */
@@ -56,19 +46,10 @@
         border-radius: 20px;
         
         
-    }
-
-    .btn-secondary {
-        background-color: rgb(214, 176, 126);
-        /* You can customize other styles as needed, like text color, padding, etc. */
-        color: white; /* Text color */
-        padding: 10px 20px; /* Padding around the button */
-        /* Add more styles as needed */
-        border-radius: 20px;
     }
 
     .card:last-child {
-    background-color: rgb(212, 111, 142);
+    background-color: rgb(184, 163, 125);
     }
 
     a{
@@ -83,57 +64,61 @@
         position: relative;
     }
 
+    .search-bar {
+    background-color: #F7F7F7;
+    border: none;
+    border-radius: 20px;
+}
+
+/* Gaya untuk tombol pencarian */
+.search-button {
+    background-color: #816e2c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
+
+/* Gaya saat tombol pencarian di-hover */
+.search-button:hover {
+    background-color: #007666;
+}
+.custom-size{
+    padding: 10px;
+    font-size: 24px;
+}
 </style>
-<nav class="navbar sticky-top" style="background-color: #C8C1B7;">
-    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
     <ul class="nav justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">ABOUT</a>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">NEWS</a>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CONTACT</a>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
         </li>
     </ul>
-    <div class="buttonuser">
-        <a class="nav-link" href="#">LOG IN</a>
-        <button class="btnlogin" type="button" style="border-radius: 20px; background-color: #4F5352; color: #C8C1B7; overflow: hidden;">SIGN UP</button>
-    </div>
+
+    <b><a class="navbar-brand" style="font-size: xx-large;">BooketList</a></b>
+
+    <form class="d-flex" role="search" method="POST">
+        {% csrf_token %}
+        <input
+            class="form-control me-2 search-bar"
+            type="search"
+            placeholder="Search"
+            name="search_query"
+            required aria-label="Search"
+        >
+        <button class="btn btn-outline-success search-button" type="submit">Search</button>
+    </form>
 </nav>
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <center><iframe src="https://giphy.com/embed/VcizxCUIgaKpa" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/atcqQ5PuX41J6" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-      <div class="carousel-item">
-        <center><iframe src="https://giphy.com/embed/3otPoRNsswd0WTQa7m" width="480" height="357" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></center>
-      </div>
-    </div>
-</div>
+{% include 'news.html' %}
 
 <div class="container">
-    <!-- <div class="heading">
-        <h1>{{ nama }}'s orders</h1>
-    </div> -->
 
     <button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Publish book
@@ -142,10 +127,6 @@
 
     <div id="item_card" class="row">
     </div>
-
-    <!-- <button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Publish book
-    </button> -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -158,16 +139,24 @@
                     <form id="form" onsubmit="return false;" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="judul" class="col-form-label">Judul:</label>
-                            <input type="text" class="form-control" id="judul" name="judul"></input>
+                            <label for="ISBN" class="col-form-label">ISBN:</label>
+                            <input type="number" class="form-control" id="ISBN" name="ISBN"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="halaman" class="col-form-label">Halaman:</label>
-                            <input type="number" class="form-control" id="halaman" name="halaman"></input>
+                            <label for="title" class="col-form-label">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title"></input>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="col-form-label">Deskripsi:</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <label for="author" class="col-form-label">Author:</label>
+                            <input type="text" class="form-control" id="author" name="author"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year_of_publication" class="col-form-label">Year of Publication:</label>
+                            <input type="number" class="form-control" id="year_of_publication" name="year_of_publication"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="publisher" class="col-form-label">Publisher:</label>
+                            <input type="text" class="form-control" id="publisher" name="publisher"></input>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="col-form-label">Image:</label>
@@ -187,6 +176,10 @@
 </div>
 
     <script>
+        function redirectToLanding() {
+            location.replace("{% url 'user:show_landing'%}"); 
+        }
+        
         async function getItems() {
             return fetch("{% url 'manajemen_buku:get_books_json' %}").then((res) => res.json())
         }
@@ -194,20 +187,20 @@
         async function refreshItems() {
             const items = await getItems();
             const itemCard = document.getElementById("item_card");
-            itemCard.innerHTML = ""; // Kosongkan elemen sebelum menambahkan kartu
+            itemCard.innerHTML = ""; 
+            const searchQuery = document.querySelector('input[name="search_query"]').value.toLowerCase();
+            const filteredItems = items.filter(item => item.fields.title.toLowerCase().includes(searchQuery));
 
-            items.forEach((item) => {
+
+            filteredItems.forEach((item) => {
                 const card = document.createElement("div");
                 card.className = "card";
 
                 card.innerHTML = `
                 <div class="card-body">
-                    <img src="${item.fields.image}" alt="Product Image">
-                    <h5 class="card-title">${item.fields.judul}</h5>
-                    <p class="card-text">${item.fields.description}</p>
-                    <p class="card-text">Amount: ${item.fields.halaman}</p>
-                    <a href="increment_amount/${item.pk}" class="btn btn-secondary" style="margin-left: 5px;">+</a> ${item.fields.halaman}
-                    <a href="decrement_amount/${item.pk}"class="btn btn-secondary" style="margin-right: 30px;">-</a>                </div>
+                    <h5 class="card-title">${item.fields.title}</h5>
+                    <img src="https://raw.githubusercontent.com/novitaaams/my-first-repo/main/buku.webp" alt="Product Image">
+                    <h5 class="card-author">${item.fields.author}</h5>
                     <button data-id="${item.pk}" class="btn btn-danger btn-sm" onclick="deleteItem(this.getAttribute('data-id'))">Delete</button>
                 `   
                 ;
@@ -236,6 +229,22 @@
             }
         }
 
+        async function hideItem(itemId) {
+            const deleteUrl = `{% url 'manajemen_buku:hide_books_ajax' item_id=999 %}`.replace('999', itemId);
+            console.log(itemId);
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(refreshItems)
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function addItem() {
             fetch("{% url 'manajemen_buku:add_books_ajax' %}", {
                 method: "POST",
@@ -246,20 +255,15 @@
             return false;
         }
 
+        
+
+
         document.getElementById("button_add").onclick = addItem;
+        document.querySelector('form[role="search"]').addEventListener('submit', function (e) {
+            e.preventDefault();
+            refreshItems();
+        });
     </script>
-<footer class="text-center text-white fixed-bottom" style="background-color: #C8C1B7;">
-    <!-- Grid container -->
-    <div class="container p-4"></div>
-    <!-- Grid container -->
-  
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: #C8C1B7;">
-      © 2023 Copyright:
-      <a class="text-white" href="https://github.com/MinafCorp">MinafCorp</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
 
+{% include 'footer.html' %}
 {% endblock content %}
-

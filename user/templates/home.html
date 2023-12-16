@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock meta %}
+
+{% block style %}
+<style>
+  #cardperson{
+    background-color: #79BDC4;
+  }
+
+    .card img {
+        object-fit: cover;
+        object-position: top;
+        width: 100%;
+        max-height: 275px;
+        height: 275px;
+    }
+
+    .card {
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk font */
+        border-radius: 150px;
+        border: none !important;
+        width: 300px; /* Lebar kartu */
+        height: 450px; /* Tinggi kartu */
+        max-width: 100%;
+        margin-right: 10px;
+        margin-bottom: 20px;
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Penambahan shadow untuk kedalaman */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden; /* Mencegah konten meluap keluar dari kartu */
+    }
+
+    .card:hover {
+        transform: scale(1.05); /* Optional: for hover effect */
+    }
+
+    .card-body {
+        overflow-y: auto;
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk teks */
+    }
+
+    .card-title {
+        white-space: nowrap; /* Memungkinkan teks untuk di-slide */
+        overflow-x: auto; /* Memungkinkan scrolling horizontal */
+        display: block; /* Membatalkan efek -webkit-box */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        font-size: 18px; /* Ukuran font yang disesuaikan */
+        font-weight: bold; /* Membuat judul tebal */
+        line-height: 1.2; /* Menyesuaikan jarak antar baris */
+        color: #654321; /* Warna coklat tua untuk judul */
+        margin-bottom: 0.5em; /* Menambahkan sedikit ruang di bawah judul */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+
+    .card-text {
+        color: #654321; /* Warna coklat tua untuk teks */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+
+    body {
+        background-color: rgb(255, 255, 255);
+        font-size: 16px; /* Ukuran teks utama */
+        font-family: 'Courier New', monospace; 
+    }
+
+    .container {
+        max-width: 1200px; /* Maksimum lebar konten */
+        margin: 0 auto; /* Pusatkan konten di tengah layar */
+        text-align: center;
+    }
+
+    .heading {
+        background-color: rgb(233, 185, 185);
+        display: flex;
+        padding: 20px;
+        border-radius: 100px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #item_card {
+        display: flex;
+        flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
+        overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+    }
+
+    .card {
+        width: 300px; /* Sesuaikan lebar kartu sesuai kebutuhan */
+        height: 450px; /* Atur tinggi kartu sesuai kebutuhan */
+        max-width: 100%; /* Batasi lebar maksimum kartu */
+        margin-right: 10px; /* Beri jarak antara kartu */
+        margin-bottom: 20px;
+    }
+
+    .logout {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .add-item {
+        background-color: rgb(201, 124, 137);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+        
+        
+    }
+
+    .btn-secondary {
+        background-color: rgb(214, 176, 126);
+        /* You can customize other styles as needed, like text color, padding, etc. */
+        color: white; /* Text color */
+        padding: 10px 20px; /* Padding around the button */
+        /* Add more styles as needed */
+        border-radius: 20px;
+    }
+
+    .card:last-child {
+    background-color: rgb(212, 111, 142);
+    }
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+
+    .heart-btn:hover .heart-icon {
+        color: red;
+    }
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 10px;
+        font-size: 24px;
+    }
+    
+    a .bi {
+        color: #4F5352;
+    }
+      
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+</nav>
+
+{% include 'news.html' %}
+<br>
+<h1 style="text-align:center ;font-family: 'Times New Roman', Times, serif">Editor's choice</h1>
+<div id="cardContainer" class="grid" style="min-width: 500px; border-radius: 50px; margin: 20px;"></div>
+<div class="container mt-4">
+    <div class="row">
+        {% if products %}
+            {% for product in products|slice:":12" %}
+                <div id="cardContainer" class="col-md-3 mt-4">
+                    <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
+                        <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">Author: {{ product.author }}</p>
+                            <p class="card-text">Year: {{ product.year_of_publication }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-md-12 mt-4">
+            <p>Tidak ada buku </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+
+    async function getPost() {
+        return fetch("{% url 'book:get_book' %}").then((res) => res.json())
+    }
+    async function refreshPost() {
+        document.getElementById("cardContainer").innerHTML = ""
+        const updates = await getPost()
+        updates.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            const cardContent = `
+                <div id="cardContainer" class="col-md-3 mt-4">
+                    <div class="col-md-3 mt-4">
+                        <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
+                            <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                            <div class="card-body">
+                                <h5 class="card-title">${ item.title }</h5>
+                                <p class="card-text">${ item.description }</p>
+                                <p class="card-text">Author: ${ item.author }</p>
+                                <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                    <i class="bi bi-heart-fill custom-color heart-icon" ${wishlisted_book_ids.includes(item.pk) ? 'red' : 'black'}> </i>
+                                </a>
+                                <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+    refreshPost()
+
+    async function performSearch(query) {
+        const updates = await getPost(); // Get all updates
+
+        const filteredUpdates = updates.filter(item => {
+            const title = item.fields.title.toLowerCase();
+            return title.includes(query.toLowerCase());
+        });
+        document.getElementById('cardContainer').innerHTML = '';
+
+        filteredUpdates.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const cardContent = `
+                <div id="cardContainer" class="col-md-3 mt-4">
+                    <div class="col-md-3 mt-4">
+                        <div class="card" data-book-id="${ item.pk }" data-book-title="${ item.title }">
+                            <img src="${ product.image_url_l }" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                            <div class="card-body">
+                                <h5 class="card-title">${ item.title }</h5>
+                                <p class="card-text">${ item.description }</p>
+                                <p class="card-text">Author: ${ item.author }</p>
+                                <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                    <i class="bi bi-heart-fill custom-color heart-icon" ${wishlisted_book_ids.includes(item.pk) ? 'red' : 'black'}> </i>
+                                </a>
+                                <a href="#" class="btn btn-secondary" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = cardContent;
+            cardContainer.appendChild(card);
+        });
+    }
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value;
+        performSearch(query);
+    });
+
+</script>
+
+{% include 'footer.html' %}
+{% endblock content %}

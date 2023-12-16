@@ -1,0 +1,64 @@
+    {% extends 'base.html' %}
+
+    {% load static %}
+
+    {% block meta %}
+        <title>Login</title>
+    {% endblock meta %}
+    {% block style %}
+        <link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+    {% endblock style %}
+
+    {% block content %}
+    <div class="container">
+        <div class="card-login">
+            <center><h2 style="color: #4F5352;">Login</h2></center>
+
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>
+
+                    <tr>
+                        <td>Username: </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                    </tr>
+                            
+                    <tr>
+                        <td>Password: </td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Role: </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="role" name="role">
+                                <option value="AUTHOR">AUTHOR</option>
+                                <option value="READER">READER</option>
+                            </select>
+                        </td>
+                    </tr>
+        
+                    <tr>
+                        <td><a class="btn signup_btn" href="{% url 'user:signup' %}">Register</a></td>
+                        <td><center><input class="btn login_btn" type="submit" value="Login"></center></td>
+                    </tr>
+                </table> 
+            </form>
+        </div>
+        <!-- Content here -->
+        
+    </div>
+    <div id= "message">
+        {% if messages%} 
+            {% for message in messages %} 
+                <li style="color: red;">{{ message }}</li> 
+            {% endfor %}
+        {% endif %}    
+    </div>
+    {% endblock content %}

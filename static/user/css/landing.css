@@ -1,0 +1,33 @@
+#cardperson{
+    background-color: #79BDC4;
+}
+
+body, h1, p {
+  font-family: 'Playfair Display', serif;
+}
+
+.about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+}
+
+.card-deck .card {
+  transition: transform 0.3s ease;
+}
+
+.card-deck .card:hover {
+  transform: translateY(-10px);
+}
+
+/* Animasi AOS */
+[data-aos='fade-up'] {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+[data-aos='fade-up'].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}

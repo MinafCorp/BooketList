@@ -1,3 +1,6 @@
+### Web app link, deployed on Railway
+booketlist-production.up.railway.app
+
 ### Anggota Kelompok MinafCorp :
 Masabil Arraya Muhammad  - 2206082101 <br>
 I Made Surya Anahata Putra - 2206081370 <br>
@@ -42,12 +45,10 @@ Untuk Komunitas:
 Deskripsi: 
 - Pengguna dapat mendaftar sebagai user atau writer melalui formulir registrasi.
 - Autentikasi dengan menggunakan email dan kata sandi.
-- Lupa kata sandi dan pengaturan profil untuk setiap role. <br>
 
 Fitur CRUD:
 - Create: Mendaftarkan akun baru.
 - Read: Melihat profil pengguna.
-- Update: Mengubah data profil pengguna.
 - Delete: Menghapus akun pengguna.
  
 **2. Modul Manajemen Buku (untuk Writer):** <br>
@@ -84,25 +85,12 @@ Fitur CRUD:
   
 **5. Modul Update:** <br>
 Deskripsi: 
-- Modul ini menyediakan informasi terbaru tentang buku atau penulis, serta update platform lainnya.<br>
+- Modul ini menyediakan informasi terbaru tentang buku atau penulis<br>
 
 Fitur CRUD: 
 - Create: Menambahkan berita atau pengumuman baru.
 - Read: Menampilkan daftar berita atau pengumuman.
-- Update: Mengubah atau memperbarui berita atau pengumuman.
 - Delete: Menghapus berita atau pengumuman yang sudah tidak relevan.
-  
-**6. Modul Keanggotaan Premium: (Optional)** <br>
-Deskripsi: <br>
-- Pengguna dapat berlangganan keanggotaan premium untuk mendapatkan fitur atau konten eksklusif. <br>
-
-Fitur CRUD: 
-- Create: Mengaktifkan keanggotaan premium.
-- Read: Menampilkan status dan detil keanggotaan.
-- Update: Mengubah paket atau detil keanggotaan.
-- Delete: Membatalkan keanggotaan premium.
- 
-
 
 
 ### iv. Sumber dataset katalog buku
@@ -114,5 +102,3 @@ https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset
 > Pembaca adalah member Reguler by default yang mempunyai beberapa Modul, seperti Modul langganan, modul ulasan dan rating, serta modul wishlist.
 - Penulis
 > Penulis adalah entitas yang mempunyai akses ke modul Manajemen Buku.
-- Admin
-> Admin adalah entitas yang mempunyai akses ke modul Update. (Unfix)

@@ -4,10 +4,13 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
-    is_author = models.BooleanField(default=False)
-    is_reader = models.BooleanField(default=False)
+    ROLE_CHOICES = (
+        ('AUTHOR', 'Author'),
+        ('READER', 'Reader'),
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='READER')
     username = models.CharField(max_length=100, unique=True)
-    email = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
@@ -16,3 +19,4 @@ class Author(models.Model):
 
 class Reader(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    

@@ -1,0 +1,184 @@
+<style>
+
+    a{
+        color:#4F5352;
+    }
+    .buttonuser{
+        display: flex;
+        margin-right: 10px;
+    }
+    .centernav{
+        display: flex;
+        position: relative;
+    }
+    .btnlogin{
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+    .custom-size{
+        padding: 10px;
+        font-size: 24px;
+    }
+    
+    a .bi {
+        color: #4F5352;
+    }
+    
+    .card img {
+        object-fit: cover;
+        object-position: top;
+        width: 100%;
+        max-height: 275px;
+        height: 275px;
+    }
+
+    .card {
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk font */
+        border-radius: 150px;
+        border: none !important;
+        width: 300px; /* Lebar kartu */
+        height: 500px; /* Tinggi kartu */
+        max-width: 100%;
+        margin-right: 10px;
+        margin-bottom: 20px;
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Penambahan shadow untuk kedalaman */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden; /* Mencegah konten meluap keluar dari kartu */
+    }
+
+    .card:hover {
+        transform: scale(1.05); /* Optional: for hover effect */
+    }
+
+    .card-body {
+        overflow-y: auto;
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk teks */
+    }
+
+    .card-title {
+        white-space: nowrap; /* Memungkinkan teks untuk di-slide */
+        overflow-x: auto; /* Memungkinkan scrolling horizontal */
+        display: block; /* Membatalkan efek -webkit-box */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        font-size: 18px; /* Ukuran font yang disesuaikan */
+        font-weight: bold; /* Membuat judul tebal */
+        line-height: 1.2; /* Menyesuaikan jarak antar baris */
+        color: #654321; /* Warna coklat tua untuk judul */
+        margin-bottom: 0.5em; /* Menambahkan sedikit ruang di bawah judul */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+
+    .card-text {
+        color: #654321; /* Warna coklat tua untuk teks */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+  
+      body {
+          background-color: rgb(255, 255, 255);
+          font-size: 16px; /* Ukuran teks utama */
+          font-family: 'Courier New', monospace; 
+      }
+  
+      .container {
+          max-width: 1200px; /* Maksimum lebar konten */
+          margin: 0 auto; /* Pusatkan konten di tengah layar */
+          text-align: center;
+      }
+  
+      .heading {
+          background-color: rgb(233, 185, 185);
+          display: flex;
+          padding: 20px;
+          border-radius: 100px;
+          justify-content: center;
+          align-items: center;
+          margin-top: 20px;
+      }
+  
+      #item_card {
+          display: flex;
+          flex-wrap: nowrap; /* Tetap berjejer tanpa memulai baris baru */
+          overflow-x: auto; /* Tampilkan scroll horizontal jika tidak cukup lebar */
+      }
+  
+      .logout {
+          background-color: rgb(201, 124, 137);
+          /* You can customize other styles as needed, like text color, padding, etc. */
+          color: white; /* Text color */
+          padding: 10px 20px; /* Padding around the button */
+          /* Add more styles as needed */
+          border-radius: 20px;
+      }
+  
+  
+      .btn-secondary {
+          background-color: rgb(214, 176, 126);
+          /* You can customize other styles as needed, like text color, padding, etc. */
+          color: white; /* Text color */
+          padding: 10px 20px; /* Padding around the button */
+          /* Add more styles as needed */
+          border-radius: 20px;
+      }
+    
+      .heart-btn:hover .heart-icon {
+          color: red;
+      }
+  
+      .btn-delete {
+          background-color: red !important;
+          color: white !important;
+          border: none;
+      }
+
+      .search-box-container {
+        display: flex; /* Ini akan mengaktifkan flexbox */
+        margin: 0; /* Ensures there are no default margins */
+        justify-content: center; /* Horizontally centers the search box */
+        align-items: center; /* Vertically centers the search box */
+    }
+    
+    .search-box {
+        background-color: #8B4513; /* Dark brown */
+        padding: 5px 10px;
+        border-radius: 20px;
+        display: flex;
+
+        width: 78%;
+
+        align-items: center;
+    }
+    
+    .search-label {
+        flex-grow: 1;  
+        margin-right: 10px;
+        color: white; /* For visibility on dark background */
+    }
+    
+    .search-btn {
+        background-color: #4F5352;
+        border: none;
+        padding: 5px 10px;  
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+    }
+
+
+    .filter-box {
+        margin: 20px 0;
+    }
+    
+    #filterYear {
+        width: 200px;
+    }
+
+       
+</style>

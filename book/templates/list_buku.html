@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Semua Buku</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock meta %}
+
+{% block style %}
+<style>
+    h1 {
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+    }
+
+    .buttonuser {
+        display: flex;
+        margin-right: 10px;
+    }
+
+    .centernav {
+        display: flex;
+        position: relative;
+    }
+
+    .btnlogin {
+        border-radius: 20px;
+        background-color: #4F5352;
+        color: #C8C1B7;
+        overflow: hidden;
+    }
+
+    .custom-size {
+        padding: 10px;
+        font-size: 24px;
+    }
+
+    a .bi {
+        color: #4F5352;
+    }
+
+    #cardperson {
+        background-color: #79BDC4;
+    }
+
+    .card img {
+        object-fit: cover;
+        object-position: top;
+        width: 100%;
+        max-height: 275px;
+        height: 275px;
+    }
+
+    .card {
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk font */
+        border-radius: 150px;
+        border: none !important;
+        width: 300px; /* Lebar kartu */
+        height: 450px; /* Tinggi kartu */
+        max-width: 100%;
+        margin-right: 10px;
+        margin-bottom: 20px;
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Penambahan shadow untuk kedalaman */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden; /* Mencegah konten meluap keluar dari kartu */
+    }
+    
+    .card:hover {
+        transform: scale(1.05); /* Optional: for hover effect */
+    }
+    
+    .card-body {
+        overflow-y: auto;
+        background-color: #a8d3c1; /* Warna hijau yang tidak terlalu terang */
+        color: #654321; /* Warna coklat tua untuk teks */
+    }
+
+    .card-title {
+        white-space: nowrap; /* Memungkinkan teks untuk di-slide */
+        overflow-x: auto; /* Memungkinkan scrolling horizontal */
+        display: block; /* Membatalkan efek -webkit-box */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        font-size: 18px; /* Ukuran font yang disesuaikan */
+        font-weight: bold; /* Membuat judul tebal */
+        line-height: 1.2; /* Menyesuaikan jarak antar baris */
+        color: #654321; /* Warna coklat tua untuk judul */
+        margin-bottom: 0.5em; /* Menambahkan sedikit ruang di bawah judul */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+
+    .card-text {
+        color: #654321; /* Warna coklat tua untuk teks */
+        font-family: 'Times New Roman', Times, serif; /* Font yang lebih klasik */
+        padding: 0 10px; /* Penambahan padding agar teks tidak menyentuh tepi */
+    }
+
+    body {
+        background-color: rgb(255, 255, 255);
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .heading {
+        background-color: rgb(233, 185, 185);
+        display: flex;
+        padding: 20px;
+        border-radius: 100px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #item_card {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .logout {
+        background-color: rgb(201, 124, 137);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+
+    .add-item {
+        background-color: rgb(201, 124, 137);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;   
+    }
+
+    .btn-secondary {
+        background-color: rgb(214, 176, 126);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+
+    a {
+        color: #4F5352;
+    }
+
+    .heart-btn:hover .heart-icon, .heart-btn:focus .heart-icon {
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+
+<!-- Modal -->
+
+
+<nav class="navbar sticky-top" style="background-color: #C8C1B7;">  
+    <ul class="nav justify-content-center">
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:profile'%}"><i class="bi bi-person-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:show_wishlist'%}"><i class="bi bi-heart-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'book:list_buku'%}"><i class="bi bi-book-fill custom-color"></i></a>
+        </li>
+        <li class="nav-item custom-size">
+            <a href="{% url 'updates:updates'%}"><i class="bi bi-megaphone-fill"></i></a>
+        <li class="nav-item custom-size">
+            <a href="{% url 'user:logout'%}"><i class="bi bi-box-arrow-right"></i></a>
+        </li>
+    </ul>
+
+    <b><a href="{% url 'user:show_home'%}" class="navbar-brand" style="font-size: xx-large; color:#4F5352">BooketList</a></b>
+</nav>
+
+<br>
+<br>
+<h1 style="text-align:center">Our Collections</h1>
+
+<div class="container mt-4" id="product_table">
+    <div class="row">
+        {% if products %}
+            {% for product in products %}
+                <div class="col-md-3 mt-4">
+                    <div class="card" data-book-id="{{ product.pk }}" data-book-title="{{ product.title }}">
+                        <img src="{{ product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">Author: {{ product.author }}</p>
+                            <a href="#" class="btn btn-secondary heart-btn" style="margin-left: 5px;">
+                                <i class="bi bi-heart-fill custom-color heart-icon" {% if product.pk in wishlisted_book_ids %}style="color: red;"{% endif %}> </i>
+                            </a>
+                            <a href="#" class="btn btn-secondary review-btn" style="margin-right: 5px;"><i class="bi bi-chat-fill custom-color"> </i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-md-12 mt-4">
+            <p>Tidak ada buku </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="wishlistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Informasi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          some
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="searchBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Your rating</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="reviewForm" method="get">
+                    <div class="mb-3">
+                        <label for="bookTitleSearch" class="form-label">Review singkat:</label>
+                        <input type="text" class="form-control" id="reviewBook" name="reviewBook" placeholder="Masukkan review">
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating:</label>
+                        <select class="form-control" id="rating" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modalElement = document.getElementById('wishlistModal');
+        const modal = new bootstrap.Modal(modalElement);
+        const modalBody = modalElement.querySelector('.modal-body');
+        const heartButtons = document.querySelectorAll('.heart-btn');
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    
+        heartButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                const bookTitle = btn.closest('.card').getAttribute('data-book-title');
+                const bookId = btn.closest('.card').getAttribute('data-book-id');
+                const icon = btn.querySelector('.heart-icon');
+    
+                // AJAX Request
+                fetch(`/wishlist/add_to_wishlist/${bookId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        if (icon.style.color === 'red') {
+                            icon.style.color = '';
+                            modalBody.textContent = `Buku dengan judul `+`${bookTitle} berhasil dihapus dari wishlist`;
+                        } else {
+                            icon.style.color = 'red';
+                            modalBody.textContent = `Buku dengan judul `+`${bookTitle} berhasil ditambahkan ke wishlist`;
+                        }
+                        modal.show();
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modalBody.textContent = "Terjadi kesalahan saat memproses permintaan Anda.";
+                    modal.show();
+                });
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('.review-btn').on('click', function () {
+            $('#reviewModal').modal('show');
+        });
+    });
+    
+    $(document).ready(function () {
+        $('.review-btn').on('click', function () {
+            var productId = $(this).closest('.card').data('book-id');
+            $('#reviewModal').data('product-id', productId).modal('show');
+        });
+    
+        $('#reviewForm').on('submit', function (e) {
+            e.preventDefault();
+            var productId = $('#reviewModal').data('product-id');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "book:create_review" %}',
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    product_id: productId,
+                    review_text: $('#reviewBook').val(),
+                    review_rating: $('#rating').val(),
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        window.location.href = '{% url "book:review_list" %}';
+                    }
+                },
+                error: function () {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+
+                }
+            });
+        });
+    });
+
+    
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% include 'footer.html' %}
+{% endblock content %}
