@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import Author
+from user.models import *
 
 # Create your models here.
 class Book(models.Model):
