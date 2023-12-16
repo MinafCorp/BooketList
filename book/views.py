@@ -1,33 +1,102 @@
-from django.shortcuts import render
-from book.models import Book
-from django.http import HttpResponse, HttpResponseNotFound
-from django.core import serializers
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from user.models import User, Reader, Author
+import json
 
-from user.models import Reader
-from wishlist.models import Wishlist
+@csrf_exempt
+def login(request):
+    global user
+    username = request.POST['username']
+    password = request.POST['password']
+    role = request.POST['role'].upper()
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            if user.role.upper() != role:
+                return JsonResponse({
+                    "status": False,
+                    "message": "Login gagal, role tidak sesuai"
+                }, status=401)
+            else:
+                auth_login(request, user)
+                print(f"Login sukses! User ID: {user.id}")
+                # Status login sukses.
+                return JsonResponse({
+                    "username": user.username,
+                    "status": True,
+                    "message": "Login sukses!",
+                    "role" : user.role,
+                    "id": user.id,
+                }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login gagal, akun nonaktif."
+            }, status=401)
 
-def get_book(request):
-    data = Book.objects.all()
-    return HttpResponse(serializers.serialize('json', data), content_type="application/json")
-
-def list_buku(request):
-    data = Book.objects.all()
-    
-    # Cek apakah pengguna sudah masuk atau belum
-    if request.user.is_authenticated:
-        reader_instance = Reader.objects.get(user=request.user)
-        # Ambil wishlist pengguna saat ini
-        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
-        wishlisted_books = wishlist_instance.buku.all()
-        wishlisted_book_ids = set(book.id for book in wishlisted_books)
     else:
-        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
-    
-    context = {
-        'products': data,
-        'wishlisted_book_ids': wishlisted_book_ids,
-    }
-    return render(request,'list_buku.html', context)
-
-
-
+        return JsonResponse({
+            "status": False,
+            "message": "Login gagal,periksa kembali username dan password anda."
+        }, status=401)
+        
+        
+@csrf_exempt
+def logout(request):
+    username = request.user.username
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logout berhasil!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout gagal."
+        }, status=401)
+     
+     
+@csrf_exempt
+def register(request):  
+    try:
+        if request.method == 'POST':
+            
+            data = json.loads(request.body)
+            
+            username = data['username']
+            email = data['email']
+            first_name = data['first_name']
+            last_name = data['last_name']
+            password1 = data['password1']
+            password2 = data['password2']
+            role = data['role'].upper()
+            
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
+                
+            if password1 != password2: 
+                return JsonResponse({"status": False,"message": "Password tidak sama."}, status=401)
+            
+            create_user = User.objects.create_user(username=username, 
+                                                email=email, 
+                                                password=password1, 
+                                                first_name=first_name, 
+                                                last_name=last_name,
+                                                role=role)
+            
+            create_user.save()
+            if role == 'AUTHOR':
+                author_instance = Author.objects.create(user=create_user)
+                author_instance.save()
+            elif role == 'READER':
+                reader_instance = Reader.objects.create(user=create_user)
+                reader_instance.save()
+                
+            return JsonResponse({"status": True,"message": "Register berhasil.", "user_id": create_user.id,}, status=200)
+        else :  
+            return JsonResponse({"status": False,"message": "Register gagal."}, status=401)
+    except Exception as e:
+        return JsonResponse({"status": False, "message": str(e)}, status=500)

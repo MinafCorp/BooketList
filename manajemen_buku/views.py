@@ -1,93 +1,102 @@
-import datetime
-from django.http import HttpResponseNotFound, HttpResponseRedirect
-from django.http import HttpResponse
-from django.core import serializers
-from django.urls import reverse
-from django.shortcuts import render
-from django.core import serializers
-from django.shortcuts import redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages  
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseNotFound
-from book.models import Book
-from manajemen_buku.models import Publish
-from user.models import Author, Reader
-
-
-# Create your views here.
-@login_required(login_url='/login')
-def manajemen_buku(request):
-    author_instance = Author.objects.get(user=request.user)
-    context = {
-        'username': request.user.username,
-        'products': Book.objects.filter(authorUser=author_instance), # Tambahkan ini
-    }
-
-    return render(request, "manajemen_buku.html", context)
-
-
-def show_json(request):
-    data = Book.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
-
-def show_json_by_id(request, id):
-    data = Book.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
-
-
-def delete_books(request, item_id):
-    books = Book.objects.get(pk=item_id)
-    books.delete()
-    return redirect('main:show_main')
-
-def get_books_json(request):
-    author_instance = Author.objects.get(user=request.user)
-    product_item = Book.objects.filter(authorUser=author_instance)
-    return HttpResponse(serializers.serialize('json', product_item))
-
-def get_books(request):
-    author_instance = Author.objects.get(user=request.user)
-    product_item = Publish.objects.filter(authorUser=author_instance)
-    return HttpResponse(serializers.serialize('json', product_item))
+from user.models import User, Reader, Author
+import json
 
 @csrf_exempt
-def add_books_ajax(request):
-    if request.method == 'POST':
-        ISBN = request.POST.get("ISBN")
-        title = request.POST.get("title")
-        author = request.POST.get("author")
-        year_of_publication = request.POST.get('year_of_publication')
-        publisher = request.POST.get("publisher")
-        image_url_s = request.FILES.get("image")
-        image_url_m = ""
-        image_url_l = ""
-        authorUser = Author.objects.get(user=request.user)
-        image = request.FILES.get("image")
+def login(request):
+    global user
+    username = request.POST['username']
+    password = request.POST['password']
+    role = request.POST['role'].upper()
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            if user.role.upper() != role:
+                return JsonResponse({
+                    "status": False,
+                    "message": "Login gagal, role tidak sesuai"
+                }, status=401)
+            else:
+                auth_login(request, user)
+                print(f"Login sukses! User ID: {user.id}")
+                # Status login sukses.
+                return JsonResponse({
+                    "username": user.username,
+                    "status": True,
+                    "message": "Login sukses!",
+                    "role" : user.role,
+                    "id": user.id,
+                }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login gagal, akun nonaktif."
+            }, status=401)
 
-
-        new_item = Book(ISBN=ISBN, title=title, author=author, year_of_publication=year_of_publication, publisher=publisher, image_url_s=image_url_s, image_url_m=image_url_m, image_url_l=image_url_l, authorUser=authorUser, image=image)
-        new_item.save()
-
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
-
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login gagal,periksa kembali username dan password anda."
+        }, status=401)
+        
+        
 @csrf_exempt
-def delete_books_ajax(request, item_id):
-    if request.method == 'DELETE':
-        books = Book.objects.get(id=item_id)
-        books.delete()
-        return HttpResponse({'status': 'DELETED'}, status=200)
-    
-
-def hide_books_ajax(request, item_id):
-    if request.method == 'DELETE':
-        books = Publish.objects.get(id=item_id)
-        books.delete()
-        return HttpResponse({'status': 'DELETED'}, status=200)
+def logout(request):
+    username = request.user.username
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logout berhasil!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout gagal."
+        }, status=401)
+     
+     
+@csrf_exempt
+def register(request):  
+    try:
+        if request.method == 'POST':
+            
+            data = json.loads(request.body)
+            
+            username = data['username']
+            email = data['email']
+            first_name = data['first_name']
+            last_name = data['last_name']
+            password1 = data['password1']
+            password2 = data['password2']
+            role = data['role'].upper()
+            
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"status": False,"message": "Username sudah terdaftar."}, status=401)
+                
+            if password1 != password2: 
+                return JsonResponse({"status": False,"message": "Password tidak sama."}, status=401)
+            
+            create_user = User.objects.create_user(username=username, 
+                                                email=email, 
+                                                password=password1, 
+                                                first_name=first_name, 
+                                                last_name=last_name,
+                                                role=role)
+            
+            create_user.save()
+            if role == 'AUTHOR':
+                author_instance = Author.objects.create(user=create_user)
+                author_instance.save()
+            elif role == 'READER':
+                reader_instance = Reader.objects.create(user=create_user)
+                reader_instance.save()
+                
+            return JsonResponse({"status": True,"message": "Register berhasil.", "user_id": create_user.id,}, status=200)
+        else :  
+            return JsonResponse({"status": False,"message": "Register gagal."}, status=401)
+    except Exception as e:
+        return JsonResponse({"status": False, "message": str(e)}, status=500)
