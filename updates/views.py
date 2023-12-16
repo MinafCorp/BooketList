@@ -1,6 +1,7 @@
+import json
 from django.dispatch import receiver
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from updates.forms import UpdatesForm
 from django.core import serializers
 from django.urls import reverse
@@ -47,14 +48,21 @@ def post_delete(request, pk):
     posts.delete()
     return HttpResponseRedirect('/updates/')
 
-@receiver(post_save, sender=Book)  # Connect to the Book model
-def create_update_for_new_book(sender, instance, created, **kwargs):
-    if created:
-        title = instance.title
-        description = instance.description
-        author = instance.author
+@csrf_exempt
+def create_updates_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
 
-        new_update = Updates(title=title, content=description, author=author)
+        new_update = Updates.objects.create(
+            title = data["title"],
+            content = data["content"],
+            author = request.user,
+            author_username = author.username,
+        )
+
         new_update.save()
-        return HttpResponse(b"CREATED", status=201)
-    return HttpResponseNotFound()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
