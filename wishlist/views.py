@@ -71,13 +71,12 @@ def wishlist_api(request):
             reader_instance =  Reader.objects.get(user=request.user)
             wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
             wishlisted_books = wishlist_instance.buku.all()
-            data = serializers.serialize('json', wishlisted_books)
             return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
         except Wishlist.DoesNotExist:
             return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
     return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
 
-@login_required(login_url="user:login")
+@csrf_exempt
 def delete_wishlist_book(request, book_id):
     if request.method == 'POST':
         try:
@@ -91,7 +90,7 @@ def delete_wishlist_book(request, book_id):
             # Hapus buku dari wishlist
             wishlist.buku.remove(book_to_remove)
             
-            return JsonResponse({'status': 'ok'})
+            return JsonResponse({"success": True, "message": "Berhasil dihapus dari wishlist"}, status=200)
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Object not found'}, status=404)
         except Exception as e:
