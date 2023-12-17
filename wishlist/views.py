@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from user.models import Reader
 from .models import Wishlist
+from book.models import ProductReview
 from book.models import Book
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -65,6 +66,15 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
+def show_review_by_current_user(request):
+    review_user = ProductReview.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
+
+def show_review(request):
+    review = ProductReview.objects.all()
+    return HttpResponse(serializers.serialize("json", review), content_type="application/json")
+
+
 def wishlist_api(request):
     if request.user.is_authenticated:
         try:
@@ -95,6 +105,14 @@ def delete_wishlist_book(request, book_id):
             return JsonResponse({'status': 'error', 'message': 'Object not found'}, status=404)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+@login_required(login_url="user:login")
+def delete_review_book2(request, book_id):
+    if request.method == 'POST':
+            product = ProductReview.objects.get(pk=book_id)
+            product.delete()
+            return JsonResponse({'status': 'ok'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
