@@ -28,7 +28,8 @@ def post_update(request):
 
 # @login_required
 def get_updates_json(request):
-    posts = Updates.objects.filter(author = request.user.id).order_by('-data_added')
+    print(request.user.id)
+    posts = Updates.objects.filter(author = request.user).order_by('-data_added')
     return HttpResponse(serializers.serialize('json', posts), content_type="application/json")
 
 def get_updates_json_all(request):
