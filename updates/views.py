@@ -7,8 +7,10 @@ from django.core import serializers
 from django.urls import reverse
 from updates.models import Updates
 from book.models import Book
+from user.models import Author
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.signals import post_save
+from django.contrib.auth.decorators import login_required
 
 @csrf_exempt
 def post_update(request):
@@ -24,9 +26,10 @@ def post_update(request):
         return HttpResponse(b"CREATED", status=201)
     return HttpResponseNotFound()
 
+# @login_required
 def get_updates_json(request):
-    posts = Updates.objects.filter(author=request.user)
-    return HttpResponse(serializers.serialize('json', posts))
+    posts = Updates.objects.filter(author = request.user.id).order_by('-data_added')
+    return HttpResponse(serializers.serialize('json', posts), content_type="application/json")
 
 def get_updates_json_all(request):
     posts = Updates.objects.all().order_by('-data_added')
@@ -55,10 +58,11 @@ def create_updates_flutter(request):
         data = json.loads(request.body)
 
         new_update = Updates.objects.create(
+            author = request.user,
+            author_username = request.user.username,
             title = data["title"],
             content = data["content"],
-            author = request.user,
-            author_username = author.username,
+            # data_added = data["data_added"]
         )
 
         new_update.save()
