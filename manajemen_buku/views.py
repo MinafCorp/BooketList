@@ -94,7 +94,7 @@ def delete_author_book(request, book_id):
             books = Book.objects.get(id=book_id)
             books.delete()
             
-            return JsonResponse({"success": True, "message": "Berhasil dihapus dari wishlist"}, status=200)
+            return JsonResponse({"success": True, "message": "Berhasil dihapus dari your books"}, status=200)
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Object not found'}, status=404)
         except Exception as e:
