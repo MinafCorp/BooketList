@@ -11,3 +11,4 @@ class Publish(models.Model):
     publisher = models.TextField(null=True, blank=True)
     authorUser = models.ForeignKey(Author, on_delete=models.CASCADE, null= True, blank=True)
     image = models.ImageField(upload_to='book_images/',null = True, blank = True)
+

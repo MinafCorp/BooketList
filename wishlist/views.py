@@ -1,13 +1,16 @@
+import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from user.models import Reader
 from .models import Wishlist
+from book.models import ProductReview
 from book.models import Book
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import WishlistSearchForm
-import json
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse
+from django.core import serializers
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -31,6 +34,7 @@ def add_to_wishlist(request, book_id):
 @csrf_exempt
 def add_to_wishlist_flutter(request):
     if request.method == 'POST':
+        
         data = json.loads(request.body)
         book_id = data["book_id"]
         
@@ -42,7 +46,6 @@ def add_to_wishlist_flutter(request):
             reader = request.user.reader
             
             wishlist, created = Wishlist.objects.get_or_create(pengguna=reader)
-            wishlist.books.add(book)  # Adding the book to the user's wishlist
             
             if book not in wishlist.buku.all():
                 wishlist.buku.add(book)
@@ -63,7 +66,27 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
-@login_required(login_url="user:login")
+def show_review_by_current_user(request):
+    review_user = ProductReview.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
+
+def show_review(request):
+    review = ProductReview.objects.all()
+    return HttpResponse(serializers.serialize("json", review), content_type="application/json")
+
+
+def wishlist_api(request):
+    if request.user.is_authenticated:
+        try:
+            reader_instance =  Reader.objects.get(user=request.user)
+            wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+            wishlisted_books = wishlist_instance.buku.all()
+            return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
+        except Wishlist.DoesNotExist:
+            return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
+    return HttpResponse(serializers.serialize('json', wishlisted_books), content_type="application/json")
+
+@csrf_exempt
 def delete_wishlist_book(request, book_id):
     if request.method == 'POST':
         try:
@@ -77,11 +100,19 @@ def delete_wishlist_book(request, book_id):
             # Hapus buku dari wishlist
             wishlist.buku.remove(book_to_remove)
             
-            return JsonResponse({'status': 'ok'})
+            return JsonResponse({"success": True, "message": "Berhasil dihapus dari wishlist"}, status=200)
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Object not found'}, status=404)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+@login_required(login_url="user:login")
+def delete_review_book2(request, book_id):
+    if request.method == 'POST':
+            product = ProductReview.objects.get(pk=book_id)
+            product.delete()
+            return JsonResponse({'status': 'ok'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 

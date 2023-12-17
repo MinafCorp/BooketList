@@ -28,7 +28,6 @@ def post_update(request):
 
 # @login_required
 def get_updates_json(request):
-    print(request.user.id)
     posts = Updates.objects.filter(author = request.user).order_by('-data_added')
     return HttpResponse(serializers.serialize('json', posts), content_type="application/json")
 
@@ -47,10 +46,14 @@ def show_json(request):
     data = Updates.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+@csrf_exempt
 def post_delete(request, pk):
-    posts = Updates.objects.get(id=pk)
-    posts.delete()
-    return HttpResponseRedirect('/updates/')
+    try:
+        posts = Updates.objects.get(id=pk)
+        posts.delete()
+        return JsonResponse({'message' : 'update deleted'})
+    except Updates.DoesNotExist:
+        return JsonResponse({'error':'post not exist'})
 
 @csrf_exempt
 def create_updates_flutter(request):
