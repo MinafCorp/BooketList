@@ -112,21 +112,19 @@ def create_product_flutter(request):
     if request.method == 'POST':
         
         data = json.loads(request.body)
-        user_id = request.user.id
-        print(f"User ID: {user_id}")
-        #print(data)
-        #print(type(data["ISBN"]))
-
+        print(data)
+        
         new_product = Book.objects.create(
             ISBN = int(data["ISBN"]),
             title = data["title"],
-            author=user_id,
+            authorUser= Author.objects.get(user=request.user),
             year_of_publication = int(data["YearOfPublication"]),
             publisher = data["publisher"],
             image_url_s = "",
             image_url_m = "",
             image_url_l = "",
             image = "",
+            author ="",
         )
 
         new_product.save()
