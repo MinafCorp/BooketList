@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from user.models import Reader
 from .models import Wishlist
@@ -11,6 +11,25 @@ from .forms import WishlistSearchForm
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from django.core import serializers
+
+@csrf_exempt
+def add_to_review_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+        products = Book.objects.get(pk=data["book"])
+        new_product = ProductReview.objects.create(
+            user= request.user,
+            product= products,
+            review_text= data["review"],
+            review_rating=data["rating"]
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -59,6 +78,8 @@ def add_to_wishlist_flutter(request):
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     else:
         return JsonResponse({"success": False, "message": "Error"}, status=400)
+    
+
 
 def show_wishlist(request):
     reader_instance = Reader.objects.get(user=request.user)
@@ -66,10 +87,12 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
+@csrf_exempt
 def show_review_by_current_user(request):
     review_user = ProductReview.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
 
+@csrf_exempt
 def show_review(request):
     review = ProductReview.objects.all()
     return HttpResponse(serializers.serialize("json", review), content_type="application/json")

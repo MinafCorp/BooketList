@@ -8,6 +8,7 @@ urlpatterns = [
     path('delete-review-book2/<int:book_id>/', delete_review_book2, name='delete-review-book2'),
     path('search_wishlist/', search_wishlist, name='search_wishlist'),
     path('add_to_wishlist_flutter/', add_to_wishlist_flutter, name='add_to_wishlist_flutter'),
+    path('add_to_review_flutter/', add_to_review_flutter, name='add_to_wishlist_flutter'),
     path('api_wishlist/', wishlist_api, name='wishlist_api'),
     path('json/user/', show_review_by_current_user, name='show_json_user'),
     path('json/all/', show_review, name='show_json_all'), 
