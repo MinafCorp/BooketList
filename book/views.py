@@ -17,23 +17,21 @@ def list_buku(request):
     
     # Cek apakah pengguna sudah masuk atau belum
     if request.user.is_authenticated:
-        user_instance = request.user
-    # Ambil review pengguna saat ini
-        review_instances = ProductReview.objects.filter(user=user_instance)
-        reviewed_books = review_instances.values_list('product', flat=True)
-        reviewed_book_ids = set(reviewed_books)
+        reader_instance = Reader.objects.get(user=request.user)
+        # Ambil wishlist pengguna saat ini
+        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+        wishlisted_books = wishlist_instance.buku.all()
+        wishlisted_book_ids = set(book.id for book in wishlisted_books)
     else:
-        reviewed_book_ids = set()  # Jika pengguna belum masuk, set kosong
+        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
     
     form = ProductReview()
     context = {
         'products': data,
-        'wishlisted_book_ids': reviewed_book_ids,
+        'wishlisted_book_ids': wishlisted_book_ids,
         'form':form
     }
     return render(request,'list_buku.html', context)
-
-
 
 @login_required
 def create_review(request):
@@ -64,8 +62,6 @@ def show_review(request):
         'user_data': reader_instance,
     }
     return render(request, 'review_list.html', context)
-
-# --------------------------
 
 def review_api(request):
     if request.user.is_authenticated:
@@ -98,8 +94,6 @@ def delete_review_book(request, book_id):
             product = ProductReview.objects.get(pk=book_id)
             product.delete()
             return JsonResponse({'status': 'ok'})
-
-
 
 
 def edit_review(request):
@@ -157,4 +151,3 @@ def review_api(request):
         except ProductReview.DoesNotExist:
             return JsonResponse({'books': []})  # Return an empty list if the review doesn't exist
     return JsonResponse({'books': []})
-
