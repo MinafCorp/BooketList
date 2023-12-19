@@ -100,9 +100,22 @@ def delete_review_book(request, book_id):
             return JsonResponse({'status': 'ok'})
 
 
-
+def review_list_yours(request):
+    reviews = ProductReview.objects.all()
+    reader_instance = Reader.objects.get(user=request.user)
+    wishlist_instance = ProductReview.objects.filter(user=request.user)
+    # wishlisted_books = wishlist_instance.product.all()
+    user_sekarang = request.user
+    context = {
+        'reviews': wishlist_instance,
+        "user_sekarang":user_sekarang,
+        'how': wishlist_instance,
+    }
+    # response = JsonResponse(context, status=200)
+    return render(request, 'review_list_yours.html', context)
 
 def edit_review(request):
+    print("hehe")
     if request.method == "POST":
         user = request.user
         product_id = request.POST.get('product_id')

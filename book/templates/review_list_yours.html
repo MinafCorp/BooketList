@@ -227,8 +227,8 @@
 <br>
 <br>
 
-<h1 style="text-align:center">Our Reviewed Books</h1>
-<a href="{% url 'book:review_list_yours' %}" type="button" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Your Review</a>
+<h1 style="text-align:center">Your Reviewed Books</h1>
+<a href="{% url 'book:review_list' %}" type="button" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Community Review</a>
 
 <div class="container mt-4" id="product_table">
     <div class="row">
@@ -238,10 +238,12 @@
                     <div class="card" data-book-id="{{ review.pk }}" data-book-title="{{ review.product.title }}">
                         <img src="{{ review.product.image_url_l }}" class="card-img-top" alt="{% static 'finalExport.png' %}" />
                         <div class="card-body">
-                            <h5 class="card-title">{{ review.product.title }}</h5>
-                            <p class="card-text">Review by {{ review.user }}</p>
+                            <h5 class="card-title">{{ review.product.title }} </h5>
+                            <p class="card-text">Review by you</p>
                             <p class="card-text">{{ review.review_text }}</p>
                             <p class="card-text">Rating : {{ review.review_rating }}</p>
+                            <a href="#" class="btn btn-delete" style="margin-right: 5px;"><i class="bi bi-trash-fill"></i></a>
+                            <a href="#" class="btn btn-secondary review-btn" style="margin-right: 5px;"><i class="bi bi-pen"></i></a>
                         </div>
                     </div>
                 </div>
@@ -370,7 +372,7 @@
             var cardDiv = $(this).closest('.col-md-3');
             var bookTitle = $(this).closest('.card-body').data('book-title');
             $.ajax({
-                url: `/wishlist/delete-review-book2/${bookId}/`,
+                url: `/book/delete-review-book2/${bookId}/`,
                 type: "GET",
                 success: function(data) {
                     $("#product_table .row");
