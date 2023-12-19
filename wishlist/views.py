@@ -15,14 +15,18 @@ from django.core import serializers
 @csrf_exempt
 def add_to_review_flutter(request):
     if request.method == 'POST':
-        
+        user = request.user
+        nama_user = str(user)
         data = json.loads(request.body)
         products = Book.objects.get(pk=data["book"])
+        judul = str(products.title)
         new_product = ProductReview.objects.create(
             user= request.user,
             product= products,
             review_text= data["review"],
-            review_rating=data["rating"]
+            review_rating=data["rating"],
+            created_by = nama_user,
+            judul_buku = judul
         )
 
         new_product.save()

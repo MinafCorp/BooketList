@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 
 from book.models import Book, ProductReview
+from user.models import User, Reader
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
@@ -42,17 +43,16 @@ def create_review(request):
         product_id = request.POST.get('product_id')
         review_text = request.POST.get('review_text')
         review_rating = request.POST.get('review_rating')
-        
+        nama_user = str(user)
+               
         product = Book.objects.get(id=product_id)
+        judul = str(product.title)
         
-        ProductReview.objects.create(
-            user=user,
-            product=product,
-            review_text=review_text,
-            review_rating=review_rating
+        ProductReview.objects.create(user = user, product=product, review_text=review_text, review_rating=review_rating, created_by = nama_user,
+                                     judul_buku = judul
         )
         return JsonResponse({'status': 'success'})
-    show_review()
+    review_list()
 
 @login_required
 def show_review(request):
