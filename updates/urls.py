@@ -10,4 +10,5 @@ urlpatterns = [
     path('get-updates-all', get_updates_json_all, name='get_updates_json_all'),
     path('delete/<int:pk>/', post_delete, name='post_delete'),
     path('json/', show_json, name='show_json'),
+    path('updates-flutter/', create_updates_flutter, name='create_updates_flutter')
 ]

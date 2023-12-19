@@ -17,7 +17,7 @@
     async function refreshPost() {
         document.getElementById("cardContainer").innerHTML = ""
         const updates = await getPost()
-        const reversedUpdates = updates.reverse();
+        const reversedUpdates = updates;
         reversedUpdates.forEach((item) => {
             const card = document.createElement("div");
             card.classList.add("card");
