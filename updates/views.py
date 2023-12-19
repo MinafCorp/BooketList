@@ -28,7 +28,8 @@ def post_update(request):
 
 # @login_required
 def get_updates_json(request):
-    posts = Updates.objects.filter(author = request.user).order_by('-data_added')
+    author_get = Author.objects.get(user=request.user)
+    posts = Updates.objects.filter(author = author_get).order_by('-data_added')
     return HttpResponse(serializers.serialize('json', posts), content_type="application/json")
 
 def get_updates_json_all(request):
@@ -60,10 +61,11 @@ def create_updates_flutter(request):
     if request.method == 'POST':
         
         data = json.loads(request.body)
+        author = Author.objects.get(user=request.user)
 
         new_update = Updates.objects.create(
-            author = request.user,
-            author_username = request.user.username,
+            author = Author.objects.get(user=request.user),
+            author_username = author.username,
             title = data["title"],
             content = data["content"],
             # data_added = data["data_added"]
