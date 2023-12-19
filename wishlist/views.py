@@ -34,6 +34,16 @@ def add_to_review_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
+def delete_review_flutter(request, book_id):
+    if request.method == "POST":
+        # fuck you
+        product = ProductReview.objects.get(pk=book_id)
+        product.delete()
+        return JsonResponse({"success": True, "message": "Berhasil dihapus dari review"}, status=200)
+
+
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -93,7 +103,11 @@ def show_wishlist(request):
 
 @csrf_exempt
 def show_review_by_current_user(request):
-    review_user = ProductReview.objects.filter(user=request.user)
+    reader_instance =  Reader.objects.get(user=request.user)
+    print(reader_instance.pk)
+    review_user = ProductReview.objects.filter(user=reader_instance.pk)
+    # review_user = ProductReview.objects.all()
+    
     return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
 
 @csrf_exempt
