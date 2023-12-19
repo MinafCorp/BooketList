@@ -21,6 +21,8 @@ class ProductReview(models.Model):
     review_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     review_rating = models.IntegerField()
+    created_by = models.TextField(null=True)
+    judul_buku = models.TextField(null=True)
 
     def edit_data(self, review_text, review_rating):
         self.review_text = review_text

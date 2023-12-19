@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from user.models import Reader
 from .models import Wishlist
@@ -11,6 +11,55 @@ from .forms import WishlistSearchForm
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from django.core import serializers
+
+@csrf_exempt
+def add_to_review_flutter(request):
+    if request.method == 'POST':
+        user = request.user
+        nama_user = str(user)
+        data = json.loads(request.body)
+        products = Book.objects.get(pk=data["book"])
+        judul = str(products.title)
+        new_product = ProductReview.objects.create(
+            user= request.user,
+            product= products,
+            review_text= data["review"],
+            review_rating=data["rating"],
+            created_by = nama_user,
+            judul_buku = judul
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
+def edit_review_flutter(request):
+    if request.method == 'POST':
+        user = request.user
+        data = json.loads(request.body)
+        products = Book.objects.get(pk=data["book"])
+        judul = str(products.title)
+        print(request)
+        print(data)
+        product_edit = ProductReview.objects.get(pk=data['book'])
+        product_edit.edit_data(data['review'], data['rating'])
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
+def delete_review_flutter(request, book_id):
+    if request.method == "POST":
+        # fuck you
+        product = ProductReview.objects.get(pk=book_id)
+        product.delete()
+        return JsonResponse({"success": True, "message": "Berhasil dihapus dari review"}, status=200)
+
+
 
 @login_required
 def add_to_wishlist(request, book_id):
@@ -59,6 +108,8 @@ def add_to_wishlist_flutter(request):
             return JsonResponse({"success": False, "message": "Pengguna tidak ditemukan"}, status=404)
     else:
         return JsonResponse({"success": False, "message": "Error"}, status=400)
+    
+
 
 def show_wishlist(request):
     reader_instance = Reader.objects.get(user=request.user)
@@ -66,10 +117,16 @@ def show_wishlist(request):
     wishlisted_books = wishlist_instance.buku.all()
     return render(request, 'wishlist.html', {'wishlist_books': wishlisted_books})
 
+@csrf_exempt
 def show_review_by_current_user(request):
-    review_user = ProductReview.objects.filter(user=request.user)
+    reader_instance =  Reader.objects.get(user=request.user)
+    print(reader_instance.pk)
+    review_user = ProductReview.objects.filter(user=reader_instance.pk)
+    # review_user = ProductReview.objects.all()
+    
     return HttpResponse(serializers.serialize("json", review_user), content_type="application/json")
 
+@csrf_exempt
 def show_review(request):
     review = ProductReview.objects.all()
     return HttpResponse(serializers.serialize("json", review), content_type="application/json")
