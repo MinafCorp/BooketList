@@ -36,6 +36,22 @@ def add_to_review_flutter(request):
         return JsonResponse({"status": "error"}, status=401)
     
 @csrf_exempt
+def edit_review_flutter(request):
+    if request.method == 'POST':
+        user = request.user
+        data = json.loads(request.body)
+        products = Book.objects.get(pk=data["book"])
+        judul = str(products.title)
+        print(request)
+        print(data)
+        product_edit = ProductReview.objects.get(pk=data['book'])
+        product_edit.edit_data(data['review'], data['rating'])
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
 def delete_review_flutter(request, book_id):
     if request.method == "POST":
         # fuck you
