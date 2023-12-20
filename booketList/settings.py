@@ -31,8 +31,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ['https://booketlist-production.up.railway.app', 'http://127.0.0.1:8000/']
-
+CSRF_TRUSTED_ORIGINS = ['https://booketlist-production.up.railway.app', 'http://127.0.0.1:8000/', 'http://127.0.0.1:58012','http://127.0.0.1:57221', 'http://localhost:57221']
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:58012',
+    'http://127.0.0.1:57221',
+    'http://localhost:57221',
+     # Add your Flutter app's URL
+    # ...
+]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True

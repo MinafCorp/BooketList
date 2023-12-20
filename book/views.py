@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 
 from book.models import Book, ProductReview
+from user.models import User, Reader
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
@@ -17,23 +18,21 @@ def list_buku(request):
     
     # Cek apakah pengguna sudah masuk atau belum
     if request.user.is_authenticated:
-        user_instance = request.user
-    # Ambil review pengguna saat ini
-        review_instances = ProductReview.objects.filter(user=user_instance)
-        reviewed_books = review_instances.values_list('product', flat=True)
-        reviewed_book_ids = set(reviewed_books)
+        reader_instance = Reader.objects.get(user=request.user)
+        # Ambil wishlist pengguna saat ini
+        wishlist_instance = Wishlist.objects.get(pengguna=reader_instance)
+        wishlisted_books = wishlist_instance.buku.all()
+        wishlisted_book_ids = set(book.id for book in wishlisted_books)
     else:
-        reviewed_book_ids = set()  # Jika pengguna belum masuk, set kosong
+        wishlisted_book_ids = set()  # Jika pengguna belum masuk, set kosong
     
     form = ProductReview()
     context = {
         'products': data,
-        'wishlisted_book_ids': reviewed_book_ids,
+        'wishlisted_book_ids': wishlisted_book_ids,
         'form':form
     }
     return render(request,'list_buku.html', context)
-
-
 
 @login_required
 def create_review(request):
@@ -42,17 +41,16 @@ def create_review(request):
         product_id = request.POST.get('product_id')
         review_text = request.POST.get('review_text')
         review_rating = request.POST.get('review_rating')
-        
+        nama_user = str(user)
+               
         product = Book.objects.get(id=product_id)
+        judul = str(product.title)
         
-        ProductReview.objects.create(
-            user=user,
-            product=product,
-            review_text=review_text,
-            review_rating=review_rating
+        ProductReview.objects.create(user = user, product=product, review_text=review_text, review_rating=review_rating, created_by = nama_user,
+                                     judul_buku = judul
         )
         return JsonResponse({'status': 'success'})
-    show_review()
+    review_list()
 
 @login_required
 def show_review(request):
@@ -64,8 +62,6 @@ def show_review(request):
         'user_data': reader_instance,
     }
     return render(request, 'review_list.html', context)
-
-# --------------------------
 
 def review_api(request):
     if request.user.is_authenticated:
@@ -101,8 +97,23 @@ def delete_review_book(request, book_id):
 
 
 
+def review_list_yours(request):
+    reviews = ProductReview.objects.all()
+    reader_instance = Reader.objects.get(user=request.user)
+    wishlist_instance = ProductReview.objects.filter(user=request.user)
+    # wishlisted_books = wishlist_instance.product.all()
+    user_sekarang = request.user
+    context = {
+        'reviews': wishlist_instance,
+        "user_sekarang":user_sekarang,
+        'how': wishlist_instance,
+    }
+    # response = JsonResponse(context, status=200)
+    return render(request, 'review_list_yours.html', context)
+
 
 def edit_review(request):
+    print("hehe")
     if request.method == "POST":
         user = request.user
         product_id = request.POST.get('product_id')
@@ -157,4 +168,3 @@ def review_api(request):
         except ProductReview.DoesNotExist:
             return JsonResponse({'books': []})  # Return an empty list if the review doesn't exist
     return JsonResponse({'books': []})
-
