@@ -120,7 +120,6 @@ def show_wishlist(request):
 @csrf_exempt
 def show_review_by_current_user(request):
     reader_instance =  Reader.objects.get(user=request.user)
-    print(reader_instance.pk)
     review_user = ProductReview.objects.filter(user=reader_instance.pk)
     # review_user = ProductReview.objects.all()
     
