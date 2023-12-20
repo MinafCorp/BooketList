@@ -60,13 +60,13 @@ def create_updates_flutter(request):
     if request.method == 'POST':
         
         data = json.loads(request.body)
+        author = Author.objects.get(user=request.user)
 
         new_update = Updates.objects.create(
             author = request.user,
-            author_username = request.user.username,
+            author_username = author.user.username,
             title = data["title"],
             content = data["content"],
-            # data_added = data["data_added"]
         )
 
         new_update.save()
