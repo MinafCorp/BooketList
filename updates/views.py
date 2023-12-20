@@ -11,6 +11,7 @@ from user.models import Author
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.signals import post_save
 from django.contrib.auth.decorators import login_required
+from django.db.models import F, Func
 
 @csrf_exempt
 def post_update(request):
